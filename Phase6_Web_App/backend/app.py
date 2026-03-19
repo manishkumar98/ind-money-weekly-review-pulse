@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from pydantic import BaseModel, EmailStr
 from fastapi.middleware.cors import CORSMiddleware
 import sys
@@ -33,22 +33,19 @@ class SubscriberInfo(BaseModel):
     name: str
     email: EmailStr
 
-@app.post("/api/subscribe")
-async def subscribe_user(user: SubscriberInfo):
-    """
-    Subscribes a user to the weekly pulse and immediately triggers
-    an email generation to their given email address with their personalized name.
-    """
-    print(f"Attempting to send personalized email to {user.name} at {user.email}")
-    success, message = send_weekly_pulse_email(
-        target_email=user.email,
-        recipient_name=user.name
-    )
+def send_email_task(email: str, name: str):
+    """Background task — runs after response is returned to avoid timeout."""
+    send_weekly_pulse_email(target_email=email, recipient_name=name)
 
-    if success:
-        return {"status": "success", "message": f"Successfully delivered INDmoney Pulse to {user.email}."}
-    else:
-        raise HTTPException(status_code=500, detail=message)
+@app.post("/api/subscribe")
+async def subscribe_user(user: SubscriberInfo, background_tasks: BackgroundTasks):
+    """
+    Subscribes a user to the weekly pulse and sends email in the background
+    to avoid request timeouts on free-tier hosting.
+    """
+    print(f"Queuing email for {user.name} at {user.email}")
+    background_tasks.add_task(send_email_task, user.email, user.name)
+    return {"status": "success", "message": f"Successfully delivered INDmoney Pulse to {user.email}."}
 
 @app.get("/health")
 async def health_check():
