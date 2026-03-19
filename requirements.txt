@@ -13,3 +13,4 @@ uvicorn
 streamlit
 pydantic
 email-validator
+resend
