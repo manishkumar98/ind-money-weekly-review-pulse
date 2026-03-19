@@ -1,168 +1,324 @@
 # Architecture Plan: INDmoney AI Review Workflow & Weekly Pulse
 
-This document outlines the phase-wise architecture for building an AI workflow that processes INDmoney app reviews into a weekly product pulse and generates structured explanations, using Groq and Gemini as the LLMs and MCP (Model Context Protocol) for external actions.
+This document is the single source of truth for the technical architecture of the INDmoney Weekly Pulse system. It covers all phases as built and deployed, including everything added after the initial design.
 
-## System Components
-1.  **Data Ingestion Module**: Reads and sanitizes input CSV files.
-2.  **LLM Processing Engine (Groq)**: Analyzes themes, extracts quotes, and generates content.
-3.  **MCP Integration Layer (Gemini)**: Uses Gemini to connect to external tools (Notes/Docs, Email) with approval gates.
-4.  **Orchestrator Script**: Ties the modules together and manages the human-in-the-loop workflow.
+---
 
-## Flow & Architecture Diagram
+## System Overview
 
-```mermaid
-graph TD
-    %% Define Nodes
-    subgraph Data Ingestion
-        A[Apple App Store] --> C(App Scraper)
-        B[Google Play Store] --> C
-        C --> D{Data Sanitizer<br>Removes PII}
-    end
+A fully automated, 6-phase AI pipeline that:
+1. Scrapes INDmoney app reviews from the Play Store and App Store
+2. Cleans and sanitizes the data
+3. Uses Groq (Llama 3) to extract themes, quotes, and action ideas
+4. Uses Gemini (MCP tool-calling) to draft notes and emails
+5. Sends a styled HTML email via Resend API
+6. Updates a public Vercel dashboard and exposes a FastAPI backend on Render
 
-    subgraph LLM Processing Layer
-        D -->|Sanitized Dataset| E[Groq API<br>Llama 3]
-        E -->|Output JSON| F[Review Themes & Quotes]
-        E -->|Output JSON| G[Weekly Note & Actions]
-        E -->|Output JSON| H[Fee Explanation]
-    end
+The entire pipeline runs every Saturday at 10:00 AM IST via GitHub Actions — zero manual intervention required.
 
-    subgraph MCP & Human Gate Layer
-        F --> I[Orchestrator Layer]
-        G --> I
-        H --> I
-        I --> J[Gemini API<br>Tool Caller]
-        J --> K{Human Approval Gate<br>Terminal/UI}
-    end
+---
 
-    subgraph Action Execution
-        K -->|Approve Tool 1| L[MCP: Notes/Docs Tool<br>Append to Notion/MD]
-        K -->|Approve Tool 2| M[MCP: Email Draft Tool<br>Draft via Gmail]
-        K -->|Deny| N[Abort Action]
-    end
+## End-to-End Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              GitHub Actions Cron (Saturday 04:30 UTC)            │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │
+               ┌───────────────▼───────────────┐
+               │       Phase 4: Orchestrator    │
+               │      main_orchestrator.py      │
+               │  (ties phases 1-3, auto Y/Y)   │
+               └──┬────────────┬───────────────┘
+                  │            │
+    ┌─────────────▼──┐   ┌─────▼──────────────────┐
+    │ Phase 1        │   │ Phase 2                  │
+    │ Data Ingestion │   │ LLM Processing (Groq)    │
+    │                │   │                          │
+    │ Play Store ──► │   │ Input: sanitized CSV     │
+    │ App Store  ──► │   │ Model: Llama 3 (Groq)    │
+    │ Sanitizer      │   │ Output:                  │
+    │ PII removal    │   │  weekly_pulse_output.json│
+    │ Deduplication  │   │  fee_explanation.json    │
+    └───────┬────────┘   └──────────┬───────────────┘
+            │                       │
+            └──────────┬────────────┘
+                       │
+            ┌──────────▼──────────────┐
+            │ Phase 3                  │
+            │ MCP Integration (Gemini) │
+            │                          │
+            │ Tool 1: Notes Appender   │
+            │  → weekly_pulse_notes.md │
+            │ Tool 2: Email Drafter    │
+            │  → email_draft.txt       │
+            │                          │
+            │ Human gate (Y/N) in      │
+            │ interactive mode;        │
+            │ auto-approved in CI      │
+            └──────────┬───────────────┘
+                       │
+            ┌──────────▼──────────────┐
+            │ Phase 5: Email Sender    │
+            │ email_sender.py          │
+            │                          │
+            │ Generates HTML poster    │
+            │ Sends via Resend API     │
+            │ (Gmail SMTP fallback)    │
+            └──────────┬───────────────┘
+                       │
+            ┌──────────▼──────────────┐
+            │ Phase 6: Dashboard Update│
+            │ update_dashboard.py      │
+            │                          │
+            │ Reads output files       │
+            │ Injects into             │
+            │ dashboard.html as JS     │
+            │ constants                │
+            │ git commit + push        │
+            └──────────┬───────────────┘
+                       │
+           ┌───────────▼────────────────────┐
+           │         Vercel                  │
+           │  Detects push → auto-deploys   │
+           │                                 │
+           │  index.html  (subscribe page)  │
+           │  dashboard.html (3-tab viewer) │
+           └─────────────────────────────────┘
+
+                  On-demand (user action)
+           ┌─────────────────────────────────┐
+           │  Browser → POST /api/send-email  │
+           │         ▼                        │
+           │    Render (Docker)               │
+           │    FastAPI app.py                │
+           │    BackgroundTask: send email    │
+           └─────────────────────────────────┘
 ```
 
-## Required Libraries & Tech Stack
+---
 
-The following python libraries and tools will be utilized to implement this architecture:
+## Phase-by-Phase Technical Specification
 
-*   **Data Scraping & Handling**:
-    *   `google-play-scraper`: To extract reviews from the Android Play Store.
-    *   `app-store-scraper`: To extract reviews from the iOS App Store.
-    *   `pandas`: For data manipulation, filtering by dates (8-12 weeks), and handling CSV structures.
-*   **AI Models**:
-    *   `groq`: The Groq Python SDK for lightning-fast inference (Llama models) to perform the heavy lifting of summarization and theme extraction.
-    *   `google-genai` (or `google-generativeai`): For interacting with Gemini to perform the tool-calling/routing logic to MCP.
-    *   `python-dotenv`: Uniquely for securely managing API keys (`GROQ_API_KEY`, `GEMINI_API_KEY`, etc.).
-*   **MCP Protocol**:
-    *   `mcp`: Standard Model Context Protocol python SDK to create and interact with our tools.
-    *   Integration specific libraries (e.g. `google-api-python-client` if using Gmail API, or Notion SDK if choosing Notion for docs).
+### Phase 1: Data Ingestion
+**File:** `Phase1_Data_Ingestion/phase1_data_ingestion.py`
+**Output:** `Phase1_Data_Ingestion/sanitized_indmoney_reviews.csv`
+
+- Scrapes Google Play Store (`com.indwealth.rn`) and Apple App Store
+- Fetches last 8–12 weeks of reviews; samples up to 3,000 with balanced star ratings
+- Sanitization pipeline:
+  - RegEx PII scan: masks emails, phone numbers, names
+  - Emoji removal via `emoji` library
+  - Minimum length filter: discard reviews under 5 words
+  - Deduplication: exact-match on review text
 
 ---
 
-## Phase 1: Setup & Data Ingestion
-**Goal:** Prepare the environment, extract raw review data, and output a sanitized dataset securely.
-**Input:** App Store unique identifiers (e.g., `com.indwealth.rn` for Google Play Store).
-**Expected Output:** A sanitized `pandas` DataFrame or CSV containing only relevant review fields (Text, Rating, Date).
-**Validation Engine:** 
-* Scrape exactly 3,000 reviews while ensuring equal representation across 1 to 5-star ratings and forcing sorting by 'MOST_RELEVANT' parameters to capture deeply helpful content.
-* RegEx/NLP scan verifying PII elements (emails, phone numbers, localized names) are successfully masked before saving.
-* **Emoji Removal:** All emojis and graphical characters must be aggressively stripped from the raw text to ensure cleaner LLM tokenization.
-*   **Length Quality Check:** Discard any review containing fewer than 5 words, removing trivial non-actionable reviews (e.g. "Good app").
-*   **Deduplication:** Remove exact match duplicate reviews based on text content to preserve context width for distinct feedback.
+### Phase 2: LLM Processing
+**File:** `Phase2_LLM_Processing/phase2_llm_processing.py`
+**Output:** `Phase2_LLM_Processing/weekly_pulse_output.json`, `Phase2_LLM_Processing/fee_explanation.json`
 
-*   **1.1 Environment Setup**: 
-    *   Initialize Python project.
-    *   Install dependencies (`pandas` for data processing, `google-play-scraper` and `app-store-scraper` (or similar) for extracting reviews, `groq` SDK, `google-genai` SDK (for Gemini), relevant MCP SDKs/clients).
-    *   Set up environment variables securely (Groq API Key, Gemini API Key, MCP tool credentials).
-*   **1.2 Data Loading (App Review Scraping)**:
-    *   Use scrapers to extract recent INDmoney reviews directly from the **Google Play Store** and the **Apple App Store**.
-    *   Fetch the last 8–12 weeks of historical public reviews.
-    *   Consolidate these into a structured DataFrame/CSV covering relevant columns (e.g., Review Text, Date, Rating, Source).
-*   **1.3 Data Sanitization (PII Removal)**:
-    *   Implement a pre-processing step to scrub potential Personally Identifiable Information (PII) like names, phone numbers, or emails from the review text before it ever reaches the LLM.
+**Model:** Groq API — Llama 3
+**Token constraint:** Input payload capped at ~12,000 tokens (~9,000 words); dataset dynamically sampled to fit
 
-## Phase 2: LLM Processing (Groq API Integration)
-**Goal:** Use Groq's fast inference to analyze the sanitized reviews and generate required structured artifacts.
-**Input:** Stringified JSON or parsed CSV text of the sanitized INDmoney reviews. *Constraint: The script will dynamically sample the dataset so that the payload sent to the LLM never exceeds 12,000 tokens (approx. 9,000 words).*
-**Prompt Strategy:**
-*   **System Prompt:** "You are an expert INDmoney Product Manager. Analyze the provided user reviews and extract key insights. Do not hallucinate features."
-*   **User Prompt:** "Process these reviews. Output a strict JSON object containing: 'themes' (max 5), 'top_3_themes', 'quotes' (exactly 3, real), 'weekly_note' (strict max 250 words), and 'action_ideas' (exactly 3)."
-**Model Output Validation:** 
-* JSON parsing success.
-* Word count verification on `weekly_note` (throws error & retries if > 250 words).
-* Length checks on `quotes` array and `action_ideas` array (must == 3).
+**Prompt strategy:**
+- System: "You are an expert INDmoney Product Manager. Analyze user reviews. Do not hallucinate."
+- User: "Output strict JSON with: `themes` (max 5), `top_3_themes`, `quotes` (exactly 3, real), `weekly_note` (max 250 words), `action_ideas` (exactly 3)."
 
-*   **2.1 Review Analysis Prompt Engine**:
-    *   Construct the runtime prompt by injecting the sanitized data into the predefined Prompt Strategy.
-*   **2.2 Structured Explanation Generation**:
-    *   Construct a separate prompt to generate a structured, standard explanation for one common fee/charge scenario specific to INDmoney (e.g., US stocks withdrawal fees, or mutual fund charges).
+**Output validation:**
+- JSON parse success check
+- `weekly_note` word count ≤ 250 (retry on violation)
+- `quotes` array length == 3
+- `action_ideas` array length == 3
 
-## Phase 3: MCP Tool Integration & Approval Gates (using Gemini)
-**Goal:** Use Gemini's tool-calling capabilities to orchestrate external actions securely, enforcing manual human oversight.
-**Input:** The validated, structured JSON produced by Phase 2 (Groq).
-**Prompt Strategy:** "You are an orchestration AI. You have access to a 'Document_Appender' tool and an 'Email_Drafter' tool. Use the provided Weekly Pulse JSON to prepare payloads for both tools."
-**Gate & Output Validation:** 
-* The system intercepts the `function_call` request from Gemini.
-* Validates that the tool payload matches the MCP schema.
-* **HALTS EXECUTION**. Presents the exact tool arguments to the human via Terminal/UI. If human inputs 'Y', proceed to MCP. If 'N', abort.
-
-*   **3.1 Tool 1: Append to Notes/Doc**:
-    *   Configure an MCP server/tool that interfaces with a documentation system (e.g., appending to a local Markdown file, Notion, or Google Docs).
-    *   This tool will receive the "Weekly Note", "Themes", "Quotes", and "Action Ideas".
-*   **3.2 Tool 2: Create Email Draft**:
-    *   Configure an MCP tool that generates an email draft via an email provider (e.g., Gmail API, local mail client integration).
-    *   The tool payload will be formatted for team wide distribution.
-*   **3.3 Approval Gating Mechanism**:
-    *   Implement an interactive terminal prompt or lightweight UI that displays the LLM's proposed tool calls and arguments.
-    *   The system *must* pause execution and wait for human confirmation (`Y/N`) before actually executing the MCP tools.
-
-## Phase 4: Workflow Orchestration & Testing
-**Goal:** Combine all phases into a cohesive, runnable script simulating the end-to-end Support/Product AI workflow.
-**Validation Checkpoints:** End-to-end execution flow strictly obeys human gate locks. The final drafted email and appended document must precisely match Phase 2's generated structure.
-
-*   **4.1 Main Execution Loop**:
-    1.  Read and sanitize CSV.
-    2.  Send data to Groq; receive parsed Pulse Data.
-    3.  Generate the Fee/Charge Scenario explanation.
-    4.  Display outputs to the user in the console.
-    5.  Request approval to append to Notes/Docs. If yes, execute MCP Tool 1.
-    6.  Request approval to draft the email. If yes, execute MCP Tool 2.
-*   **4.2 Testing & Validation**:
-    *   Test with sample dummy CSV data.
-    *   Ensure the word count constraint (≤250 words) is consistently met.
-    *   Verify the approval gates block execution when denied.
-
-## Phase 5: Email Automation & UI Dashboard
-**Goal:** Transmit the finalized email draft to stakeholders automatically and build a visual dashboard (Streamlit) for manual testing.
-**Input:** `email_draft.txt` and `weekly_pulse_notes.md` from Phase 3.
-**Execution Engine:** Python `smtplib` and Streamlit.
-*   **5.1 SMTP Transmission**: 
-    * Set up `email_sender.py` utilizing Gmail SMTP protocol to parse the drafted local text files.
-    * Use environment variables (`EMAIL_SENDER` and `EMAIL_PASSWORD`) for security and authenticate securely using App Passwords.
-*   **5.2 UI Testing Dashboard (Streamlit)**:
-    * Build `app.py` leveraging Streamlit to give product managers a visual view of the exported data.
-    * Provide a seamless text-input mechanism on the UI for manual triggering the SMTP email without needing to wait for a full week.
-*   **5.3 CRON Scheduling & Automation (Completed Native Crontab)**:
-    * The orchestrator bypass mechanism (`Y\nY\n` via printf) acts as the CLI bypass tool inside `run_weekly.sh`.
-    * A native cron job is configured directly on the root user system (`0 10 * * 6`) to automatically trigger the `run_weekly.sh` script to target the pre-configured email `manish98ad@gmail.com` exactly at Saturday 10:00 AM IST.
-
-## Phase 6: Public Subscription Web App (Frontend & Backend)
-**Goal:** Expose the finalized weekly pulse generator to public users or internal product managers via a dedicated, beautiful web interface, allowing them to instantly receive a personalized copy of the email on-demand.
-**Input:** User `Name` and `Email` provided via the Web UI.
-**Execution Engine:** FastAPI (Backend) and HTML/CSS/JS (Frontend).
-*   **6.1 API Backend Setup**: 
-    * Spin up an async FastAPI application (`Phase6_Web_App/backend/app.py`).
-    * Implement a `/api/subscribe` POST endpoint receiving `SubscriberInfo` schema.
-    * The backend hooks into `Phase5_Email_UI/email_sender.py`, pushing the `target_email` and dynamically utilizing the `recipient_name` to insert a custom greeting inside the generated HTML email.
-*   **6.2 Premium Frontend Application (`Phase6_Web_App/frontend/index.html`)**:
-    * Visually stunning, responsive glassmorphism-styled frontend using pure Vanilla CSS.
-    * Contains dynamic animated abstract blobs and a polished frosted glass subscription card.
-    * Uses asynchronous `fetch` calls to subscribe and present immediate UI success feedback to the user.
+**Secondary output:** `fee_explanation.json` — structured explanation of one common INDmoney fee scenario (e.g. US stocks withdrawal).
 
 ---
-## Project Delta Highlights (Recent Upgrades)
-During development, several premium features were strategically added outside the core LLM scope to greatly enhance UI/UX and system automation:
-1. **Dynamic HTML Poster Emails (Phase 5):** The system no longer just sends plain text. It dynamically parses LLM JSON outputs into a stunning minimalist email featuring sleek typography, grid layouts, horizontal 1px separators, and circular visual avatars representing review users.
-2. **HD Poster Generator (`generate_poster.py`):** An independent script that natively renders the email format directly into an `HD_Poster.html` for out-of-browser rendering or PDF printing.
-3. **Streamlit Sub-system Update:** The raw Streamlit debug dashboard was retrofitted with an `HD Poster Preview` tab utilizing `streamlit.components` to natively view the custom Email payload styles directly inside the analytics UI before sending.
-4. **CLI Non-Interactive Loop:** Developed `run_weekly.sh` which forces human approval gates through `printf` pipes, granting autonomous scheduling power while maintaining manual control capabilities upon script direct execution.
+
+### Phase 3: MCP Integration
+**File:** `Phase3_MCP_Integration/phase3_mcp_orchestration.py`, `Phase3_MCP_Integration/mcp_tools.py`
+**Output:** `Phase3_MCP_Integration/weekly_pulse_notes.md`, `Phase3_MCP_Integration/email_draft.txt`
+
+**Model:** Gemini API (tool-calling mode)
+
+**MCP Tools defined:**
+- `Document_Appender` — appends formatted weekly summary to `weekly_pulse_notes.md`
+- `Email_Drafter` — generates a formatted plain-text email draft in `email_draft.txt`
+
+**Approval gate:**
+- In interactive (local) mode: pauses execution, shows exact tool arguments, waits for `Y/N` before executing
+- In CI/automated mode: `printf "Y\nY\n"` pre-approves both gates
+- Gate logic: intercepts Gemini's `function_call`, validates schema, conditionally executes
+
+---
+
+### Phase 4: Orchestration
+**File:** `Phase4_Orchestration/main_orchestrator.py`
+
+Ties Phases 1–3 into a single runnable script:
+1. Call Phase 1 → produce sanitized CSV
+2. Call Phase 2 → produce pulse JSON + fee JSON
+3. Print outputs to console
+4. Present approval gate → call Phase 3 Tool 1 (notes)
+5. Present approval gate → call Phase 3 Tool 2 (email draft)
+
+Used by both local `run_weekly.sh` and GitHub Actions CI.
+
+---
+
+### Phase 5: Email Sender
+**File:** `Phase5_Email_UI/email_sender.py`
+**Also:** `Phase5_Email_UI/generate_poster.py`
+
+**Email delivery:**
+- Primary (cloud/Render): Resend API — HTTP-based, not blocked by cloud hosting providers
+- Fallback (local): Gmail SMTP via `smtplib` on port 587
+
+**HTML email generation:**
+- Reads `weekly_pulse_output.json`
+- Generates a styled HTML email with:
+  - Personalized greeting (recipient name)
+  - User quotes with avatar icons (`ui-avatars.com`)
+  - Weekly summary note
+  - Top themes list
+  - Action ideas list
+  - Footer with branding
+- Saves as `Phase5_Email_UI/poster.html` (standalone preview)
+
+**Environment variables required:**
+- `RESEND_API_KEY` — if set, uses Resend; otherwise falls back to SMTP
+- `EMAIL_SENDER`, `EMAIL_PASSWORD` — for SMTP fallback
+
+---
+
+### Phase 6: Web Application
+**Backend:** `Phase6_Web_App/backend/app.py` → deployed on **Render** (Docker)
+**Frontend:** `Phase6_Web_App/frontend/` → deployed on **Vercel** (static)
+**Dashboard updater:** `Phase6_Web_App/update_dashboard.py`
+
+#### Backend (FastAPI on Render)
+
+**Path detection (Docker vs local):**
+```python
+_this_dir = Path(__file__).resolve().parent
+_local_root = _this_dir.parent.parent   # ind-money-weekly-pulse-view/
+_docker_root = _this_dir                # Docker: /app
+project_root = _local_root if (_local_root / "Phase5_Email_UI").exists() else _docker_root
+```
+
+**Endpoints:**
+| Method | Path | Description |
+|---|---|---|
+| GET | `/health` | Health check |
+| POST | `/api/subscribe` | Subscribe user, send email in background |
+| POST | `/api/send-email` | Send pulse email to any address (dashboard) |
+
+**Note:** `/api/pulse-data`, `/api/email-draft`, `/api/notes` endpoints exist in code but are no longer called by the frontend. Data is embedded directly in `dashboard.html`.
+
+**CORS:**
+- `allow_credentials=False` (required when `allow_origins=["*"]`)
+- Origins configurable via `ALLOWED_ORIGINS` env var (comma-separated)
+
+**Email sending:** Uses `BackgroundTasks` to avoid request timeout on Render's free tier (email sending can take 5–10s).
+
+**Docker image:** Built from `Dockerfile` at repo root. Copies:
+- `Phase6_Web_App/backend/app.py`
+- `Phase5_Email_UI/` (email sender)
+- `Phase2_LLM_Processing/weekly_pulse_output.json`
+- `Phase3_MCP_Integration/email_draft.txt`
+- `Phase3_MCP_Integration/weekly_pulse_notes.md`
+
+#### Frontend (Vercel)
+
+**`index.html`** — Subscribe page
+- Glassmorphism UI, animated background blobs
+- Name + email form → POST `/api/subscribe` → success feedback
+
+**`dashboard.html`** — 3-tab weekly pulse viewer
+- Tab 1: Email Draft (plain text)
+- Tab 2: Markdown Report (rendered with `marked.js`)
+- Tab 3: Pulse Poster (themes, quotes, actions, weekly note)
+- Send Email form → POST `https://ind-money-weekly-review-pulse.onrender.com/api/send-email`
+
+**Key design decision:** All tab content is **baked directly into `dashboard.html` as JavaScript constants**. No API calls are made to load data. This eliminates CORS issues, Render cold-start timeouts, and any dependency on the backend being awake. The only network call is the Send Email button.
+
+**`vercel.json`** — Proxy rewrite:
+```json
+{ "rewrites": [{ "source": "/api/:path*", "destination": "https://ind-money-weekly-review-pulse.onrender.com/api/:path*" }] }
+```
+
+#### Dashboard Updater (`update_dashboard.py`)
+
+Runs as part of the GitHub Actions pipeline after Phase 4. Reads the three output files and injects them into `dashboard.html` using regex replacement on the JS constant blocks:
+- `EMAIL_DRAFT` ← `Phase3_MCP_Integration/email_draft.txt`
+- `NOTES_MD` ← `Phase3_MCP_Integration/weekly_pulse_notes.md`
+- `PULSE_DATA` ← `Phase2_LLM_Processing/weekly_pulse_output.json`
+
+After updating, GitHub Actions commits and pushes → Vercel auto-deploys.
+
+---
+
+## GitHub Actions Workflow
+
+**File:** `.github/workflows/weekly_pulse.yml`
+**Trigger:** `cron: '30 4 * * 6'` (Saturday 04:30 UTC = 10:00 AM IST) + `workflow_dispatch` (manual)
+
+**Steps:**
+1. Checkout repo
+2. Setup Python 3.11 with pip cache
+3. `pip install -r requirements.txt`
+4. Write `.env` from GitHub Secrets
+5. Log run start → `logs/scheduler.log`
+6. Run pipeline: `printf "Y\nY\n" | python Phase4_Orchestration/main_orchestrator.py`
+7. Send email: `python Phase5_Email_UI/email_sender.py $EMAIL_SENDER`
+8. Update dashboard: `python Phase6_Web_App/update_dashboard.py`
+9. Git commit + push updated files (dashboard.html + output files)
+10. Log result
+11. Upload artifacts (output files + log, retained 30 days)
+
+**GitHub Secrets required:**
+- `GROQ_API_KEY`
+- `GEMINI_API_KEY`
+- `ANTHROPIC_API_KEY`
+- `EMAIL_SENDER`
+- `EMAIL_PASSWORD`
+
+---
+
+## Hosting & Infrastructure
+
+| Component | Platform | Config |
+|---|---|---|
+| Frontend | Vercel | Root: `Phase6_Web_App/frontend/`, auto-deploy on push to `main` |
+| Backend | Render (free tier) | Docker, `Dockerfile` at repo root, auto-deploy on push |
+| Pipeline scheduler | GitHub Actions | Free tier, cron weekly |
+| Email (cloud) | Resend API | Free tier, `onboarding@resend.dev` sender |
+| Email (local) | Gmail SMTP | App password via env var |
+
+**Render free tier caveats:**
+- Spins down after 15 minutes of inactivity (cold start ~30–60s on first request)
+- SMTP port 587 is blocked → must use Resend API
+
+---
+
+## Data Flow: File Outputs
+
+```
+Phase 1 → sanitized_indmoney_reviews.csv
+Phase 2 → weekly_pulse_output.json
+          fee_explanation.json
+Phase 3 → weekly_pulse_notes.md  (appended each week)
+          email_draft.txt
+Phase 5 → poster.html  (local HTML preview of email)
+Phase 6 → dashboard.html  (updated in-place by update_dashboard.py)
+          logs/scheduler.log  (appended each run)
+```
+
+---
+
+## Security Notes
+
+- `.env` is gitignored; API keys only live in GitHub Secrets and Render env vars
+- PII removed from review data before any LLM sees it
+- Human approval gate in Phase 3 prevents autonomous tool execution in interactive mode
+- `allow_credentials=False` on CORS middleware (required for `allow_origins=["*"]`)

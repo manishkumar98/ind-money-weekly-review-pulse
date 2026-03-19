@@ -1,42 +1,146 @@
-# What is the "INDmoney Weekly App Review Pulse" Project?
+# INDmoney Weekly Pulse — Plain English Overview
 
-Imagine the product team that builds the INDmoney app. Every day, hundreds of users leave reviews on the App Store or Google Play Store. Some complain about bugs, others request new features, and some leave glowing praise. 
+## The Problem
 
-Normally, a product manager or a support agent has to manually read through thousands of these reviews every week. They have to try and spot patterns, copy-paste important quotes into a document, and then write an email to the rest of the company saying, "Here's what our users are feeling this week."
+The INDmoney app has thousands of users. Every single day, those users leave reviews on the Google Play Store and Apple App Store. Some say the app is great. Some complain about bugs. Some ask for new features. Some report being charged unexpected fees.
 
-**Our project is an AI assistant that does all this repetitive, manual work automatically in seconds, while still giving the human the final say.**
+**The problem:** A product manager or support team member has to manually read through hundreds of these reviews every week. They need to spot patterns ("are more people complaining about login issues this week?"), pull out the most important quotes, write a summary document, and email it to the whole product team. This takes hours of repetitive, tedious work — every single week.
 
----
+**What if an AI could do all of that in under 3 minutes, automatically, every Saturday morning?**
 
-## How it works (Step-by-Step)
-
-### 1. It collects the reviews (Data Gathering)
-Instead of a human logging into the App Store, our system runs a scripted "scraper." A scraper is a tool that goes directly to the Google Play Store and Apple App Store and downloads the last 8 to 12 weeks' worth of reviews automatically.
-
-### 2. It protects user privacy (Sanitization)
-Before any AI reads these reviews, our system scans them and removes any private information (like phone numbers, email addresses, or real names). We only care about the feedback, not the specific identity of the person leaving it.
-
-### 3. It "Reads" everything incredibly fast (AI Analysis)
-We use a super-fast Artificial Intelligence called **Groq**. We feed thousands of cleaned-up reviews to Groq and ask it to play the role of a data analyst. It will:
-*   Group thousands of unique reviews into the top 5 main topics (e.g., "Login Bugs", "New Feature Praise", "Customer Service Complaints").
-*   Pick out the top 3 most urgent themes.
-*   Pull out 3 real, direct quotes from real users as evidence.
-*   Write a sharp, 250-word summary note for the team.
-*   Suggest 3 action items the company should take based on this feedback.
-
-*We also use the AI to generate a standard, easy-to-understand response to one common INDmoney-specific complaint (like "Why was I charged a fee for US stocks?").*
-
-### 4. It prepares the paperwork (Connecting to Apps)
-Once the summary is written, we hand the results over to a second AI named **Gemini**. Gemini knows how to talk to other software (via something called MCP). Gemini will:
-*   Connect to the team's internal notes (like a Google Doc or Notion) and format the summary so it can be saved for the record.
-*   Open an email drafting tool and write a professional email containing the summary, addressed to the whole product team.
-
-### 5. It waits for Human Approval (The "Gate")
-**This is the most important part:** The AI is not allowed to actually send the email or permanently edit the company notes on its own. 
-
-The system will pause and show the human exactly what it wrote and what it intends to do. The human looks it over, makes sure it makes sense, and clicks "Approve." Only then does the AI actually click final "Save" or "Send."
+That is exactly what this project does.
 
 ---
 
-## The Ultimate Goal
-We are simulating exactly how modern Product and Support teams are using AI. By turning a massive, unstructured pile of comments into a clean weekly summary with action items, we save the team a huge amount of time—allowing humans to focus on actually *fixing* the problems, rather than just *finding* them.
+## What This Project Does — In Plain English
+
+Think of it like hiring an extremely fast, tireless assistant who:
+
+1. Reads every app review published in the last 8–12 weeks
+2. Protects users' privacy by removing personal details before anyone (or any AI) reads them
+3. Identifies the top themes users are talking about
+4. Picks out the most powerful direct quotes from real users
+5. Writes a clear weekly summary note
+6. Suggests 3 concrete action items the product team should act on
+7. Drafts a professional email and sends it
+8. Updates a live dashboard on the internet — all without a human lifting a finger
+
+And every Saturday morning at 10:00 AM, it does all of this again automatically with the fresh week's reviews.
+
+---
+
+## The 6 Steps (How It Actually Works)
+
+### Step 1 — Collect Reviews (Data Ingestion)
+A script acts like a robot browser. It visits the Google Play Store and Apple App Store and downloads all recent INDmoney reviews — up to several thousand at a time. It stores them in a spreadsheet-like file.
+
+**Tool used:** `google-play-scraper`, `app-store-scraper`, `pandas`
+
+---
+
+### Step 2 — Protect Privacy (Sanitization)
+Before any AI reads the reviews, the system scans every review and removes anything that could identify a real person — phone numbers, email addresses, names. Only the feedback text itself goes forward.
+
+Reviews shorter than 5 words are also discarded (e.g. "Good app" tells us nothing useful). Duplicate reviews are removed.
+
+---
+
+### Step 3 — AI Reads Everything (LLM Analysis with Groq)
+We send the cleaned reviews to **Groq** — a lightning-fast AI that uses Meta's Llama 3 model. We give it clear instructions:
+
+> "You are an expert INDmoney Product Manager. Read these reviews and give me:
+> - The top 5 themes users are talking about
+> - The top 3 most important themes
+> - 3 direct quotes from real users
+> - A 250-word weekly summary
+> - 3 action items the team should take"
+
+Groq returns a structured response in seconds. We also ask it to explain one common INDmoney fee scenario in plain language (e.g., "Why was I charged for withdrawing US stocks?").
+
+**Tool used:** Groq API (Llama 3 model)
+
+---
+
+### Step 4 — Prepare Documents & Draft Email (MCP Integration with Gemini)
+We hand the Groq output to **Gemini** (Google's AI). Gemini is better at "tool use" — meaning it can be told to prepare formatted documents and emails.
+
+Gemini uses something called **MCP (Model Context Protocol)** — a standard way for AI models to interact with external apps and tools. It:
+- Formats and saves a weekly notes file (like a running Google Doc entry)
+- Drafts a professional email ready to send to the product team
+
+**A human approval gate sits here:** in automated runs, the system auto-approves. When run manually, it pauses and shows you exactly what it will write and asks "Y/N" before doing anything.
+
+**Tool used:** Gemini API, MCP tools
+
+---
+
+### Step 5 — Send the Email (Automated Delivery)
+The system sends a beautifully styled HTML email to the configured recipient. The email contains:
+- A personal greeting
+- All user quotes with avatar icons
+- The weekly summary note
+- Top themes and action ideas
+
+On cloud servers, it uses the **Resend API** (because Gmail is blocked on most cloud providers). Locally, it uses Gmail's SMTP.
+
+**Tool used:** Resend API, Gmail SMTP fallback
+
+---
+
+### Step 6 — Update the Public Dashboard & Publish (Web App)
+The system updates a live website dashboard that shows:
+- **Email Draft tab** — the exact email that was (or will be) sent
+- **Markdown Report tab** — the full running weekly notes history
+- **Pulse Poster tab** — a visual card with themes, quotes, and action ideas
+
+Anyone can also enter their name and email on the subscribe page to get the pulse email sent directly to them.
+
+The website is hosted free on **Vercel** (frontend) and **Render** (backend API for send-email). Every Saturday after the pipeline runs, the dashboard automatically updates with the new week's data.
+
+**Tool used:** HTML/CSS/JS (Vercel), FastAPI (Render), GitHub Actions
+
+---
+
+## The Big Picture: One Diagram
+
+```
+Every Saturday 10:00 AM IST
+         │
+         ▼
+  GitHub Actions wakes up
+         │
+         ├──► Scrape reviews from Play Store + App Store
+         │
+         ├──► Strip private info (PII removal)
+         │
+         ├──► Send to Groq AI → get themes, quotes, summary, actions
+         │
+         ├──► Send to Gemini AI → draft notes file + email
+         │
+         ├──► Send email to recipient via Resend API
+         │
+         ├──► Inject new data into dashboard.html
+         │
+         └──► Push to GitHub → Vercel auto-deploys new dashboard
+                                        │
+                                        ▼
+                              Live dashboard updated ✅
+```
+
+---
+
+## Who Can Use This
+
+| User | What They Get |
+|---|---|
+| Product Manager | Weekly email every Saturday with themes, quotes, action items |
+| Anyone who subscribes | Same pulse email delivered on demand via the subscribe page |
+| Developer / Technical user | Full pipeline they can run locally, modify, or extend |
+
+---
+
+## Why This Matters
+
+Without this system, a product manager might spend 3–4 hours every week just reading reviews and writing summaries. This system reduces that to zero manual effort, while still keeping the human in the loop — they get the finished summary, review it, and decide what to act on.
+
+It is a practical demonstration of how modern AI tools (Groq, Gemini, MCP) can be combined into a real automated workflow that solves a real business problem.
