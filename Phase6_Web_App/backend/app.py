@@ -1,21 +1,29 @@
-from fastapi import FastAPI, HTTPException, Body
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr
 from fastapi.middleware.cors import CORSMiddleware
 import sys
 import os
 from pathlib import Path
 
-# Add project root to python path to import email sender
-sys.path.append(str(Path(__file__).parent.parent.parent))
+# Works both locally (Phase6_Web_App/backend/app.py) and in Docker (/app/app.py)
+_this_dir = Path(__file__).resolve().parent
+_local_root = _this_dir.parent.parent.parent   # local monorepo root
+_docker_root = _this_dir                        # Docker: /app
+
+project_root = _local_root if (_local_root / "Phase5_Email_UI").exists() else _docker_root
+sys.path.insert(0, str(project_root))
 
 from Phase5_Email_UI.email_sender import send_weekly_pulse_email
+
+# CORS: allow Vercel frontend domain via ALLOWED_ORIGINS env var (comma-separated)
+# Default "*" works for local dev; set to your Vercel URL in production
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 
 app = FastAPI(title="INDmoney Weekly Pulse Subscriber")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,20 +36,20 @@ class SubscriberInfo(BaseModel):
 @app.post("/api/subscribe")
 async def subscribe_user(user: SubscriberInfo):
     """
-    Subscribes a user to the weekly pulse and immediately triggers 
+    Subscribes a user to the weekly pulse and immediately triggers
     an email generation to their given email address with their personalized name.
     """
-    print(f"🌟 Attempting to send personalized email to {user.name} at {user.email}")
+    print(f"Attempting to send personalized email to {user.name} at {user.email}")
     success, message = send_weekly_pulse_email(
         target_email=user.email,
         recipient_name=user.name
     )
-    
+
     if success:
         return {"status": "success", "message": f"Successfully delivered INDmoney Pulse to {user.email}."}
     else:
         raise HTTPException(status_code=500, detail=message)
 
-# Mount the frontend folder to serve the index.html
-frontend_path = Path(__file__).parent.parent / "frontend"
-app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}

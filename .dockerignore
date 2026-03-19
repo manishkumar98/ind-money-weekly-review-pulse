@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+.env
+.git/
+.github/
+.claude/
+*.pyc
+*.pyo
+node_modules/
+Phase1_Data_Ingestion/
+Phase4_Orchestration/
+Phase6_Web_App/frontend/
+Docs/
+logs/
+*.log
