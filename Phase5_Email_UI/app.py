@@ -11,6 +11,11 @@ from email_sender import send_weekly_pulse_email, generate_html_poster
 import json
 import streamlit.components.v1 as components
 
+# Load credentials from Streamlit Cloud secrets if available, else fall back to .env
+if hasattr(st, "secrets") and "EMAIL_SENDER" in st.secrets:
+    os.environ["EMAIL_SENDER"] = st.secrets["EMAIL_SENDER"]
+    os.environ["EMAIL_PASSWORD"] = st.secrets["EMAIL_PASSWORD"]
+
 st.set_page_config(page_title="INDmoney Weekly Pulse", page_icon="📈", layout="wide")
 
 st.title("🎯 INDmoney Weekly Pulse Orchestrator")

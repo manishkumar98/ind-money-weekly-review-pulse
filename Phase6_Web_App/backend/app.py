@@ -35,7 +35,14 @@ class SubscriberInfo(BaseModel):
 
 def send_email_task(email: str, name: str):
     """Background task — runs after response is returned to avoid timeout."""
-    send_weekly_pulse_email(target_email=email, recipient_name=name)
+    try:
+        success, message = send_weekly_pulse_email(target_email=email, recipient_name=name)
+        if success:
+            print(f"[EMAIL OK] Sent to {email}")
+        else:
+            print(f"[EMAIL FAIL] {message}")
+    except Exception as e:
+        print(f"[EMAIL ERROR] {e}")
 
 @app.post("/api/subscribe")
 async def subscribe_user(user: SubscriberInfo, background_tasks: BackgroundTasks):
