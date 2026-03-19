@@ -207,10 +207,11 @@ def send_weekly_pulse_email(target_email: str, recipient_name: str = None):
     try:
         if RESEND_API_KEY:
             # Use Resend API (works on cloud hosts that block SMTP)
+            # Free tier must send FROM onboarding@resend.dev unless domain is verified
             import resend
             resend.api_key = RESEND_API_KEY
             resend.Emails.send({
-                "from": f"INDmoney Pulse <{EMAIL_SENDER or 'onboarding@resend.dev'}>",
+                "from": "INDmoney Pulse <onboarding@resend.dev>",
                 "to": target_email,
                 "subject": subject,
                 "html": html_content if html_content else f"<p>{clean_body}</p>",
