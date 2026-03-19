@@ -127,7 +127,8 @@
     </div>
 
     <script>
-        const API = 'https://ind-money-weekly-review-pulse.onrender.com';
+        // Use relative URL so Vercel proxy handles the request (no CORS preflight)
+        const API = '';
 
         // ── Baked-in data (updated by pipeline each week) ──────────────────
         const EMAIL_DRAFT = `============================================================
