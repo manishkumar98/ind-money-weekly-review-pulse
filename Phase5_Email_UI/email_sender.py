@@ -15,9 +15,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# We configure the email settings here
-EMAIL_SENDER = os.getenv("EMAIL_SENDER")      # e.g., your_email@gmail.com
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")  # Gmail App Password
+EMAIL_SENDER = os.getenv("EMAIL_SENDER")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")  # Set this on Render; falls back to SMTP if not set
 
 def generate_html_poster(json_data, recipient_name=None):
     """
@@ -205,14 +205,26 @@ def send_weekly_pulse_email(target_email: str, recipient_name: str = None):
         msg.attach(part2)
 
     try:
-        # Connect to Gmail SMTP Server
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(EMAIL_SENDER, EMAIL_PASSWORD)
-        text = msg.as_string()
-        server.sendmail(EMAIL_SENDER, target_email, text)
-        server.quit()
-        print(f"✅ Success! Email correctly sent to {target_email} in elegant poster format.")
+        if RESEND_API_KEY:
+            # Use Resend API (works on cloud hosts that block SMTP)
+            import resend
+            resend.api_key = RESEND_API_KEY
+            resend.Emails.send({
+                "from": f"INDmoney Pulse <{EMAIL_SENDER or 'onboarding@resend.dev'}>",
+                "to": target_email,
+                "subject": subject,
+                "html": html_content if html_content else f"<p>{clean_body}</p>",
+                "text": clean_body,
+            })
+        else:
+            # Fall back to Gmail SMTP (works locally and on Streamlit Cloud)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_SENDER, target_email, msg.as_string())
+            server.quit()
+
+        print(f"✅ Email sent to {target_email}")
         return True, "Email sent successfully."
     except Exception as e:
         error_msg = f"❌ Failed to send email: {str(e)}"
