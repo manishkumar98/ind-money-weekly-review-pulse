@@ -33,11 +33,38 @@ jobs:
           EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
           EOF
 
+      - name: Log run start
+        run: |
+          mkdir -p logs
+          echo "========================================" >> logs/scheduler.log
+          echo "Run Date     : $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M:%S IST')" >> logs/scheduler.log
+          echo "Triggered by : ${{ github.event_name }}" >> logs/scheduler.log
+          echo "Commit SHA   : ${{ github.sha }}" >> logs/scheduler.log
+          echo "Status       : STARTED" >> logs/scheduler.log
+
       - name: Run full pipeline (Phases 1-3)
+        id: pipeline
         run: printf "Y\nY\n" | python Phase4_Orchestration/main_orchestrator.py
 
       - name: Send weekly email
+        id: email
         run: python Phase5_Email_UI/email_sender.py "${{ secrets.EMAIL_SENDER }}"
+
+      - name: Log run result
+        if: always()
+        run: |
+          if [ "${{ steps.pipeline.outcome }}" == "success" ] && [ "${{ steps.email.outcome }}" == "success" ]; then
+            echo "Pipeline     : SUCCESS" >> logs/scheduler.log
+            echo "Email Sent   : SUCCESS -> ${{ secrets.EMAIL_SENDER }}" >> logs/scheduler.log
+            echo "Result       : COMPLETED" >> logs/scheduler.log
+          else
+            echo "Pipeline     : ${{ steps.pipeline.outcome }}" >> logs/scheduler.log
+            echo "Email Sent   : ${{ steps.email.outcome }}" >> logs/scheduler.log
+            echo "Result       : FAILED" >> logs/scheduler.log
+          fi
+          echo "========================================" >> logs/scheduler.log
+          echo "" >> logs/scheduler.log
+          cat logs/scheduler.log
 
       - name: Upload pipeline outputs as artifacts
         if: always()
@@ -50,4 +77,5 @@ jobs:
             Phase3_MCP_Integration/email_draft.txt
             Phase3_MCP_Integration/weekly_pulse_notes.md
             Phase5_Email_UI/poster.html
+            logs/scheduler.log
           retention-days: 30
