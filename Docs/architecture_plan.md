@@ -67,7 +67,8 @@ The following python libraries and tools will be utilized to implement this arch
 * Scrape exactly 3,000 reviews while ensuring equal representation across 1 to 5-star ratings and forcing sorting by 'MOST_RELEVANT' parameters to capture deeply helpful content.
 * RegEx/NLP scan verifying PII elements (emails, phone numbers, localized names) are successfully masked before saving.
 * **Emoji Removal:** All emojis and graphical characters must be aggressively stripped from the raw text to ensure cleaner LLM tokenization.
-* **Length Quality Check:** Discard any review containing fewer than 5 words, removing trivial non-actionable reviews (e.g. "Good app").
+*   **Length Quality Check:** Discard any review containing fewer than 5 words, removing trivial non-actionable reviews (e.g. "Good app").
+*   **Deduplication:** Remove exact match duplicate reviews based on text content to preserve context width for distinct feedback.
 
 *   **1.1 Environment Setup**: 
     *   Initialize Python project.
@@ -130,3 +131,38 @@ The following python libraries and tools will be utilized to implement this arch
     *   Test with sample dummy CSV data.
     *   Ensure the word count constraint (≤250 words) is consistently met.
     *   Verify the approval gates block execution when denied.
+
+## Phase 5: Email Automation & UI Dashboard
+**Goal:** Transmit the finalized email draft to stakeholders automatically and build a visual dashboard (Streamlit) for manual testing.
+**Input:** `email_draft.txt` and `weekly_pulse_notes.md` from Phase 3.
+**Execution Engine:** Python `smtplib` and Streamlit.
+*   **5.1 SMTP Transmission**: 
+    * Set up `email_sender.py` utilizing Gmail SMTP protocol to parse the drafted local text files.
+    * Use environment variables (`EMAIL_SENDER` and `EMAIL_PASSWORD`) for security and authenticate securely using App Passwords.
+*   **5.2 UI Testing Dashboard (Streamlit)**:
+    * Build `app.py` leveraging Streamlit to give product managers a visual view of the exported data.
+    * Provide a seamless text-input mechanism on the UI for manual triggering the SMTP email without needing to wait for a full week.
+*   **5.3 CRON Scheduling & Automation (Completed Native Crontab)**:
+    * The orchestrator bypass mechanism (`Y\nY\n` via printf) acts as the CLI bypass tool inside `run_weekly.sh`.
+    * A native cron job is configured directly on the root user system (`0 10 * * 6`) to automatically trigger the `run_weekly.sh` script to target the pre-configured email `manish98ad@gmail.com` exactly at Saturday 10:00 AM IST.
+
+## Phase 6: Public Subscription Web App (Frontend & Backend)
+**Goal:** Expose the finalized weekly pulse generator to public users or internal product managers via a dedicated, beautiful web interface, allowing them to instantly receive a personalized copy of the email on-demand.
+**Input:** User `Name` and `Email` provided via the Web UI.
+**Execution Engine:** FastAPI (Backend) and HTML/CSS/JS (Frontend).
+*   **6.1 API Backend Setup**: 
+    * Spin up an async FastAPI application (`Phase6_Web_App/backend/app.py`).
+    * Implement a `/api/subscribe` POST endpoint receiving `SubscriberInfo` schema.
+    * The backend hooks into `Phase5_Email_UI/email_sender.py`, pushing the `target_email` and dynamically utilizing the `recipient_name` to insert a custom greeting inside the generated HTML email.
+*   **6.2 Premium Frontend Application (`Phase6_Web_App/frontend/index.html`)**:
+    * Visually stunning, responsive glassmorphism-styled frontend using pure Vanilla CSS.
+    * Contains dynamic animated abstract blobs and a polished frosted glass subscription card.
+    * Uses asynchronous `fetch` calls to subscribe and present immediate UI success feedback to the user.
+
+---
+## Project Delta Highlights (Recent Upgrades)
+During development, several premium features were strategically added outside the core LLM scope to greatly enhance UI/UX and system automation:
+1. **Dynamic HTML Poster Emails (Phase 5):** The system no longer just sends plain text. It dynamically parses LLM JSON outputs into a stunning minimalist email featuring sleek typography, grid layouts, horizontal 1px separators, and circular visual avatars representing review users.
+2. **HD Poster Generator (`generate_poster.py`):** An independent script that natively renders the email format directly into an `HD_Poster.html` for out-of-browser rendering or PDF printing.
+3. **Streamlit Sub-system Update:** The raw Streamlit debug dashboard was retrofitted with an `HD Poster Preview` tab utilizing `streamlit.components` to natively view the custom Email payload styles directly inside the analytics UI before sending.
+4. **CLI Non-Interactive Loop:** Developed `run_weekly.sh` which forces human approval gates through `printf` pipes, granting autonomous scheduling power while maintaining manual control capabilities upon script direct execution.

@@ -1,0 +1,9 @@
+{
+  "scenario_name": "US Stocks Withdrawal Fees",
+  "explanation": "When you withdraw US stocks from your INDmoney account, you may incur a withdrawal fee. This fee is typically charged by the US brokerage firm and is usually a percentage of the withdrawal amount. The fee is deducted from the withdrawn amount and credited to the brokerage firm. The withdrawal fee is usually higher for smaller withdrawal amounts and may be waived for larger withdrawals. It's essential to review the fee structure before initiating a withdrawal to avoid any unexpected charges.",
+  "key_points": [
+    "Withdrawal fees are charged by the US brokerage firm, not INDmoney.",
+    "Fees are usually a percentage of the withdrawal amount.",
+    "Fees may be waived for larger withdrawal amounts."
+  ]
+}

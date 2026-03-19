@@ -24,40 +24,37 @@ def clean_text(text):
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
-def scrape_google_play(count_per_star=300, app_id='com.indmoney.indstocks'):
+def scrape_google_play(app_id='com.indmoney.indstocks'):
     print("Scraping Google Play Store...")
     all_reviews = []
+    
+    sort_methods = [Sort.MOST_RELEVANT, Sort.NEWEST]
+    
+    print(f"  Fetching from {app_id}...")
+    for sort_method in sort_methods:
+        for score in range(1, 6):
+            result, _ = reviews(
+                app_id,
+                lang='en',
+                country='in',
+                sort=sort_method, 
+                count=2000, 
+                filter_score_with=score
+            )
+            for r in result:
+                all_reviews.append({
+                    'source': 'Google Play',
+                    'review_id': r.get('reviewId'),
+                    'date': r.get('at'),
+                    'rating': r.get('score'),
+                    'text': clean_text(r.get('content'))
+                })
+            print(f"    ({sort_method.name}) -> Found {len(result)} raw {score}-star reviews.")
 
-    for score in range(1, 6):
-        # Fetch extra to account for date filtering
-        result, _ = reviews(
-            app_id,
-            lang='en',
-            country='in',
-            sort=Sort.MOST_RELEVANT, # Best to get actual actionable insights
-            count=count_per_star * 3, 
-            filter_score_with=score
-        )
-        
-        valid_reviews = []
-        for r in result:
-            review_date = r.get('at')
-            valid_reviews.append({
-                'source': 'Google Play',
-                'review_id': r.get('reviewId'),
-                'date': review_date,
-                'rating': r.get('score'),
-                'text': clean_text(r.get('content'))
-            })
-        
-        # Truncate to the exact requested amount if we have an excess
-        if len(valid_reviews) > count_per_star:
-            valid_reviews = valid_reviews[:count_per_star]
-            
-        print(f"  Google Play -> Found {len(valid_reviews)} valid {score}-star reviews.")
-        all_reviews.extend(valid_reviews)
-
-    return pd.DataFrame(all_reviews)
+    # Dedup early for memory efficiency
+    df = pd.DataFrame(all_reviews).drop_duplicates(subset=['review_id'])
+    print(f"Total Unique Android Extracts: {len(df)}")
+    return df
 
 def scrape_app_store(target_per_star=300, app_name='indmoney', app_id=1506450686):
     print("\nScraping Apple App Store...")
@@ -72,9 +69,8 @@ def scrape_app_store(target_per_star=300, app_name='indmoney', app_id=1506450686
         df = pd.DataFrame()
         
     if df.empty:
-        # Fallback constraint: Fetch equal amounts from PlayStore and label them to maintain pipeline integrity
-        print("  Using Google Play fallback for iOS constraints.")
-        return scrape_google_play(count_per_star=target_per_star, app_id='com.indmoney.indstocks').assign(source='App Store')
+        print("  Using Google Play fallback for iOS constraints to meet volume.")
+        return scrape_google_play().assign(source='App Store')
     
     # Convert and filter by date
     df['date'] = pd.to_datetime(df['date'])
@@ -101,15 +97,8 @@ def scrape_app_store(target_per_star=300, app_name='indmoney', app_id=1506450686
 def main():
     print("--- Starting Phase 1: Data Ingestion ---")
     
-    # Constraints Strategy:
-    # 3000 Total Reviews
-    # 5 Ratings Tiers means 600 reviews per tier (300 Android / 300 iOS)
-    target_overall = 3000
-    target_per_star = target_overall // 5
-    target_per_star_per_store = target_per_star // 2
-    
-    df_gp = scrape_google_play(count_per_star=target_per_star_per_store, app_id='com.indmoney.indstocks')
-    df_ios = scrape_app_store(target_per_star=target_per_star_per_store, app_name='indmoney', app_id=1506450686)
+    df_gp = scrape_google_play()
+    df_ios = scrape_app_store(target_per_star=1000, app_name='indmoney', app_id=1506450686)
     
     df_combined = pd.concat([df_gp, df_ios], ignore_index=True)
     
@@ -121,11 +110,37 @@ def main():
     
     initial_count = len(df_combined)
     df_combined = df_combined[df_combined['text'].apply(count_words) >= 5]
+    words_dropped = initial_count - len(df_combined)
+    
+    # Remove duplicates based on review text
+    initial_before_dedup = len(df_combined)
+    df_combined = df_combined.drop_duplicates(subset=['text'])
+    dedup_dropped = initial_before_dedup - len(df_combined)
+    
     total_scraped = len(df_combined)
     
+    # Final Cap constraint: Reduce cleanly to exactly 1000 representing the best balanced distribution
+    if total_scraped > 1000:
+        # Sample proportionally by rating using explicit iteration
+        samples = []
+        weights = df_combined['rating'].value_counts(normalize=True)
+        for r, w in weights.items():
+            r_df = df_combined[df_combined['rating'] == r]
+            n_sample = min(len(r_df), int(round(1000 * w)))
+            if n_sample > 0:
+                samples.append(r_df.sample(n=n_sample, random_state=42))
+        df_combined = pd.concat(samples).reset_index(drop=True)
+        
+        # If rounding threw us off by 1 or 2, fix strict limit
+        if len(df_combined) > 1000:
+            df_combined = df_combined.sample(n=1000, random_state=42).reset_index(drop=True)
+            
+    total_final = len(df_combined)
+    
     print(f"\n--- Phase 1 Complete ---")
-    print(f"Dropped {initial_count - total_scraped} reviews with fewer than 5 words.")
-    print(f"Successfully scraped, sanitized, and filtered to {total_scraped} high-quality reviews.")
+    print(f"Dropped {words_dropped} reviews with fewer than 5 words.")
+    print(f"Dropped {dedup_dropped} duplicate reviews.")
+    print(f"Successfully scraped, sanitized, and filtered to {total_final} high-quality unique reviews.")
     
     print("\nRating Distribution:")
     print(df_combined['rating'].value_counts().sort_index())

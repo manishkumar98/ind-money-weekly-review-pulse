@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDmoney Pulse | Subscribe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #151a30 100%);
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Abstract Background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+        }
+
+        .blob-1 {
+            background: rgba(255, 99, 132, 0.4);
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            animation: move-x 10s infinite alternate cubic-bezier(0.5, 0, 0.5, 1);
+        }
+
+        .blob-2 {
+            background: rgba(54, 162, 235, 0.4);
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+            animation: move-y 8s infinite alternate cubic-bezier(0.5, 0, 0.5, 1);
+        }
+
+        @keyframes move-x {
+            100% { transform: translateX(200px); }
+        }
+        @keyframes move-y {
+            100% { transform: translateY(-150px); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 460px;
+            z-index: 10;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fade-up 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
+
+        @keyframes fade-up {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #b3c5e7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-msg {
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .status-msg.success {
+            color: #4ade80;
+            opacity: 1;
+        }
+
+        .status-msg.error {
+            color: #f87171;
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="glass-card">
+        <div class="header">
+            <h1>INDmoney Pulse</h1>
+            <p>Get the latest app reviews, key user themes, and product insights straight to your inbox.</p>
+        </div>
+
+        <form id="subscribeForm">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" placeholder="E.g. Sarah" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="sarah@example.com" required>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Send to my Inbox
+                <div class="spinner" id="btnSpinner"></div>
+            </button>
+
+            <div class="status-msg" id="statusMessage"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('subscribeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            const btn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('btnSpinner');
+            const statusMsg = document.getElementById('statusMessage');
+
+            // Loading state
+            btn.style.opacity = '0.8';
+            btn.style.cursor = 'not-allowed';
+            spinner.style.display = 'block';
+            statusMsg.style.opacity = '0';
+            statusMsg.className = 'status-msg';
+
+            try {
+                const response = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+
+                const rawResponse = await response.json();
+                
+                if (response.ok) {
+                    statusMsg.textContent = rawResponse.message || "✨ Pulse beautifully delivered to your inbox!";
+                    statusMsg.classList.add('success');
+                    document.getElementById('subscribeForm').reset();
+                } else {
+                    statusMsg.textContent = typeof rawResponse.detail === 'string' ? rawResponse.detail : "❌ An error occurred sending your pulse.";
+                    statusMsg.classList.add('error');
+                }
+            } catch (err) {
+                statusMsg.textContent = "❌ Failed to connect to server.";
+                statusMsg.classList.add('error');
+            } finally {
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+                spinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
