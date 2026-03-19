@@ -1,0 +1,13 @@
+groq
+google-generativeai
+python-dotenv
+pandas
+google-play-scraper
+app-store-scraper
+emoji
+fastapi[all]
+uvicorn
+streamlit
+pydantic
+email-validator
+pytest
