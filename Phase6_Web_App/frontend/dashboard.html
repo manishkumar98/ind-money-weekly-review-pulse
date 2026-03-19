@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDmoney Pulse | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #151a30 100%);
+            color: #fff;
+            padding: 30px 20px;
+        }
+
+        .blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none; }
+        .blob-1 { background: rgba(255,99,132,0.3); width: 400px; height: 400px; top: -100px; left: -100px; animation: move-x 10s infinite alternate; }
+        .blob-2 { background: rgba(54,162,235,0.3); width: 300px; height: 300px; bottom: -50px; right: -50px; animation: move-y 8s infinite alternate; }
+        @keyframes move-x { 100% { transform: translateX(200px); } }
+        @keyframes move-y { 100% { transform: translateY(-150px); } }
+
+        .container { max-width: 960px; margin: 0 auto; position: relative; z-index: 10; }
+
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #fff, #b3c5e7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { color: rgba(255,255,255,0.6); margin-top: 8px; font-size: 15px; }
+        header a { color: rgba(255,255,255,0.5); font-size: 13px; text-decoration: none; display: inline-block; margin-top: 8px; }
+        header a:hover { color: #fff; }
+
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; background: transparent; color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif; }
+        .tab-btn.active { background: linear-gradient(135deg, #4361ee, #3a0ca3); color: #fff; box-shadow: 0 4px 15px rgba(67,97,238,0.4); }
+        .tab-btn:hover:not(.active) { color: #fff; background: rgba(255,255,255,0.08); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .glass-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 20px; }
+
+        /* Tab 1 - Email Draft */
+        .draft-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); white-space: pre-wrap; overflow-x: auto; max-height: 500px; overflow-y: auto; }
+
+        /* Tab 2 - Markdown */
+        .markdown-box { line-height: 1.8; color: rgba(255,255,255,0.9); }
+        .markdown-box h1, .markdown-box h2, .markdown-box h3 { color: #fff; margin: 20px 0 10px; }
+        .markdown-box p { margin-bottom: 12px; color: rgba(255,255,255,0.8); }
+        .markdown-box ul, .markdown-box ol { padding-left: 20px; margin-bottom: 12px; color: rgba(255,255,255,0.8); }
+        .markdown-box li { margin-bottom: 6px; }
+        .markdown-box strong { color: #fff; }
+        .markdown-box code { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+
+        /* Tab 3 - Poster */
+        .poster-section { margin-bottom: 28px; }
+        .poster-section h3 { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 14px; }
+        .theme-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .pill { background: rgba(67,97,238,0.3); border: 1px solid rgba(67,97,238,0.5); color: #a5b4fc; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        .quote-card { background: rgba(255,255,255,0.05); border-left: 3px solid #4361ee; border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.6; font-style: italic; }
+        .note-text { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.8); }
+        .action-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+        .action-num { background: linear-gradient(135deg, #4361ee, #3a0ca3); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+        .action-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+
+        /* Send Email Form */
+        .send-section { margin-top: 10px; }
+        .send-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: rgba(255,255,255,0.9); }
+        .input-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .input-row input { flex: 1; min-width: 180px; padding: 14px 18px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; font-size: 15px; outline: none; font-family: 'Outfit', sans-serif; }
+        .input-row input::placeholder { color: rgba(255,255,255,0.3); }
+        .input-row input:focus { border-color: rgba(255,255,255,0.4); }
+        .send-btn { padding: 14px 28px; background: linear-gradient(135deg, #4361ee, #3a0ca3); border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif; white-space: nowrap; }
+        .send-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(67,97,238,0.4); }
+        .send-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .status-msg { margin-top: 12px; font-size: 14px; font-weight: 500; }
+        .status-msg.success { color: #4ade80; }
+        .status-msg.error { color: #f87171; }
+
+        .loading { text-align: center; color: rgba(255,255,255,0.5); padding: 40px; font-size: 15px; }
+        .spinner-inline { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 8px; vertical-align: middle; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="container">
+        <header>
+            <h1>INDmoney Pulse Dashboard</h1>
+            <p>Weekly review insights, email draft and poster preview</p>
+            <a href="/">← Back to Subscribe</a>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('draft')">📧 Email Draft</button>
+            <button class="tab-btn" onclick="switchTab('notes')">📝 Markdown Report</button>
+            <button class="tab-btn" onclick="switchTab('poster')">🖼️ Pulse Poster</button>
+        </div>
+
+        <!-- Tab 1: Email Draft -->
+        <div id="tab-draft" class="tab-content active">
+            <div class="glass-card">
+                <div id="draft-content" class="loading">Loading email draft...</div>
+            </div>
+            <div class="glass-card send-section">
+                <h3>✉️ Send Pulse Email</h3>
+                <div class="input-row">
+                    <input type="text" id="send-name" placeholder="Recipient name" />
+                    <input type="email" id="send-email" placeholder="recipient@example.com" />
+                    <button class="send-btn" id="send-btn" onclick="sendEmail()">Send Email 🚀</button>
+                </div>
+                <div class="status-msg" id="send-status"></div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Markdown Notes -->
+        <div id="tab-notes" class="tab-content">
+            <div class="glass-card">
+                <div id="notes-content" class="loading">Loading markdown report...</div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Pulse Poster -->
+        <div id="tab-poster" class="tab-content">
+            <div class="glass-card" id="poster-content">
+                <div class="loading">Loading pulse data...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://ind-money-weekly-review-pulse.onrender.com';
+
+        // Load all data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDraft();
+            loadNotes();
+            loadPoster();
+        });
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        async function loadDraft() {
+            try {
+                const res = await fetch(`${API}/api/email-draft`);
+                const data = await res.json();
+                document.getElementById('draft-content').innerHTML = `<div class="draft-box">${escapeHtml(data.content)}</div>`;
+            } catch (e) {
+                document.getElementById('draft-content').innerHTML = `<div class="draft-box" style="color:#f87171">Failed to load. Make sure Render is running.</div>`;
+            }
+        }
+
+        async function loadNotes() {
+            try {
+                const res = await fetch(`${API}/api/notes`);
+                const data = await res.json();
+                document.getElementById('notes-content').innerHTML = `<div class="markdown-box">${marked.parse(data.content)}</div>`;
+            } catch (e) {
+                document.getElementById('notes-content').innerHTML = `<div style="color:#f87171">Failed to load notes.</div>`;
+            }
+        }
+
+        async function loadPoster() {
+            try {
+                const res = await fetch(`${API}/api/pulse-data`);
+                const d = await res.json();
+                const themes = (d.top_3_themes || []).map(t => `<span class="pill">${t}</span>`).join('');
+                const quotes = (d.quotes || []).map(q => `<div class="quote-card">"${escapeHtml(q)}"</div>`).join('');
+                const actions = (d.action_ideas || []).map((a, i) => `
+                    <div class="action-item">
+                        <div class="action-num">${i+1}</div>
+                        <div class="action-text">${escapeHtml(a)}</div>
+                    </div>`).join('');
+
+                document.getElementById('poster-content').innerHTML = `
+                    <div class="poster-section">
+                        <h3>Top Themes</h3>
+                        <div class="theme-pills">${themes}</div>
+                    </div>
+                    <div class="poster-section">
+                        <h3>User Quotes</h3>
+                        ${quotes}
+                    </div>
+                    <div class="poster-section">
+                        <h3>Weekly Summary</h3>
+                        <p class="note-text">${escapeHtml(d.weekly_note || '')}</p>
+                    </div>
+                    <div class="poster-section">
+                        <h3>Action Ideas</h3>
+                        ${actions}
+                    </div>`;
+            } catch (e) {
+                document.getElementById('poster-content').innerHTML = `<div style="color:#f87171">Failed to load poster data.</div>`;
+            }
+        }
+
+        async function sendEmail() {
+            const name = document.getElementById('send-name').value.trim();
+            const email = document.getElementById('send-email').value.trim();
+            const btn = document.getElementById('send-btn');
+            const status = document.getElementById('send-status');
+
+            if (!name || !email) { status.textContent = 'Please enter both name and email.'; status.className = 'status-msg error'; return; }
+
+            btn.disabled = true;
+            btn.innerHTML = 'Sending... <span class="spinner-inline"></span>';
+            status.textContent = '';
+            status.className = 'status-msg';
+
+            try {
+                const res = await fetch(`${API}/api/send-email`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    status.textContent = `✅ Email sent to ${email}!`;
+                    status.className = 'status-msg success';
+                    document.getElementById('send-name').value = '';
+                    document.getElementById('send-email').value = '';
+                } else {
+                    status.textContent = data.detail || 'Failed to send email.';
+                    status.className = 'status-msg error';
+                }
+            } catch (e) {
+                status.textContent = '❌ Failed to connect to server.';
+                status.className = 'status-msg error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Email 🚀';
+            }
+        }
+
+        function escapeHtml(text) {
+            return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+    </script>
+</body>
+</html>

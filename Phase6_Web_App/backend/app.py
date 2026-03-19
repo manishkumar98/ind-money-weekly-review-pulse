@@ -3,6 +3,7 @@ from pydantic import BaseModel, EmailStr
 from fastapi.middleware.cors import CORSMiddleware
 import sys
 import os
+import json
 from pathlib import Path
 
 # Works both locally (Phase6_Web_App/backend/app.py) and in Docker (/app/app.py)
@@ -57,3 +58,32 @@ async def subscribe_user(user: SubscriberInfo, background_tasks: BackgroundTasks
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+@app.get("/api/pulse-data")
+async def get_pulse_data():
+    json_path = project_root / "Phase2_LLM_Processing" / "weekly_pulse_output.json"
+    if not json_path.exists():
+        raise HTTPException(status_code=404, detail="Pulse data not found")
+    with open(json_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+@app.get("/api/email-draft")
+async def get_email_draft():
+    draft_path = project_root / "Phase3_MCP_Integration" / "email_draft.txt"
+    if not draft_path.exists():
+        raise HTTPException(status_code=404, detail="Email draft not found")
+    with open(draft_path, "r", encoding="utf-8") as f:
+        return {"content": f.read()}
+
+@app.get("/api/notes")
+async def get_notes():
+    notes_path = project_root / "Phase3_MCP_Integration" / "weekly_pulse_notes.md"
+    if not notes_path.exists():
+        raise HTTPException(status_code=404, detail="Notes not found")
+    with open(notes_path, "r", encoding="utf-8") as f:
+        return {"content": f.read()}
+
+@app.post("/api/send-email")
+async def send_email_to_target(user: SubscriberInfo, background_tasks: BackgroundTasks):
+    background_tasks.add_task(send_email_task, user.email, user.name)
+    return {"status": "success", "message": f"Email queued for {user.email}"}
