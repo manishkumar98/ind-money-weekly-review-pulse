@@ -66,6 +66,19 @@ jobs:
           echo "" >> logs/scheduler.log
           cat logs/scheduler.log
 
+      - name: Update dashboard.html with latest pulse data
+        if: steps.pipeline.outcome == 'success'
+        run: python Phase6_Web_App/update_dashboard.py
+
+      - name: Commit and push updated dashboard
+        if: steps.pipeline.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Phase6_Web_App/frontend/dashboard.html Phase2_LLM_Processing/weekly_pulse_output.json Phase3_MCP_Integration/email_draft.txt Phase3_MCP_Integration/weekly_pulse_notes.md
+          git diff --staged --quiet || git commit -m "chore: update dashboard with weekly pulse data $(date '+%Y-%m-%d')"
+          git push
+
       - name: Upload pipeline outputs as artifacts
         if: always()
         uses: actions/upload-artifact@v4

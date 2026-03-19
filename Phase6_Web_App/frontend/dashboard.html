@@ -99,7 +99,7 @@
         <!-- Tab 1: Email Draft -->
         <div id="tab-draft" class="tab-content active">
             <div class="glass-card">
-                <div class="week-label">Week of March 18, 2026</div>
+                <div class="week-label">Week of March 19, 2026</div>
                 <div class="draft-box" id="draft-content"></div>
             </div>
             <div class="glass-card send-section">
@@ -137,26 +137,13 @@ To      : Product Team
 Subject : Weekly INDmoney Product Pulse
 ------------------------------------------------------------
 
-Dear Product Team,
+Dear Product Team, 
 
-The weekly INDmoney product pulse is out. The top 3 themes from user
-reviews are User Interface, Trading Features, and Customer Support.
-Some notable user quotes include: Fundamental analysis is crucial
-prior to investment., This app is very nice and very seckure, and
-best F & O Option.
+The weekly INDmoney product pulse is out. The top 3 themes from user reviews are User Interface, Trading Features, and Customer Support. Some notable user quotes include: Fundamental analysis is crucial prior to investment., This app is very nice and very seckure, and best F & O Option. 
 
-The weekly note highlights both positive and negative reviews. Users
-praise the app's user-friendly interface and features, but some have
-reported issues with customer support, data accuracy, and withdrawal
-problems.
+The weekly note highlights both positive and negative reviews. Users praise the app's user-friendly interface and features, but some have reported issues with customer support, data accuracy, and withdrawal problems. 
 
-Action ideas to improve the app include:
-  • Improve customer support by responding to user complaints and
-    providing timely assistance.
-  • Enhance data accuracy by verifying information and providing
-    reliable data to users.
-  • Simplify the withdrawal process to make it easier for users to
-    access their funds.
+Action ideas to improve the app include: Improve customer support by responding to user complaints and providing timely assistance., Enhance data accuracy by verifying information and providing reliable data to users., and Simplify the withdrawal process to make it easier for users to access their funds. 
 
 Best regards, [Your Name]
 
@@ -164,11 +151,20 @@ Best regards, [Your Name]
 [DRAFT — Pending human review before sending]
 ============================================================`;
 
-        const NOTES_MD = `## 📅 Week of March 17, 2026
+        const NOTES_MD = `---
+
+## 📅 Week of March 17, 2026
 *Appended at 2026-03-17 22:55*
 
 ### Weekly Note
-The users have mixed reviews about the app, with some praising its user-friendly interface, trading features, and customer support, while others have raised concerns about technical issues, brokerage charges, and customer support.
+The users have mixed reviews about the app, with some praising its user-friendly interface, trading features, and customer support, while others have raised concerns about technical issues, brokerage charges, and customer support. The INDmoney app has received mixed reviews from users. While some users have praised the app's user experience, features, and performance, others have reported technical issues, scams, and frustration with the app's performance.
+
+### Themes Identified
+- User Interface
+- Trading Features
+- Technical Issues
+- Brokerage Charges
+- Customer Support
 
 ### Top 3 Themes
 1. User Interface
@@ -177,13 +173,14 @@ The users have mixed reviews about the app, with some praising its user-friendly
 
 ### User Quotes
 > "Fundamental analysis is crucial prior to investment."
-> "INDstocks is the best platform for Stock market that I had every used in my life."
-> "It is very lovely to use and trade & invest in one user friendly application itself."
+> "INDstocks is the best platform for Stock market thata I had every used in my life."
+> "This INDstocks is the best platform for Stock market thata I had every used in my life. It is very lovely to use and trade n invest in one user friendly application itself."
 
 ### Action Ideas
-- Improve the user interface to make it more intuitive and user-friendly.
-- Enhance the trading features to include more advanced options and tools.
-- Address the technical issues and ensure that the app is stable and reliable.
+- [ ] Improve the user interface to make it more intuitive and user-friendly.
+- [ ] Enhance the trading features to include more advanced options and tools.
+- [ ] Address the technical issues and ensure that the app is stable and reliable.
+
 
 ---
 
@@ -191,7 +188,14 @@ The users have mixed reviews about the app, with some praising its user-friendly
 *Appended at 2026-03-18 00:13*
 
 ### Weekly Note
-The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and broad range of financial features. However, some users have reported issues with customer support, data accuracy, and withdrawal problems.
+The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and broad range of financial features. However, some users have reported issues with customer support, data accuracy, and withdrawal problems. To improve the app, INDmoney should focus on addressing these concerns and enhancing its features to meet the needs of its users. The app has also received mixed reviews from users, with some praising its user-friendly interface and features, while others have experienced technical issues and expressed dissatisfaction with certain features. To improve the app, the developers should focus on addressing technical issues, enhancing user experience, and adding more features to meet the diverse needs of its users.
+
+### Themes Identified
+- User Interface
+- Trading Features
+- Customer Support
+- Data Accuracy
+- Withdrawal Issues
 
 ### Top 3 Themes
 1. User Interface
@@ -204,24 +208,35 @@ The INDmoney app has received both positive and negative reviews. Users praise i
 > "best F & O Option"
 
 ### Action Ideas
-- Improve customer support by responding to user complaints and providing timely assistance.
-- Enhance data accuracy by verifying information and providing reliable data to users.
-- Simplify the withdrawal process to make it easier for users to access their funds.`;
+- [ ] Improve customer support by responding to user complaints and providing timely assistance.
+- [ ] Enhance data accuracy by verifying information and providing reliable data to users.
+- [ ] Simplify the withdrawal process to make it easier for users to access their funds.`;
 
         const PULSE_DATA = {
-            top_3_themes: ["User Interface", "Trading Features", "Customer Support"],
-            quotes: [
-                "Fundamental analysis is crucial prior to investment.",
-                "This app is very nice and very seckure",
-                "best F & O Option"
+            "themes": [
+                        "User Interface",
+                        "Trading Features",
+                        "Customer Support",
+                        "Data Accuracy",
+                        "Withdrawal Issues"
             ],
-            weekly_note: "The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and broad range of financial features. However, some users have reported issues with customer support, data accuracy, and withdrawal problems. To improve the app, INDmoney should focus on addressing these concerns and enhancing its features to meet the needs of its users.",
-            action_ideas: [
-                "Improve customer support by responding to user complaints and providing timely assistance.",
-                "Enhance data accuracy by verifying information and providing reliable data to users.",
-                "Simplify the withdrawal process to make it easier for users to access their funds."
+            "top_3_themes": [
+                        "User Interface",
+                        "Trading Features",
+                        "Customer Support"
+            ],
+            "quotes": [
+                        "Fundamental analysis is crucial prior to investment.",
+                        "This app is very nice and very seckure",
+                        "best F & O Option"
+            ],
+            "weekly_note": "The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and broad range of financial features. However, some users have reported issues with customer support, data accuracy, and withdrawal problems. To improve the app, INDmoney should focus on addressing these concerns and enhancing its features to meet the needs of its users. The app has also received mixed reviews from users, with some praising its user-friendly interface and features, while others have experienced technical issues and expressed dissatisfaction with certain features. To improve the app, the developers should focus on addressing technical issues, enhancing user experience, and adding more features to meet the diverse needs of its users.",
+            "action_ideas": [
+                        "Improve customer support by responding to user complaints and providing timely assistance.",
+                        "Enhance data accuracy by verifying information and providing reliable data to users.",
+                        "Simplify the withdrawal process to make it easier for users to access their funds."
             ]
-        };
+};
         // ───────────────────────────────────────────────────────────────────
 
         window.addEventListener('DOMContentLoaded', () => {
