@@ -40,10 +40,8 @@
 
         .glass-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 20px; }
 
-        /* Tab 1 - Email Draft */
         .draft-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); white-space: pre-wrap; overflow-x: auto; max-height: 500px; overflow-y: auto; }
 
-        /* Tab 2 - Markdown */
         .markdown-box { line-height: 1.8; color: rgba(255,255,255,0.9); }
         .markdown-box h1, .markdown-box h2, .markdown-box h3 { color: #fff; margin: 20px 0 10px; }
         .markdown-box p { margin-bottom: 12px; color: rgba(255,255,255,0.8); }
@@ -51,8 +49,8 @@
         .markdown-box li { margin-bottom: 6px; }
         .markdown-box strong { color: #fff; }
         .markdown-box code { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+        .markdown-box blockquote { border-left: 3px solid #4361ee; padding-left: 16px; margin: 12px 0; color: rgba(255,255,255,0.7); font-style: italic; }
 
-        /* Tab 3 - Poster */
         .poster-section { margin-bottom: 28px; }
         .poster-section h3 { font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 14px; }
         .theme-pills { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -63,7 +61,6 @@
         .action-num { background: linear-gradient(135deg, #4361ee, #3a0ca3); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
         .action-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.6; }
 
-        /* Send Email Form */
         .send-section { margin-top: 10px; }
         .send-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: rgba(255,255,255,0.9); }
         .input-row { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -77,7 +74,7 @@
         .status-msg.success { color: #4ade80; }
         .status-msg.error { color: #f87171; }
 
-        .loading { text-align: center; color: rgba(255,255,255,0.5); padding: 40px; font-size: 15px; }
+        .week-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
         .spinner-inline { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 8px; vertical-align: middle; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
@@ -94,15 +91,16 @@
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('draft')">📧 Email Draft</button>
-            <button class="tab-btn" onclick="switchTab('notes')">📝 Markdown Report</button>
-            <button class="tab-btn" onclick="switchTab('poster')">🖼️ Pulse Poster</button>
+            <button class="tab-btn active" onclick="switchTab('draft', this)">📧 Email Draft</button>
+            <button class="tab-btn" onclick="switchTab('notes', this)">📝 Markdown Report</button>
+            <button class="tab-btn" onclick="switchTab('poster', this)">🖼️ Pulse Poster</button>
         </div>
 
         <!-- Tab 1: Email Draft -->
         <div id="tab-draft" class="tab-content active">
             <div class="glass-card">
-                <div id="draft-content" class="loading">Loading email draft...</div>
+                <div class="week-label">Week of March 18, 2026</div>
+                <div class="draft-box" id="draft-content"></div>
             </div>
             <div class="glass-card send-section">
                 <h3>✉️ Send Pulse Email</h3>
@@ -118,87 +116,155 @@
         <!-- Tab 2: Markdown Notes -->
         <div id="tab-notes" class="tab-content">
             <div class="glass-card">
-                <div id="notes-content" class="loading">Loading markdown report...</div>
+                <div class="markdown-box" id="notes-content"></div>
             </div>
         </div>
 
         <!-- Tab 3: Pulse Poster -->
         <div id="tab-poster" class="tab-content">
-            <div class="glass-card" id="poster-content">
-                <div class="loading">Loading pulse data...</div>
-            </div>
+            <div class="glass-card" id="poster-content"></div>
         </div>
     </div>
 
     <script>
         const API = 'https://ind-money-weekly-review-pulse.onrender.com';
 
-        // Load all data on page load
+        // ── Baked-in data (updated by pipeline each week) ──────────────────
+        const EMAIL_DRAFT = `============================================================
+  EMAIL DRAFT — 2026-03-18 00:13
+============================================================
+To      : Product Team
+Subject : Weekly INDmoney Product Pulse
+------------------------------------------------------------
+
+Dear Product Team,
+
+The weekly INDmoney product pulse is out. The top 3 themes from user
+reviews are User Interface, Trading Features, and Customer Support.
+Some notable user quotes include: Fundamental analysis is crucial
+prior to investment., This app is very nice and very seckure, and
+best F & O Option.
+
+The weekly note highlights both positive and negative reviews. Users
+praise the app's user-friendly interface and features, but some have
+reported issues with customer support, data accuracy, and withdrawal
+problems.
+
+Action ideas to improve the app include:
+  • Improve customer support by responding to user complaints and
+    providing timely assistance.
+  • Enhance data accuracy by verifying information and providing
+    reliable data to users.
+  • Simplify the withdrawal process to make it easier for users to
+    access their funds.
+
+Best regards, [Your Name]
+
+------------------------------------------------------------
+[DRAFT — Pending human review before sending]
+============================================================`;
+
+        const NOTES_MD = `## 📅 Week of March 17, 2026
+*Appended at 2026-03-17 22:55*
+
+### Weekly Note
+The users have mixed reviews about the app, with some praising its user-friendly interface, trading features, and customer support, while others have raised concerns about technical issues, brokerage charges, and customer support.
+
+### Top 3 Themes
+1. User Interface
+2. Trading Features
+3. Technical Issues
+
+### User Quotes
+> "Fundamental analysis is crucial prior to investment."
+> "INDstocks is the best platform for Stock market that I had every used in my life."
+> "It is very lovely to use and trade & invest in one user friendly application itself."
+
+### Action Ideas
+- Improve the user interface to make it more intuitive and user-friendly.
+- Enhance the trading features to include more advanced options and tools.
+- Address the technical issues and ensure that the app is stable and reliable.
+
+---
+
+## 📅 Week of March 18, 2026
+*Appended at 2026-03-18 00:13*
+
+### Weekly Note
+The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and broad range of financial features. However, some users have reported issues with customer support, data accuracy, and withdrawal problems.
+
+### Top 3 Themes
+1. User Interface
+2. Trading Features
+3. Customer Support
+
+### User Quotes
+> "Fundamental analysis is crucial prior to investment."
+> "This app is very nice and very seckure"
+> "best F & O Option"
+
+### Action Ideas
+- Improve customer support by responding to user complaints and providing timely assistance.
+- Enhance data accuracy by verifying information and providing reliable data to users.
+- Simplify the withdrawal process to make it easier for users to access their funds.`;
+
+        const PULSE_DATA = {
+            top_3_themes: ["User Interface", "Trading Features", "Customer Support"],
+            quotes: [
+                "Fundamental analysis is crucial prior to investment.",
+                "This app is very nice and very seckure",
+                "best F & O Option"
+            ],
+            weekly_note: "The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and broad range of financial features. However, some users have reported issues with customer support, data accuracy, and withdrawal problems. To improve the app, INDmoney should focus on addressing these concerns and enhancing its features to meet the needs of its users.",
+            action_ideas: [
+                "Improve customer support by responding to user complaints and providing timely assistance.",
+                "Enhance data accuracy by verifying information and providing reliable data to users.",
+                "Simplify the withdrawal process to make it easier for users to access their funds."
+            ]
+        };
+        // ───────────────────────────────────────────────────────────────────
+
         window.addEventListener('DOMContentLoaded', () => {
-            loadDraft();
-            loadNotes();
-            loadPoster();
+            // Tab 1
+            document.getElementById('draft-content').textContent = EMAIL_DRAFT;
+
+            // Tab 2
+            document.getElementById('notes-content').innerHTML = marked.parse(NOTES_MD);
+
+            // Tab 3
+            const d = PULSE_DATA;
+            const themes = d.top_3_themes.map(t => `<span class="pill">${escapeHtml(t)}</span>`).join('');
+            const quotes = d.quotes.map(q => `<div class="quote-card">"${escapeHtml(q)}"</div>`).join('');
+            const actions = d.action_ideas.map((a, i) => `
+                <div class="action-item">
+                    <div class="action-num">${i+1}</div>
+                    <div class="action-text">${escapeHtml(a)}</div>
+                </div>`).join('');
+
+            document.getElementById('poster-content').innerHTML = `
+                <div class="poster-section">
+                    <h3>Top Themes</h3>
+                    <div class="theme-pills">${themes}</div>
+                </div>
+                <div class="poster-section">
+                    <h3>User Quotes</h3>
+                    ${quotes}
+                </div>
+                <div class="poster-section">
+                    <h3>Weekly Summary</h3>
+                    <p class="note-text">${escapeHtml(d.weekly_note)}</p>
+                </div>
+                <div class="poster-section">
+                    <h3>Action Ideas</h3>
+                    ${actions}
+                </div>`;
         });
 
-        function switchTab(tab) {
+        function switchTab(tab, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        async function loadDraft() {
-            try {
-                const res = await fetch(`${API}/api/email-draft`);
-                const data = await res.json();
-                document.getElementById('draft-content').innerHTML = `<div class="draft-box">${escapeHtml(data.content)}</div>`;
-            } catch (e) {
-                document.getElementById('draft-content').innerHTML = `<div class="draft-box" style="color:#f87171">Failed to load. Make sure Render is running.</div>`;
-            }
-        }
-
-        async function loadNotes() {
-            try {
-                const res = await fetch(`${API}/api/notes`);
-                const data = await res.json();
-                document.getElementById('notes-content').innerHTML = `<div class="markdown-box">${marked.parse(data.content)}</div>`;
-            } catch (e) {
-                document.getElementById('notes-content').innerHTML = `<div style="color:#f87171">Failed to load notes.</div>`;
-            }
-        }
-
-        async function loadPoster() {
-            try {
-                const res = await fetch(`${API}/api/pulse-data`);
-                const d = await res.json();
-                const themes = (d.top_3_themes || []).map(t => `<span class="pill">${t}</span>`).join('');
-                const quotes = (d.quotes || []).map(q => `<div class="quote-card">"${escapeHtml(q)}"</div>`).join('');
-                const actions = (d.action_ideas || []).map((a, i) => `
-                    <div class="action-item">
-                        <div class="action-num">${i+1}</div>
-                        <div class="action-text">${escapeHtml(a)}</div>
-                    </div>`).join('');
-
-                document.getElementById('poster-content').innerHTML = `
-                    <div class="poster-section">
-                        <h3>Top Themes</h3>
-                        <div class="theme-pills">${themes}</div>
-                    </div>
-                    <div class="poster-section">
-                        <h3>User Quotes</h3>
-                        ${quotes}
-                    </div>
-                    <div class="poster-section">
-                        <h3>Weekly Summary</h3>
-                        <p class="note-text">${escapeHtml(d.weekly_note || '')}</p>
-                    </div>
-                    <div class="poster-section">
-                        <h3>Action Ideas</h3>
-                        ${actions}
-                    </div>`;
-            } catch (e) {
-                document.getElementById('poster-content').innerHTML = `<div style="color:#f87171">Failed to load poster data.</div>`;
-            }
+            btn.classList.add('active');
         }
 
         async function sendEmail() {
