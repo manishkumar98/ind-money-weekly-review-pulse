@@ -8,8 +8,8 @@ from pathlib import Path
 
 # Works both locally (Phase6_Web_App/backend/app.py) and in Docker (/app/app.py)
 _this_dir = Path(__file__).resolve().parent
-_local_root = _this_dir.parent.parent.parent   # local monorepo root
-_docker_root = _this_dir                        # Docker: /app
+_local_root = _this_dir.parent.parent   # local: ind-money-weekly-pulse-view/
+_docker_root = _this_dir                # Docker: /app
 
 project_root = _local_root if (_local_root / "Phase5_Email_UI").exists() else _docker_root
 sys.path.insert(0, str(project_root))
