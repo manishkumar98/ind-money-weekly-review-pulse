@@ -1,3 +1,4 @@
+# Pipeline dependencies (used by GitHub Actions scheduler)
 groq
 google-generativeai
 python-dotenv
@@ -5,9 +6,10 @@ pandas
 google-play-scraper
 app-store-scraper
 emoji
-fastapi[all]
+
+# Web app dependencies (used locally only)
+fastapi
 uvicorn
 streamlit
 pydantic
 email-validator
-pytest
