@@ -1,13 +1,20 @@
 """
 Phase 5 - Email Sender Utility
 
-Reads the generated email draft from Phase 3 and sends it via SMTP.
-Also generates an beautifully styled HTML "poster" layout based on user quotes.
+Reads the generated email draft from Phase 3 and sends it via Brevo API (primary),
+Resend API (secondary), or Gmail SMTP (local fallback).
+Also generates a beautifully styled HTML "poster" layout based on user quotes.
+
+Priority:
+  1. Brevo API  — HTTP-based, works on Render, sends to any email, free tier 300/day
+  2. Resend API — HTTP-based, works on Render, free tier limited to account email
+  3. Gmail SMTP — local only (Render blocks port 587)
 """
 
 import os
 import json
 import smtplib
+import requests
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -18,7 +25,8 @@ load_dotenv()
 
 EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-RESEND_API_KEY = os.getenv("RESEND_API_KEY")  # Set this on Render; falls back to SMTP if not set
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 
 def generate_html_poster(json_data, recipient_name=None, fee_data=None):
     """
@@ -257,9 +265,26 @@ def send_weekly_pulse_email(target_email: str, recipient_name: str = None):
         msg.attach(part2)
 
     try:
-        if RESEND_API_KEY:
-            # Use Resend API (works on cloud hosts that block SMTP)
-            # Free tier must send FROM onboarding@resend.dev unless domain is verified
+        if BREVO_API_KEY:
+            # Brevo HTTP API — works on Render, sends to any email, 300/day free
+            response = requests.post(
+                "https://api.brevo.com/v3/smtp/email",
+                headers={
+                    "accept": "application/json",
+                    "api-key": BREVO_API_KEY,
+                    "content-type": "application/json",
+                },
+                json={
+                    "sender": {"name": "INDmoney Pulse", "email": EMAIL_SENDER},
+                    "to": [{"email": target_email, "name": recipient_name or "User"}],
+                    "subject": subject,
+                    "htmlContent": html_content if html_content else f"<p>{clean_body}</p>",
+                    "textContent": clean_body,
+                },
+            )
+            response.raise_for_status()
+        elif RESEND_API_KEY:
+            # Resend API — free tier only sends to account owner's email
             import resend
             resend.api_key = RESEND_API_KEY
             resend.Emails.send({
@@ -270,7 +295,7 @@ def send_weekly_pulse_email(target_email: str, recipient_name: str = None):
                 "text": clean_body,
             })
         else:
-            # Fall back to Gmail SMTP (works locally and on Streamlit Cloud)
+            # Gmail SMTP fallback — local only (Render blocks port 587)
             server = smtplib.SMTP('smtp.gmail.com', 587)
             server.starttls()
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)

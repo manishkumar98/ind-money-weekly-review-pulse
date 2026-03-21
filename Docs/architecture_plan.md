@@ -221,9 +221,10 @@ Used by both local `run_weekly.sh` and GitHub Actions CI.
 **File:** `Phase5_Email_UI/email_sender.py`
 **Also:** `Phase5_Email_UI/generate_poster.py`
 
-**Email delivery:**
-- Primary (cloud/Render): Resend API — HTTP-based, not blocked by cloud hosting providers
-- Fallback (local): Gmail SMTP via `smtplib` on port 587
+**Email delivery (priority order):**
+- Primary: Brevo API — HTTP-based, works on Render, sends to any email address, 300 emails/day free tier, sender email verified in Brevo dashboard
+- Secondary: Resend API — HTTP-based, but free tier (`onboarding@resend.dev`) limited to sending only to the Resend account owner's email
+- Fallback (local only): Gmail SMTP via `smtplib` on port 587 — blocked on Render free tier
 
 **Subject line:** Read from `email_draft.txt` (written by Email_Drafter tool). Format: `Weekly Pulse + Fee Explainer — YYYY-MM-DD`. A run-date suffix `(Mon DD, YYYY)` is appended by `email_sender.py` using `weekly_pulse_output.json` mtime as a fallback guard.
 
@@ -244,8 +245,9 @@ Used by both local `run_weekly.sh` and GitHub Actions CI.
 - Exit load section is omitted gracefully if `fee_explanation.json` is absent
 
 **Environment variables required:**
-- `RESEND_API_KEY` — if set, uses Resend; otherwise falls back to SMTP
-- `EMAIL_SENDER`, `EMAIL_PASSWORD` — for SMTP fallback
+- `BREVO_API_KEY` — if set, uses Brevo (primary, recommended for Render)
+- `RESEND_API_KEY` — used if Brevo key absent; free tier limited to account email only
+- `EMAIL_SENDER`, `EMAIL_PASSWORD` — sender address (used by all methods) + Gmail app password for SMTP fallback
 
 ---
 
@@ -352,8 +354,9 @@ After updating, GitHub Actions commits and pushes → Vercel auto-deploys.
 | Frontend | Vercel | Root: `Phase6_Web_App/frontend/`, auto-deploy on push to `main` |
 | Backend | Render (free tier) | Docker, `Dockerfile` at repo root, auto-deploy on push |
 | Pipeline scheduler | GitHub Actions | Free tier, cron weekly |
-| Email (cloud) | Resend API | Free tier, `onboarding@resend.dev` sender |
-| Email (local) | Gmail SMTP | App password via env var |
+| Email (cloud) | Brevo API | Free tier, 300/day, any recipient, sender verified in Brevo dashboard |
+| Email (fallback) | Resend API | Free tier, limited to Resend account email only |
+| Email (local) | Gmail SMTP | App password via env var, blocked on Render |
 
 **Render free tier caveats:**
 - Spins down after 15 minutes of inactivity (cold start ~30–60s on first request)
