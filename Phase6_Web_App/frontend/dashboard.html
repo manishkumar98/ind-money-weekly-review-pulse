@@ -364,6 +364,7 @@ The INDmoney app has received mixed reviews from users, with some praising its u
                         "Review and adjust fees and charges to make the app more competitive and user-friendly."
             ]
 };
+        const FEE_DATA = {"scenario_name":"SBI Mutual Funds \u2014 Exit Load","explanation_bullets":["SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment.","SBI Flexicap Fund: Nil exit load.","SBI ELSS Tax Saver Fund: Nil exit load.","SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment.","SBI Midcap Fund: Nil exit load.","SBI Focused Equity Fund: Nil exit load."],"source_links":["https://www.sbimf.com/en-us/investor-corner","https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43"],"last_checked":"March 21, 2026"};
         // ───────────────────────────────────────────────────────────────────
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -399,7 +400,17 @@ The INDmoney app has received mixed reviews from users, with some praising its u
                 <div class="poster-section">
                     <h3>Action Ideas</h3>
                     ${actions}
-                </div>`;
+                </div>
+                ${FEE_DATA ? `<div class="poster-section">
+                    <h3>Fee Explainer — ${escapeHtml(FEE_DATA.scenario_name)}</h3>
+                    <ul style="margin:0;padding-left:20px;color:rgba(255,255,255,0.85);line-height:1.8">
+                        ${FEE_DATA.explanation_bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
+                    </ul>
+                    <div style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.55)">Last checked: ${escapeHtml(FEE_DATA.last_checked)}</div>
+                    <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+                        ${FEE_DATA.source_links.map(l => `<a href="${l}" target="_blank" rel="noopener" style="color:#a5b4fc;font-size:13px;word-break:break-all">${escapeHtml(l)}</a>`).join('')}
+                    </div>
+                </div>` : ''}`;
         });
 
         function switchTab(tab, btn) {

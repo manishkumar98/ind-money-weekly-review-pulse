@@ -13,10 +13,12 @@ DASHBOARD = Path(__file__).resolve().parent / "frontend" / "dashboard.html"
 draft_path = ROOT / "Phase3_MCP_Integration" / "email_draft.txt"
 notes_path = ROOT / "Phase3_MCP_Integration" / "weekly_pulse_notes.md"
 json_path  = ROOT / "Phase2_LLM_Processing"  / "weekly_pulse_output.json"
+fee_path   = ROOT / "Phase2_LLM_Processing"  / "fee_explanation.json"
 
 draft  = draft_path.read_text(encoding="utf-8").strip()
 notes  = notes_path.read_text(encoding="utf-8").strip()
 pulse  = json.loads(json_path.read_text(encoding="utf-8"))
+fee    = json.loads(fee_path.read_text(encoding="utf-8")) if fee_path.exists() else None
 
 # Escape backticks so they don't break JS template literals
 def escape_js(text):
@@ -44,6 +46,14 @@ html = re.sub(
     f"const PULSE_DATA = {json.dumps(pulse, indent=12)};\\2",
     html
 )
+
+# Replace FEE_DATA constant
+if fee:
+    html = re.sub(
+        r"(const FEE_DATA = )\{[\s\S]*?\};",
+        f"const FEE_DATA = {json.dumps(fee)};",
+        html
+    )
 
 # Update week label in the draft tab
 from datetime import date
