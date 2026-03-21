@@ -30,10 +30,9 @@ except ImportError:
     run_phase1 = None
 
 try:
-    from phase2_llm_processing import run_phase2, explain_fee_scenario
+    from phase2_llm_processing import run_phase2
 except ImportError:
     run_phase2 = None
-    explain_fee_scenario = None
 
 try:
     from phase3_mcp_orchestration import run_phase3

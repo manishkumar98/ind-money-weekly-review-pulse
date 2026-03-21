@@ -1,9 +1,26 @@
 import os
 import json
 import time
+from datetime import datetime
 import pandas as pd
 from groq import Groq
 from dotenv import load_dotenv
+
+# SBI Mutual Funds tracked for exit load explainer
+SBI_MF_FUNDS = [
+    "SBI Large Cap Fund",
+    "SBI Flexicap Fund",
+    "SBI ELSS Tax Saver Fund",
+    "SBI Small Cap Fund",
+    "SBI Midcap Fund",
+    "SBI Focused Equity Fund",
+]
+
+# Official source URLs used as references in the explainer (2 selected)
+SBI_MF_SOURCE_URLS = [
+    "https://www.sbimf.com/en-us/investor-corner",
+    "https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43",
+]
 
 load_dotenv()
 
@@ -209,10 +226,32 @@ def validate_llm_json(data):
     if not isinstance(action_ideas, list) or len(action_ideas) != 3:
         raise LLMValidationException(f"action_ideas must be a list of exactly 3 elements. Found {len(action_ideas)}.")
 
-def explain_fee_scenario(client, scenario="US stocks withdrawal fees"):
-    system_prompt = "You are an expert INDmoney support agent. Provide a clear, structured, and informative explanation for specific product fee scenarios."
-    user_prompt = f"Generate a structured, standard explanation for the following fee scenario: '{scenario}'. Output as a strict JSON with 'scenario_name' (string), 'explanation' (string, max 150 words), and 'key_points' (list of 3 string points)."
-    
+def generate_exit_load_explainer(client):
+    """
+    Generates a structured, neutral exit load explainer for SBI Mutual Funds
+    available on INDmoney. Output: ≤6 factual bullets, 2 official source links,
+    and a 'last_checked' date. No recommendations or comparisons.
+    """
+    funds_list = "\n".join(f"- {f}" for f in SBI_MF_FUNDS)
+    today = datetime.now().strftime("%B %d, %Y")
+
+    system_prompt = (
+        "You are a financial information specialist. Provide strictly factual, "
+        "neutral information about mutual fund exit loads. "
+        "Maintain a facts-only tone. Do not make recommendations or comparisons."
+    )
+    user_prompt = f"""Generate a structured exit load explainer for these SBI Mutual Funds available on INDmoney:
+
+{funds_list}
+
+Output a strict JSON with exactly these fields:
+- "scenario_name": "SBI Mutual Funds — Exit Load"
+- "explanation_bullets": list of 5 to 6 short, factual bullet strings. Each bullet must state a specific exit load rule (fund name, holding period, exit load %). Use only publicly known SEBI-mandated or fund-document facts. Neutral tone. No recommendations.
+- "source_links": exactly this list: {json.dumps(SBI_MF_SOURCE_URLS)}
+- "last_checked": "{today}"
+
+Output only the JSON object. No markdown, no extra text."""
+
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
@@ -220,15 +259,21 @@ def explain_fee_scenario(client, scenario="US stocks withdrawal fees"):
             {"role": "user", "content": user_prompt}
         ],
         response_format={"type": "json_object"},
-        temperature=0.2
+        temperature=0.1
     )
-    
+
     result_text = response.choices[0].message.content
     try:
-        parsed_json = json.loads(result_text)
-        return parsed_json
+        parsed = json.loads(result_text)
+        # Enforce ≤6 bullets
+        if isinstance(parsed.get("explanation_bullets"), list):
+            parsed["explanation_bullets"] = parsed["explanation_bullets"][:6]
+        # Always enforce the exact source links regardless of LLM output
+        parsed["source_links"] = SBI_MF_SOURCE_URLS
+        parsed["last_checked"] = today
+        return parsed
     except json.JSONDecodeError:
-        raise LLMProcessingException("Failed to decode JSON from Fee Scenario LLM call.")
+        raise LLMProcessingException("Failed to decode JSON from Exit Load Explainer LLM call.")
 
 def run_phase2(csv_file_path="../Phase1_Data_Ingestion/sanitized_indmoney_reviews.csv"):
     print("--- Starting Phase 2: LLM Processing ---")
@@ -272,10 +317,10 @@ def run_phase2(csv_file_path="../Phase1_Data_Ingestion/sanitized_indmoney_review
     print("\nWaiting 60 seconds to respect Groq Free Tier TPM rate limits before the next call...")
     time.sleep(60)
         
-    print("\nGenerating Fee/Charge Scenario explanation...")
+    print("\nGenerating Exit Load explainer for SBI Mutual Funds...")
     try:
-        fee_explanation = explain_fee_scenario(client, scenario="US stocks withdrawal fees")
-        print("Successfully generated Fee Explanation.")
+        fee_explanation = generate_exit_load_explainer(client)
+        print("Successfully generated Exit Load Explainer.")
         
         # Save fee explanation
         fee_file = os.path.join(os.path.dirname(__file__), "fee_explanation.json")

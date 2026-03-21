@@ -9,9 +9,9 @@ This document is the single source of truth for the technical architecture of th
 A fully automated, 6-phase AI pipeline that:
 1. Scrapes INDmoney app reviews from the Play Store and App Store
 2. Cleans and sanitizes the data
-3. Uses Groq (Llama 3) to extract themes, quotes, and action ideas
-4. Uses Gemini (MCP tool-calling) to draft notes and emails
-5. Sends a styled HTML email via Resend API
+3. Uses Groq (Llama 3) to extract themes, quotes, action ideas, and an exit load explainer for SBI Mutual Funds
+4. Uses Groq (MCP tool-calling) to draft notes, emails, and append a combined JSON to Google Docs
+5. Sends a styled HTML email via Resend API — includes Exit Load fee explainer section
 6. Updates a public Vercel dashboard and exposes a FastAPI backend on Render
 
 The entire pipeline runs every Saturday at 10:00 AM IST via GitHub Actions — zero manual intervention required.
@@ -46,11 +46,13 @@ The entire pipeline runs every Saturday at 10:00 AM IST via GitHub Actions — z
                        │
             ┌──────────▼──────────────┐
             │ Phase 3                  │
-            │ MCP Integration (Gemini) │
+            │ MCP Integration (Groq)   │
             │                          │
             │ Tool 1: Notes Appender   │
             │  → weekly_pulse_notes.md │
-            │ Tool 2: Email Drafter    │
+            │ Tool 2: Google Doc       │
+            │  → appends JSON to GDoc  │
+            │ Tool 3: Email Drafter    │
             │  → email_draft.txt       │
             │                          │
             │ Human gate (Y/N) in      │
@@ -131,24 +133,72 @@ The entire pipeline runs every Saturday at 10:00 AM IST via GitHub Actions — z
 - `quotes` array length == 3
 - `action_ideas` array length == 3
 
-**Secondary output:** `fee_explanation.json` — structured explanation of one common INDmoney fee scenario (e.g. US stocks withdrawal).
+**Secondary output:** `fee_explanation.json` — structured exit load explainer for SBI Mutual Funds available on INDmoney.
+
+**Exit Load Explainer (`generate_exit_load_explainer`):**
+- Funds covered: SBI Large Cap, Flexicap, ELSS Tax Saver, Small Cap, Midcap, Focused Equity
+- Output schema:
+  ```json
+  {
+    "scenario_name": "SBI Mutual Funds — Exit Load",
+    "explanation_bullets": ["≤6 factual bullet strings"],
+    "source_links": ["2 official sbimf.com URLs"],
+    "last_checked": "Month DD, YYYY"
+  }
+  ```
+- Tone: neutral, facts-only, no recommendations or comparisons
+- Source links are hardcoded post-generation (LLM output overridden) to guarantee accuracy
 
 ---
 
 ### Phase 3: MCP Integration
 **File:** `Phase3_MCP_Integration/phase3_mcp_orchestration.py`, `Phase3_MCP_Integration/mcp_tools.py`
-**Output:** `Phase3_MCP_Integration/weekly_pulse_notes.md`, `Phase3_MCP_Integration/email_draft.txt`
+**Output:** `Phase3_MCP_Integration/weekly_pulse_notes.md`, `Phase3_MCP_Integration/email_draft.txt`, appended entry in Google Doc
 
-**Model:** Gemini API (tool-calling mode)
+**Model:** Groq API — Llama 3 (tool-calling mode)
+
+**Inputs loaded:** `weekly_pulse_output.json` + `fee_explanation.json` (both passed to Groq)
 
 **MCP Tools defined:**
-- `Document_Appender` — appends formatted weekly summary to `weekly_pulse_notes.md`
-- `Email_Drafter` — generates a formatted plain-text email draft in `email_draft.txt`
+
+**Tool 1 — `Document_Appender`**
+- Appends formatted weekly pulse summary to local `weekly_pulse_notes.md`
+- Fields: `weekly_note`, `themes`, `top_3_themes`, `quotes`, `action_ideas`
+
+**Tool 2 — `Google_Doc_Appender`** *(true MCP — server/client split)*
+- Uses the **Model Context Protocol (MCP)** via stdio transport — not a direct API call
+- Architecture:
+  - **MCP Server** (`google_doc_mcp_server.py`) — exposes `append_to_google_doc` tool via JSON-RPC over stdio
+  - **MCP Client** (`execute_google_doc_appender` in `mcp_tools.py`) — spawns the server as a subprocess, connects via `ClientSession`, calls the tool
+- Payload schema (matches assignment spec exactly):
+  ```json
+  {
+    "date": "YYYY-MM-DD",
+    "weekly_pulse": { "...full pulse JSON..." },
+    "fee_scenario": "SBI Mutual Funds — Exit Load",
+    "explanation_bullets": ["≤6 factual bullets"],
+    "source_links": ["2 official sbimf.com URLs"]
+  }
+  ```
+- Auth: `GOOGLE_DOC_ID` + `GOOGLE_SERVICE_ACCOUNT_JSON` env vars (raw JSON or base64)
+- MCP SDK: `mcp` v1.26.0 (Anthropic)
+
+**Tool 3 — `Email_Drafter`**
+- Writes a plain-text email draft to `email_draft.txt`. No auto-send.
+- Subject format (enforced in system prompt): `Weekly Pulse + Fee Explainer — YYYY-MM-DD`
+- Body has two mandatory sections:
+  - **Section 1 — WEEKLY PULSE**: top themes, 3 user quotes, weekly note, action ideas
+  - **Section 2 — FEE EXPLAINER**: fee scenario name, all explanation bullets, source links, last checked date
+
+**Orchestration prompt rules (enforced):**
+- Tool 1: weekly pulse fields only
+- Tool 2: combined pulse + fee data, exact schema
+- Tool 3: subject must match `Weekly Pulse + Fee Explainer — {date}` exactly; body must contain both sections
 
 **Approval gate:**
 - In interactive (local) mode: pauses execution, shows exact tool arguments, waits for `Y/N` before executing
-- In CI/automated mode: `printf "Y\nY\n"` pre-approves both gates
-- Gate logic: intercepts Gemini's `function_call`, validates schema, conditionally executes
+- In CI/automated mode: `printf "Y\nY\nY\n"` pre-approves all three gates
+- Gate logic: intercepts Groq's `function_call`, validates schema, conditionally executes
 
 ---
 
@@ -157,10 +207,11 @@ The entire pipeline runs every Saturday at 10:00 AM IST via GitHub Actions — z
 
 Ties Phases 1–3 into a single runnable script:
 1. Call Phase 1 → produce sanitized CSV
-2. Call Phase 2 → produce pulse JSON + fee JSON
+2. Call Phase 2 → produce pulse JSON + exit load fee JSON
 3. Print outputs to console
 4. Present approval gate → call Phase 3 Tool 1 (notes)
-5. Present approval gate → call Phase 3 Tool 2 (email draft)
+5. Present approval gate → call Phase 3 Tool 2 (Google Doc append)
+6. Present approval gate → call Phase 3 Tool 3 (email draft)
 
 Used by both local `run_weekly.sh` and GitHub Actions CI.
 
@@ -174,16 +225,23 @@ Used by both local `run_weekly.sh` and GitHub Actions CI.
 - Primary (cloud/Render): Resend API — HTTP-based, not blocked by cloud hosting providers
 - Fallback (local): Gmail SMTP via `smtplib` on port 587
 
+**Subject line:** Read from `email_draft.txt` (written by Email_Drafter tool). Format: `Weekly Pulse + Fee Explainer — YYYY-MM-DD`. A run-date suffix `(Mon DD, YYYY)` is appended by `email_sender.py` using `weekly_pulse_output.json` mtime as a fallback guard.
+
 **HTML email generation:**
-- Reads `weekly_pulse_output.json`
+- Reads `weekly_pulse_output.json` and `fee_explanation.json`
 - Generates a styled HTML email with:
   - Personalized greeting (recipient name)
   - User quotes with avatar icons (`ui-avatars.com`)
   - Weekly summary note
   - Top themes list
   - Action ideas list
+  - **Exit Load Fee Explainer section** (new):
+    - ≤6 factual bullet points on SBI MF exit loads
+    - 2 clickable official source links
+    - "Last checked: Month DD, YYYY"
   - Footer with branding
 - Saves as `Phase5_Email_UI/poster.html` (standalone preview)
+- Exit load section is omitted gracefully if `fee_explanation.json` is absent
 
 **Environment variables required:**
 - `RESEND_API_KEY` — if set, uses Resend; otherwise falls back to SMTP
@@ -269,7 +327,7 @@ After updating, GitHub Actions commits and pushes → Vercel auto-deploys.
 3. `pip install -r requirements.txt`
 4. Write `.env` from GitHub Secrets
 5. Log run start → `logs/scheduler.log`
-6. Run pipeline: `printf "Y\nY\n" | python Phase4_Orchestration/main_orchestrator.py`
+6. Run pipeline: `printf "Y\nY\nY\n" | python Phase4_Orchestration/main_orchestrator.py`
 7. Send email: `python Phase5_Email_UI/email_sender.py $EMAIL_SENDER`
 8. Update dashboard: `python Phase6_Web_App/update_dashboard.py`
 9. Git commit + push updated files (dashboard.html + output files)
@@ -282,6 +340,8 @@ After updating, GitHub Actions commits and pushes → Vercel auto-deploys.
 - `ANTHROPIC_API_KEY`
 - `EMAIL_SENDER`
 - `EMAIL_PASSWORD`
+- `GOOGLE_DOC_ID` — target Google Doc for weekly appends
+- `GOOGLE_SERVICE_ACCOUNT_JSON` — service account credentials with Docs write access
 
 ---
 

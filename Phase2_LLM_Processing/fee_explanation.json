@@ -1,9 +1,16 @@
 {
-  "scenario_name": "US Stocks Withdrawal Fees",
-  "explanation": "When you withdraw US stocks from your INDmoney account, you may incur a withdrawal fee. This fee is typically charged by the US brokerage firm and is usually a percentage of the withdrawal amount. The fee is deducted from the withdrawn amount and credited to the brokerage firm. The withdrawal fee is usually higher for smaller withdrawal amounts and may be waived for larger withdrawals. It's essential to review the fee structure before initiating a withdrawal to avoid any unexpected charges.",
-  "key_points": [
-    "Withdrawal fees are charged by the US brokerage firm, not INDmoney.",
-    "Fees are usually a percentage of the withdrawal amount.",
-    "Fees may be waived for larger withdrawal amounts."
-  ]
+  "scenario_name": "SBI Mutual Funds \u2014 Exit Load",
+  "explanation_bullets": [
+    "SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment.",
+    "SBI Flexicap Fund: Nil exit load.",
+    "SBI ELSS Tax Saver Fund: Nil exit load.",
+    "SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment.",
+    "SBI Midcap Fund: Nil exit load.",
+    "SBI Focused Equity Fund: Nil exit load."
+  ],
+  "source_links": [
+    "https://www.sbimf.com/en-us/investor-corner",
+    "https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43"
+  ],
+  "last_checked": "March 21, 2026"
 }

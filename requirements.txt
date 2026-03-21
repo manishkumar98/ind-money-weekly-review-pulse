@@ -6,6 +6,9 @@ pandas
 google-play-scraper
 app-store-scraper
 emoji
+google-api-python-client
+google-auth
+mcp
 
 # Web app dependencies (used locally only)
 fastapi

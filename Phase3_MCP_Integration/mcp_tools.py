@@ -2,16 +2,22 @@
 mcp_tools.py
 Phase 3 - MCP Tool Definitions
 
-Defines the two MCP tools:
-  1. Document_Appender  - Appends the weekly pulse to a local Markdown file.
-  2. Email_Drafter      - Writes a formatted team email draft to a local .txt file.
+Defines three tools. Two run locally; one uses a real MCP server:
+  1. Document_Appender    - Appends the weekly pulse to a local Markdown file.
+  2. Google_Doc_Appender  - Connects to google_doc_mcp_server.py via MCP stdio
+                            transport and calls the 'append_to_google_doc' tool.
+                            This is true MCP: JSON-RPC over stdio, server/client split.
+  3. Email_Drafter        - Writes a formatted team email draft to a local .txt file.
 
-These are the actual executors that run ONLY after the human approves them at the gate.
+Tools 1 and 3 execute locally after human approval.
+Tool 2 spawns the MCP server as a subprocess and communicates via the MCP protocol.
 """
 
 import os
-import json
+import sys
+import asyncio
 from datetime import datetime
+from pathlib import Path
 
 
 # ──────────────────────────────────────────────
@@ -57,17 +63,55 @@ TOOL_SCHEMAS = [
         }
     },
     {
+        "name": "Google_Doc_Appender",
+        "description": (
+            "Appends the combined weekly pulse and exit load fee explainer as a "
+            "structured JSON block to a Google Doc. Called after both Document_Appender "
+            "and Email_Drafter have executed."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "description": "ISO date string for this pulse run (YYYY-MM-DD)."
+                },
+                "weekly_pulse": {
+                    "type": "object",
+                    "description": "The full weekly_pulse_output JSON object."
+                },
+                "fee_scenario": {
+                    "type": "string",
+                    "description": "Name of the fee scenario (e.g. 'SBI Mutual Funds — Exit Load')."
+                },
+                "explanation_bullets": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of ≤6 factual exit load bullet strings."
+                },
+                "source_links": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Exactly 2 official source URLs."
+                }
+            },
+            "required": ["date", "weekly_pulse", "fee_scenario", "explanation_bullets", "source_links"]
+        }
+    },
+    {
         "name": "Email_Drafter",
         "description": (
             "Drafts a team-wide distribution email summarizing the weekly INDmoney "
-            "product pulse, ready to be reviewed and sent."
+            "product pulse AND the fee explainer. Subject must follow the format: "
+            "'Weekly Pulse + Fee Explainer — YYYY-MM-DD'. Body must include both "
+            "the weekly pulse summary and the fee explanation bullets. No auto-send."
         ),
         "parameters": {
             "type": "object",
             "properties": {
                 "subject": {
                     "type": "string",
-                    "description": "Email subject line."
+                    "description": "Email subject. Format: 'Weekly Pulse + Fee Explainer — YYYY-MM-DD'."
                 },
                 "recipient": {
                     "type": "string",
@@ -75,7 +119,11 @@ TOOL_SCHEMAS = [
                 },
                 "body": {
                     "type": "string",
-                    "description": "Full email body in plain text."
+                    "description": (
+                        "Full email body in plain text. Must contain two sections: "
+                        "1) Weekly Pulse — themes, quotes, weekly note, action ideas. "
+                        "2) Fee Explainer — fee scenario name, explanation bullets, source links, last checked date."
+                    )
                 }
             },
             "required": ["subject", "recipient", "body"]
@@ -140,7 +188,52 @@ def execute_document_appender(args: dict, output_dir: str) -> str:
 
 
 # ──────────────────────────────────────────────
-# Tool 2: Email_Drafter
+# Tool 2: Google_Doc_Appender
+# ──────────────────────────────────────────────
+
+def execute_google_doc_appender(args: dict, _output_dir: str) -> str:
+    """
+    Uses a real MCP client to call the Google Docs append tool.
+
+    Flow:
+      1. Spawns google_doc_mcp_server.py as a subprocess (stdio transport).
+      2. Connects via the MCP protocol (JSON-RPC over stdin/stdout).
+      3. Calls the 'append_to_google_doc' MCP tool with the approved payload.
+      4. Returns the text result from the server.
+
+    This is true MCP — server/client split, stdio transport, JSON-RPC protocol.
+    """
+    server_script = str(Path(__file__).parent / "google_doc_mcp_server.py")
+    python_exec = sys.executable
+
+    async def _run_mcp_client():
+        try:
+            from mcp import ClientSession, StdioServerParameters
+            from mcp.client.stdio import stdio_client
+        except ImportError:
+            return "❌ mcp package not installed. Run: pip install mcp"
+
+        server_params = StdioServerParameters(
+            command=python_exec,
+            args=[server_script]
+        )
+
+        async with stdio_client(server_params) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                result = await session.call_tool("append_to_google_doc", args)
+                if result.content:
+                    return result.content[0].text
+                return "✅ MCP tool executed (no content returned)"
+
+    try:
+        return asyncio.run(_run_mcp_client())
+    except Exception as e:
+        return f"❌ MCP client error: {e}"
+
+
+# ──────────────────────────────────────────────
+# Tool 3: Email_Drafter
 # ──────────────────────────────────────────────
 
 def execute_email_drafter(args: dict, output_dir: str) -> str:
@@ -191,6 +284,15 @@ def execute_tool(tool_name: str, args: dict, output_dir: str) -> dict:
             "tool": tool_name,
             "output_path": path,
             "message": f"✅ Weekly pulse appended to: {path}"
+        }
+    elif tool_name == "Google_Doc_Appender":
+        message = execute_google_doc_appender(args, output_dir)
+        success = message.startswith("✅")
+        return {
+            "success": success,
+            "tool": tool_name,
+            "output_path": None,
+            "message": message
         }
     elif tool_name == "Email_Drafter":
         path = execute_email_drafter(args, output_dir)

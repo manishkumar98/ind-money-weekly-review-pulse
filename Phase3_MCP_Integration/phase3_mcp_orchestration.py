@@ -4,9 +4,9 @@ Phase 3 - MCP Tool Integration & Human Approval Gates
 
 Flow:
   1. Load weekly_pulse_output.json from Phase 2.
-  2. Send it to Gemini (gemini-2.0-flash) with Document_Appender and
-     Email_Drafter declared as callable tools.
-  3. Gemini returns function_call requests with ready-made payloads.
+  2. Send it to Groq (llama-3.3-70b-versatile) with Document_Appender,
+     Google_Doc_Appender, and Email_Drafter declared as callable tools.
+  3. Groq returns function_call requests with ready-made payloads.
   4. For EACH proposed tool call:
        a. Pretty-print the exact payload to the terminal.
        b. Prompt the human for Y/N approval.
@@ -18,6 +18,7 @@ Flow:
 import os
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 from groq import Groq
@@ -36,7 +37,7 @@ OUTPUT_DIR = str(Path(__file__).parent)
 # Helpers
 # ──────────────────────────────────────────────
 
-def load_pulse_data(json_path: str) -> dict:
+def load_json_file(json_path: str) -> dict:
     with open(json_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -108,28 +109,41 @@ def validate_tool_payload(tool_name: str, args: dict) -> bool:
 # Core orchestration
 # ──────────────────────────────────────────────
 
-def run_groq_orchestration(pulse_data: dict) -> list[dict]:
+def run_groq_orchestration(pulse_data: dict, fee_data: dict) -> list[dict]:
     """
-    Sends the pulse data to Groq and collects its tool-call proposals.
+    Sends pulse + fee explainer data to Groq and collects its tool-call proposals.
     Returns a list of dicts: [{tool_name, args}, ...]
+    Expects Groq to call all three tools: Document_Appender, Email_Drafter, Google_Doc_Appender.
     """
     if not GROQ_API_KEY:
         raise ValueError("GROQ_API_KEY not found. Please set it in your .env file.")
 
     client = Groq(api_key=GROQ_API_KEY)
 
+    today = datetime.now().strftime("%Y-%m-%d")
+
     system_instruction = (
         "You are an orchestration AI for the INDmoney product team. "
-        "You have access to a 'Document_Appender' tool and an 'Email_Drafter' tool. "
-        "Use the provided Weekly Pulse JSON to prepare and call BOTH tools with "
-        "appropriate, well-formatted payloads. For the Email_Drafter, generate a "
-        "professional, concise team-wide email using the pulse data."
+        "You have access to three tools: 'Document_Appender', 'Google_Doc_Appender', and 'Email_Drafter'. "
+        "Use the provided Weekly Pulse JSON and Exit Load Fee Explainer JSON to call ALL THREE tools.\n\n"
+        "STRICT RULES:\n"
+        "1. Document_Appender: use weekly pulse fields only.\n"
+        "2. Google_Doc_Appender: combine both datasets — include date, full weekly_pulse object, "
+        "fee_scenario name, explanation_bullets list, and source_links list.\n"
+        "3. Email_Drafter:\n"
+        f"   - subject MUST be exactly: 'Weekly Pulse + Fee Explainer — {today}'\n"
+        "   - body MUST have two clearly labelled sections:\n"
+        "     Section 1 — WEEKLY PULSE: top themes, 3 user quotes, weekly note, action ideas.\n"
+        "     Section 2 — FEE EXPLAINER: fee scenario name, all explanation bullets, "
+        "source links, and last checked date.\n"
+        "   - No auto-send. This is a draft only."
     )
 
     user_message = (
-        f"Here is the Weekly Pulse JSON. Please call Document_Appender and "
-        f"Email_Drafter with suitable payloads derived from this data:\n\n"
-        f"{json.dumps(pulse_data, indent=2)}"
+        f"Today's date: {today}\n\n"
+        f"Weekly Pulse JSON:\n{json.dumps(pulse_data, indent=2)}\n\n"
+        f"Exit Load Fee Explainer JSON:\n{json.dumps(fee_data, indent=2)}\n\n"
+        f"Call Document_Appender, Google_Doc_Appender, and Email_Drafter now."
     )
 
     tools = build_groq_tools()
@@ -182,15 +196,25 @@ def run_phase3(
         print("   Please run Phase 2 first.")
         return
 
-    # 1. Load Phase 2 output
-    pulse_data = load_pulse_data(pulse_json_path)
+    # 1. Load Phase 2 outputs
+    pulse_data = load_json_file(pulse_json_path)
     print(f"\n✅ Loaded weekly pulse data from:\n   {pulse_json_path}")
     print(f"\n   Themes   : {pulse_data.get('themes', [])}")
     print(f"   Top 3    : {pulse_data.get('top_3_themes', [])}")
 
+    fee_json_path = str(
+        Path(__file__).parent.parent / "Phase2_LLM_Processing" / "fee_explanation.json"
+    )
+    fee_data = {}
+    if os.path.exists(fee_json_path):
+        fee_data = load_json_file(fee_json_path)
+        print(f"✅ Loaded fee explainer data from:\n   {fee_json_path}")
+    else:
+        print(f"⚠️  fee_explanation.json not found — Google_Doc_Appender will have empty fee data.")
+
     # 2. Send to Groq → get tool-call proposals
     try:
-        tool_calls = run_groq_orchestration(pulse_data)
+        tool_calls = run_groq_orchestration(pulse_data, fee_data)
     except Exception as e:
         print(f"\n❌ Groq orchestration failed: {e}")
         return
