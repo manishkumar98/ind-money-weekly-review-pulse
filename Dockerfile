@@ -14,6 +14,7 @@ COPY Phase5_Email_UI/ ./Phase5_Email_UI/
 
 # Copy pre-generated pulse data used by the email sender
 COPY Phase2_LLM_Processing/weekly_pulse_output.json ./Phase2_LLM_Processing/
+COPY Phase2_LLM_Processing/fee_explanation.json ./Phase2_LLM_Processing/
 COPY Phase3_MCP_Integration/email_draft.txt ./Phase3_MCP_Integration/
 COPY Phase3_MCP_Integration/weekly_pulse_notes.md ./Phase3_MCP_Integration/
 
