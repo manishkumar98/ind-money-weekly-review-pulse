@@ -92,7 +92,7 @@ Writes `email_draft.txt` with:
 |---|---|
 | Working prototype | https://ind-money-weekly-review-pulse.vercel.app/dashboard.html |
 | Weekly note (MD) | `Phase3_MCP_Integration/weekly_pulse_notes.md` |
-| Notes/Doc snippet | `Phase3_MCP_Integration/weekly_pulse_notes.md` (appended weekly) + Google Doc ID: `1erfYuwVB6nNieTNwjxO6cTX9Be2FIXg6rQiEfSov0so` |
+| Notes/Doc snippet | `Phase3_MCP_Integration/weekly_pulse_notes.md` (appended weekly) + [Google Doc](https://docs.google.com/document/d/1erfYuwVB6nNieTNwjxO6cTX9Be2FIXg6rQiEfSov0so/edit?tab=t.0) |
 | Email draft | `Phase3_MCP_Integration/email_draft.txt` |
 | Reviews CSV sample | `Phase1_Data_Ingestion/sanitized_indmoney_reviews.csv` |
 | Source list | See sources below |
