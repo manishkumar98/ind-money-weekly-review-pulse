@@ -2,8 +2,8 @@ name: INDmoney Weekly Pulse
 
 on:
   schedule:
-    # Every Saturday at 8:40 PM IST (15:10 UTC)
-    - cron: '10 15 * * 6'
+    # Every Friday at 8:40 PM IST (15:10 UTC)
+    - cron: '10 15 * * 5'
   workflow_dispatch:  # Allow manual trigger from GitHub UI
 
 jobs:
