@@ -27,31 +27,35 @@ def escape_js(text):
 html = DASHBOARD.read_text(encoding="utf-8")
 
 # Replace EMAIL_DRAFT constant
+draft_js = escape_js(draft)
 html = re.sub(
     r"(const EMAIL_DRAFT = `)[\s\S]*?(`;)",
-    f"const EMAIL_DRAFT = `{escape_js(draft)}`;",
+    lambda m: f"const EMAIL_DRAFT = `{draft_js}`;",
     html
 )
 
 # Replace NOTES_MD constant
+notes_js = escape_js(notes)
 html = re.sub(
     r"(const NOTES_MD = `)[\s\S]*?(`;)",
-    f"const NOTES_MD = `{escape_js(notes)}`;",
+    lambda m: f"const NOTES_MD = `{notes_js}`;",
     html
 )
 
 # Replace PULSE_DATA constant
+pulse_js = json.dumps(pulse, indent=12)
 html = re.sub(
     r"(const PULSE_DATA = )\{[\s\S]*?\};(\s*// ─)",
-    f"const PULSE_DATA = {json.dumps(pulse, indent=12)};\\2",
+    lambda m: f"const PULSE_DATA = {pulse_js};{m.group(2)}",
     html
 )
 
 # Replace FEE_DATA constant
 if fee:
+    fee_js = json.dumps(fee)
     html = re.sub(
         r"(const FEE_DATA = )\{[\s\S]*?\};",
-        f"const FEE_DATA = {json.dumps(fee)};",
+        lambda m: f"const FEE_DATA = {fee_js};",
         html
     )
 
