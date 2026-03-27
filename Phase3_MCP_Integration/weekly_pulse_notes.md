@@ -184,3 +184,34 @@ The INDmoney app has received mixed reviews from users, with some praising its u
 - [ ] Enhance data accuracy by ensuring that the information provided is reliable and up-to-date.
 - [ ] Review and adjust fees and charges to make the app more competitive and user-friendly.
 
+
+---
+
+## 📅 Week of March 27, 2026
+*Appended at 2026-03-27 15:04*
+
+### Weekly Note
+The INDmoney app has received mixed reviews from users. Some users have praised the app's user-friendly interface, features, and performance. However, others have raised concerns about the app's customer support, security, and performance issues. The app's features, such as its ability to provide real-time data and allow for easy trading, have been well-received by many users. However, some users have reported issues with the app's performance, such as lagging charts and frequent crashes. Overall, the app has the potential to be a valuable tool for traders and investors, but it needs to address its performance and customer support issues to meet the expectations of its users.
+
+### Themes Identified
+- User Interface
+- Features
+- Performance
+- Customer Support
+- Security
+
+### Top 3 Themes
+1. User Interface
+2. Features
+3. Performance
+
+### User Quotes
+> "very easy to pick up for the commoner to trade"
+> "Flash mode is very easy and beneficial for trading. Overall a very good platform ."
+> "Poor performance since some days Slow, price update issue in last 5-6days"
+
+### Action Ideas
+- [ ] Improve the app's performance by addressing lagging charts and frequent crashes
+- [ ] Enhance customer support by providing more responsive and helpful support
+- [ ] Add more features, such as premium chart scanners and letter viewing, to make the app more comprehensive
+

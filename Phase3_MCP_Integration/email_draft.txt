@@ -1,22 +1,12 @@
 
 ============================================================
-  EMAIL DRAFT — 2026-03-21 23:52
+  EMAIL DRAFT — 2026-03-27 15:04
 ============================================================
 To      : Product Team
-Subject : Weekly Pulse + Fee Explainer — 2026-03-21
+Subject : Weekly Pulse + Fee Explainer — 2026-03-27
 ------------------------------------------------------------
 
-Section 1 — WEEKLY PULSE: 
-Top themes: User Interface, Trading Features, Customer Support
-User quotes: Fundamental analysis is crucial prior to investment., Best app for options trading. Very intuitive design and user interface., INDMoney Platform Bahut Achha hai lekin customer support achha nhi hai maine kitna baar bola ek problem solve krne ke liye lekin nhi kiya bola hamare developer is pe kaam kr rahe lekin aisa kuch nhi hai bas ticket closed krne ke liye bolta hai
-Weekly note: The INDMoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have raised concerns about customer support, data accuracy, and fees and charges. To improve the app, INDMoney should focus on addressing these issues and providing a seamless user experience.
-Action ideas: Improve customer support by providing timely and effective solutions to user queries., Enhance data accuracy by ensuring that the information provided is reliable and up-to-date., Review and adjust fees and charges to make the app more competitive and user-friendly.
-
-Section 2 — FEE EXPLAINER: 
-Fee scenario: SBI Mutual Funds — Exit Load
-Explanation bullets: SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment., SBI Flexicap Fund: Nil exit load., SBI ELSS Tax Saver Fund: Nil exit load., SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment., SBI Midcap Fund: Nil exit load., SBI Focused Equity Fund: Nil exit load.
-Source links: https://www.sbimf.com/en-us/investor-corner, https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43
-Last checked: March 21, 2026
+Section 1 — WEEKLY PULSE: The top themes for this week are User Interface, Features, and Performance. Some user quotes include: very easy to pick up for the commoner to trade, Flash mode is very easy and beneficial for trading. Overall a very good platform ., and Poor performance since some days Slow, price update issue in last 5-6days. The weekly note highlights the mixed reviews from users, with some praising the app's features and performance, while others raise concerns about customer support and performance issues. Action ideas include improving the app's performance, enhancing customer support, and adding more features. Section 2 — FEE EXPLAINER: The fee scenario is SBI Mutual Funds — Exit Load. Explanation bullets include: SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of investment., SBI Flexicap Fund: Nil exit load., SBI ELSS Tax Saver Fund: Nil exit load., SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of investment., SBI Midcap Fund: 1% exit load if redeemed within 18 months from the date of investment., and SBI Focused Equity Fund: Nil exit load. Source links include https://www.sbimf.com/en-us/investor-corner and https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43. Last checked date is March 27, 2026.
 
 ------------------------------------------------------------
 [DRAFT — Pending human review before sending]

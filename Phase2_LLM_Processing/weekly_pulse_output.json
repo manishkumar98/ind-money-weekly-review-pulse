@@ -1,25 +1,25 @@
 {
   "themes": [
     "User Interface",
-    "Trading Features",
+    "Features",
+    "Performance",
     "Customer Support",
-    "Data Accuracy",
-    "Fees and Charges"
+    "Security"
   ],
   "top_3_themes": [
     "User Interface",
-    "Trading Features",
-    "Customer Support"
+    "Features",
+    "Performance"
   ],
   "quotes": [
-    "Fundamental analysis is crucial prior to investment.",
-    "Best app for options trading. Very intuitive design and user interface.",
-    "INDmoney Platform Bahut Achha hai lekin customer support achha nhi hai maine kitna baar bola ek problem solve krne ke liye lekin nhi kiya bola hamare developer is pe kaam kr rahe lekin aisa kuch nhi hai bas ticket closed krne ke liye bolta hai"
+    "very easy to pick up for the commoner to trade",
+    "Flash mode is very easy and beneficial for trading. Overall a very good platform .",
+    "Poor performance since some days Slow, price update issue in last 5-6days"
   ],
-  "weekly_note": "The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have raised concerns about customer support, data accuracy, and fees and charges. To improve the app, INDmoney should focus on addressing these issues and providing a seamless user experience.",
+  "weekly_note": "The INDmoney app has received mixed reviews from users. Some users have praised the app's user-friendly interface, features, and performance. However, others have raised concerns about the app's customer support, security, and performance issues. The app's features, such as its ability to provide real-time data and allow for easy trading, have been well-received by many users. However, some users have reported issues with the app's performance, such as lagging charts and frequent crashes. Overall, the app has the potential to be a valuable tool for traders and investors, but it needs to address its performance and customer support issues to meet the expectations of its users.",
   "action_ideas": [
-    "Improve customer support by providing timely and effective solutions to user queries.",
-    "Enhance data accuracy by ensuring that the information provided is reliable and up-to-date.",
-    "Review and adjust fees and charges to make the app more competitive and user-friendly."
+    "Improve the app's performance by addressing lagging charts and frequent crashes",
+    "Enhance customer support by providing more responsive and helpful support",
+    "Add more features, such as premium chart scanners and letter viewing, to make the app more comprehensive"
   ]
 }
