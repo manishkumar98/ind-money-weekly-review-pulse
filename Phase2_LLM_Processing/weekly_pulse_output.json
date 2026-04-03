@@ -1,25 +1,25 @@
 {
   "themes": [
-    "User Interface",
-    "Features",
-    "Performance",
-    "Customer Support",
-    "Trading Experience"
+    "Ease of use",
+    "User interface",
+    "Trading features",
+    "Customer support",
+    "Brokerage charges"
   ],
   "top_3_themes": [
-    "User Interface",
-    "Features",
-    "Performance"
+    "Ease of use",
+    "User interface",
+    "Trading features"
   ],
   "quotes": [
-    "very easy to pick up for the commoner to trade",
-    "Big scammed don't use this app other wise you lost all of your money in your account trust me we lost all of my money after using this app",
-    "Amazing App. Great trading app for genz as well as for traditional stock traders. the trading features are excellent."
+    "very good application ind stocks.. wow",
+    "Fast Intraday and FnO trading at Rs 5 per order is the best feature",
+    "very good app highly recommended,, trustable app,,"
   ],
-  "weekly_note": "The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and features, while others have reported performance issues, scams, and misleading information. To improve the app, the developers should focus on addressing these concerns and incorporating user feedback.",
+  "weekly_note": "Overall, users are satisfied with the ease of use and user interface of the app. However, some users have reported issues with customer support and brokerage charges. The app's trading features are also a major point of discussion, with some users praising its simplicity and others requesting additional features. The INDmoney app has received mixed reviews from users. Some users have praised the app's features, user interface, and performance, while others have reported issues with chart crashing, missing features, and high brokerage charges. The app's performance has also been a concern for some users, with reports of frequent crashes and slow loading times.",
   "action_ideas": [
     "Improve customer support",
-    "Enhance trading experience",
-    "Optimize performance"
+    "Reduce brokerage charges",
+    "Add more trading features"
   ]
 }

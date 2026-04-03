@@ -246,3 +246,34 @@ The INDmoney app has received mixed reviews from users, with some praising its u
 - [ ] Enhance trading experience
 - [ ] Optimize performance
 
+
+---
+
+## 📅 Week of April 03, 2026
+*Appended at 2026-04-03 15:55*
+
+### Weekly Note
+Overall, users are satisfied with the ease of use and user interface of the app. However, some users have reported issues with customer support and brokerage charges. The app's trading features are also a major point of discussion, with some users praising its simplicity and others requesting additional features. The INDmoney app has received mixed reviews from users. Some users have praised the app's features, user interface, and performance, while others have reported issues with chart crashing, missing features, and high brokerage charges. The app's performance has also been a concern for some users, with reports of frequent crashes and slow loading times.
+
+### Themes Identified
+- Ease of use
+- User interface
+- Trading features
+- Customer support
+- Brokerage charges
+
+### Top 3 Themes
+1. Ease of use
+2. User interface
+3. Trading features
+
+### User Quotes
+> "very good application ind stocks.. wow"
+> "Fast Intraday and FnO trading at Rs 5 per order is the best feature"
+> "very good app highly recommended,, trustable app,,"
+
+### Action Ideas
+- [ ] Improve customer support
+- [ ] Reduce brokerage charges
+- [ ] Add more trading features
+
