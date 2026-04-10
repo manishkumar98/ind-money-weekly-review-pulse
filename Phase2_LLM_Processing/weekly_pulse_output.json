@@ -1,25 +1,25 @@
 {
   "themes": [
-    "Ease of use",
-    "User interface",
-    "Trading features",
-    "Customer support",
-    "Brokerage charges"
+    "user-friendly interface",
+    "easy to use",
+    "good features",
+    "best app",
+    "good service"
   ],
   "top_3_themes": [
-    "Ease of use",
-    "User interface",
-    "Trading features"
+    "user-friendly interface",
+    "easy to use",
+    "good features"
   ],
   "quotes": [
-    "very good application ind stocks.. wow",
-    "Fast Intraday and FnO trading at Rs 5 per order is the best feature",
-    "very good app highly recommended,, trustable app,,"
+    "Fundamental analysis is crucial prior to investment.",
+    "You can track your all investments under one bucket.",
+    "Informative and easy to use application, a must recommend for people who want to invest simply."
   ],
-  "weekly_note": "Overall, users are satisfied with the ease of use and user interface of the app. However, some users have reported issues with customer support and brokerage charges. The app's trading features are also a major point of discussion, with some users praising its simplicity and others requesting additional features. The INDmoney app has received mixed reviews from users. Some users have praised the app's features, user interface, and performance, while others have reported issues with chart crashing, missing features, and high brokerage charges. The app's performance has also been a concern for some users, with reports of frequent crashes and slow loading times.",
+  "weekly_note": "The users are generally satisfied with the app's user-friendly interface, ease of use, and good features. However, some users have reported issues with the app's performance, such as delays in placing orders and glitches. Additionally, some users have suggested features that are not currently available, such as stop loss triggers and mutual fund options.",
   "action_ideas": [
-    "Improve customer support",
-    "Reduce brokerage charges",
-    "Add more trading features"
+    "Improve app performance to reduce delays and glitches",
+    "Add stop loss triggers and mutual fund options",
+    "Enhance user interface for better accessibility"
   ]
 }
