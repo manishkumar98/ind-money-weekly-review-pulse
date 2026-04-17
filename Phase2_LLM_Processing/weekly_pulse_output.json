@@ -1,25 +1,25 @@
 {
   "themes": [
     "user-friendly interface",
-    "easy to use",
-    "good features",
-    "best app",
-    "good service"
+    "trading features",
+    "investment options",
+    "customer support",
+    "glitches and latency"
   ],
   "top_3_themes": [
     "user-friendly interface",
-    "easy to use",
-    "good features"
+    "trading features",
+    "glitches and latency"
   ],
   "quotes": [
-    "Fundamental analysis is crucial prior to investment.",
-    "You can track your all investments under one bucket.",
-    "Informative and easy to use application, a must recommend for people who want to invest simply."
+    "Bahut hii achcha aur saral",
+    "easy way to learn fno",
+    "very nice app in india"
   ],
-  "weekly_note": "The users are generally satisfied with the app's user-friendly interface, ease of use, and good features. However, some users have reported issues with the app's performance, such as delays in placing orders and glitches. Additionally, some users have suggested features that are not currently available, such as stop loss triggers and mutual fund options.",
+  "weekly_note": "The INDmoney app has received mostly positive reviews from users, with many praising its user-friendly interface and trading features. However, some users have reported glitches and latency issues, which need to be addressed. The app also needs to improve its customer support and add more investment options. The users have mixed opinions about the app, with some praising its user interface, trading experience, and charting and analysis features, while others have complained about issues with customer support, brokerage charges, and technical problems. The app seems to be improving, with some users mentioning that their concerns have been addressed, but there are still some issues that need to be resolved.",
   "action_ideas": [
-    "Improve app performance to reduce delays and glitches",
-    "Add stop loss triggers and mutual fund options",
-    "Enhance user interface for better accessibility"
+    "Improve customer support",
+    "Add more investment options",
+    "Fix glitches and latency issues"
   ]
 }

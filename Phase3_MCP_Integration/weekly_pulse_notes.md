@@ -308,3 +308,34 @@ The users are generally satisfied with the app's user-friendly interface, ease o
 - [ ] Add stop loss triggers and mutual fund options
 - [ ] Enhance user interface for better accessibility
 
+
+---
+
+## 📅 Week of April 17, 2026
+*Appended at 2026-04-17 16:14*
+
+### Weekly Note
+The INDmoney app has received mostly positive reviews from users, with many praising its user-friendly interface and trading features. However, some users have reported glitches and latency issues, which need to be addressed. The app also needs to improve its customer support and add more investment options. The users have mixed opinions about the app, with some praising its user interface, trading experience, and charting and analysis features, while others have complained about issues with customer support, brokerage charges, and technical problems. The app seems to be improving, with some users mentioning that their concerns have been addressed, but there are still some issues that need to be resolved.
+
+### Themes Identified
+- user-friendly interface
+- trading features
+- investment options
+- customer support
+- glitches and latency
+
+### Top 3 Themes
+1. user-friendly interface
+2. trading features
+3. glitches and latency
+
+### User Quotes
+> "Bahut hii achcha aur saral"
+> "easy way to learn fno"
+> "very nice app in india"
+
+### Action Ideas
+- [ ] Improve customer support
+- [ ] Add more investment options
+- [ ] Fix glitches and latency issues
+
