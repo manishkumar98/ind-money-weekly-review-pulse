@@ -45,8 +45,8 @@ html = re.sub(
 # Replace PULSE_DATA constant
 pulse_js = json.dumps(pulse, indent=12)
 html = re.sub(
-    r"(const PULSE_DATA = )\{[\s\S]*?\};(\s*// ─)",
-    lambda m: f"const PULSE_DATA = {pulse_js};{m.group(2)}",
+    r"(const PULSE_DATA = )\{[\s\S]*?\};",
+    lambda m: f"const PULSE_DATA = {pulse_js};",
     html
 )
 

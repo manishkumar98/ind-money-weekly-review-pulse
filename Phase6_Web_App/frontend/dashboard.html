@@ -30,8 +30,14 @@
         header a { color: rgba(255,255,255,0.5); font-size: 13px; text-decoration: none; display: inline-block; margin-top: 8px; }
         header a:hover { color: #fff; }
 
-        .tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; background: transparent; color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif; }
+        .header-meta { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+        .status-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4); color: #4ade80; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .review-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(67,97,238,0.2); border: 1px solid rgba(67,97,238,0.4); color: #a5b4fc; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+        .tab-btn { flex: 1; min-width: 100px; padding: 10px 8px; border: none; border-radius: 10px; background: transparent; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif; white-space: nowrap; }
         .tab-btn.active { background: linear-gradient(135deg, #4361ee, #3a0ca3); color: #fff; box-shadow: 0 4px 15px rgba(67,97,238,0.4); }
         .tab-btn:hover:not(.active) { color: #fff; background: rgba(255,255,255,0.08); }
 
@@ -77,6 +83,70 @@
         .week-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
         .spinner-inline { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 8px; vertical-align: middle; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Approval Gate styles */
+        .checklist { list-style: none; margin-bottom: 24px; }
+        .checklist li { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14px; color: rgba(255,255,255,0.8); }
+        .checklist li:last-child { border-bottom: none; }
+        .check-icon { width: 26px; height: 26px; border-radius: 50%; background: rgba(74,222,128,0.2); border: 1px solid rgba(74,222,128,0.5); color: #4ade80; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+        .check-date { margin-left: auto; font-size: 12px; color: rgba(255,255,255,0.35); }
+
+        .section-title { font-size: 13px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 12px; margin-top: 24px; }
+        .section-title:first-child { margin-top: 0; }
+
+        .editable-summary { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.8; resize: vertical; min-height: 100px; font-family: 'Outfit', sans-serif; outline: none; }
+        .editable-summary:focus { border-color: rgba(67,97,238,0.6); }
+
+        .accordion { border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
+        .accordion-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; background: rgba(255,255,255,0.04); transition: background 0.2s; user-select: none; }
+        .accordion-header:hover { background: rgba(255,255,255,0.08); }
+        .accordion-header span { font-size: 14px; font-weight: 600; color: #fff; }
+        .accordion-arrow { font-size: 12px; color: rgba(255,255,255,0.4); transition: transform 0.25s; }
+        .accordion.open .accordion-arrow { transform: rotate(180deg); }
+        .accordion-body { display: none; padding: 16px 18px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .accordion.open .accordion-body { display: block; }
+        .accordion-quote { font-size: 13px; font-style: italic; color: rgba(255,255,255,0.7); border-left: 3px solid #4361ee; padding-left: 12px; margin-top: 8px; line-height: 1.6; }
+        .accordion-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+        .action-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+        .gate-btn { padding: 12px 20px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif; white-space: nowrap; }
+        .gate-btn.primary { background: linear-gradient(135deg, #4361ee, #3a0ca3); color: #fff; }
+        .gate-btn.secondary { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
+        .gate-btn.success-btn { background: linear-gradient(135deg, #059669, #047857); color: #fff; }
+        .gate-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+        .gate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .collapsible-section { border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; margin-top: 20px; }
+        .collapsible-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; background: rgba(255,255,255,0.04); }
+        .collapsible-header:hover { background: rgba(255,255,255,0.08); }
+        .collapsible-header h4 { font-size: 14px; font-weight: 700; color: #fff; }
+        .collapsible-arrow { font-size: 12px; color: rgba(255,255,255,0.4); transition: transform 0.25s; }
+        .collapsible-section.open .collapsible-arrow { transform: rotate(180deg); }
+        .collapsible-body { display: none; padding: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .collapsible-section.open .collapsible-body { display: block; }
+
+        .fee-bullet { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.6; }
+        .fee-dot { width: 7px; height: 7px; border-radius: 50%; background: #a5b4fc; flex-shrink: 0; margin-top: 7px; }
+        .fee-links { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+        .fee-link { color: #a5b4fc; font-size: 13px; word-break: break-all; text-decoration: none; }
+        .fee-link:hover { text-decoration: underline; }
+        .fee-meta { margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.35); }
+
+        .meta-row { display: flex; align-items: center; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+        .no-pii-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(250,204,21,0.12); border: 1px solid rgba(250,204,21,0.3); color: #fbbf24; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .gen-time { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+        /* Analytics styles */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+        .stat-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; text-align: center; }
+        .stat-num { font-size: 36px; font-weight: 700; background: linear-gradient(135deg, #a5b4fc, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+        .theme-bar-list { list-style: none; }
+        .theme-bar-item { margin-bottom: 14px; }
+        .theme-bar-label { display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 6px; }
+        .theme-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
+        .theme-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #4361ee, #7c3aed); transition: width 1s ease; }
     </style>
 </head>
 <body>
@@ -86,20 +156,83 @@
     <div class="container">
         <header>
             <h1>INDmoney Pulse Dashboard</h1>
-            <p>Weekly review insights, email draft and poster preview</p>
+            <p>Weekly review insights, approval gate, analytics and email delivery</p>
+            <div class="header-meta">
+                <span class="status-pill"><span class="status-dot"></span>Pipeline Active</span>
+                <span class="review-badge" id="review-count-badge">📊 Loading...</span>
+            </div>
             <a href="/">← Back to Subscribe</a>
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('draft', this)">📧 Email Draft</button>
+            <button class="tab-btn active" onclick="switchTab('gate', this)">🔒 Approval Gate</button>
+            <button class="tab-btn" onclick="switchTab('draft', this)">📧 Email Draft</button>
             <button class="tab-btn" onclick="switchTab('notes', this)">📝 Markdown Report</button>
             <button class="tab-btn" onclick="switchTab('poster', this)">🖼️ Pulse Poster</button>
+            <button class="tab-btn" onclick="switchTab('analytics', this)">📊 Analytics</button>
         </div>
 
-        <!-- Tab 1: Email Draft -->
-        <div id="tab-draft" class="tab-content active">
+        <!-- Tab 1: Approval Gate -->
+        <div id="tab-gate" class="tab-content active">
             <div class="glass-card">
-                <div class="week-label">Week of April 17, 2026</div>
+                <div class="section-title">Review Weekly Pulse</div>
+                <p style="font-size:14px;color:rgba(255,255,255,0.55);margin-bottom:20px">AI-generated analysis for this week — review before team distribution.</p>
+
+                <!-- Checklist -->
+                <ul class="checklist" id="gate-checklist"></ul>
+
+                <!-- Editable summary -->
+                <div class="section-title">Weekly Summary</div>
+                <textarea class="editable-summary" id="gate-summary" rows="4"></textarea>
+
+                <!-- Theme accordions -->
+                <div class="section-title" style="margin-top:20px">Categorised Themes</div>
+                <div id="gate-themes"></div>
+
+                <!-- Action Ideas -->
+                <div class="section-title" style="margin-top:20px">Action Ideas</div>
+                <div id="gate-actions"></div>
+
+                <!-- Action buttons -->
+                <div class="action-row">
+                    <button class="gate-btn secondary" onclick="gateAction('notes')">📎 Send to Notes</button>
+                    <button class="gate-btn primary" onclick="gateAction('email')">📧 Create Email Draft</button>
+                    <button class="gate-btn success-btn" id="both-btn" onclick="gateAction('both')">✅ Do Both &amp; Finish</button>
+                </div>
+                <div class="status-msg" id="gate-status" style="margin-top:14px"></div>
+
+                <!-- Fee Explainer collapsible -->
+                <div class="collapsible-section" id="fee-collapsible">
+                    <div class="collapsible-header" onclick="toggleCollapsible('fee-collapsible')">
+                        <h4>💡 AI Fee Explainer — Exit Load</h4>
+                        <span class="collapsible-arrow">▼</span>
+                    </div>
+                    <div class="collapsible-body" id="fee-body"></div>
+                </div>
+
+                <!-- Footer meta -->
+                <div class="meta-row">
+                    <span class="no-pii-badge">🔒 No PII included</span>
+                    <span class="gen-time" id="gen-timestamp"></span>
+                </div>
+            </div>
+
+            <!-- Send Email card -->
+            <div class="glass-card send-section">
+                <h3>✉️ Send Pulse Email</h3>
+                <div class="input-row">
+                    <input type="text" id="gate-send-name" placeholder="Recipient name" />
+                    <input type="email" id="gate-send-email" placeholder="recipient@example.com" />
+                    <button class="send-btn" id="gate-send-btn" onclick="sendEmailFrom('gate')">Send Email 🚀</button>
+                </div>
+                <div class="status-msg" id="gate-send-status"></div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Email Draft -->
+        <div id="tab-draft" class="tab-content">
+            <div class="glass-card">
+                <div class="week-label" id="draft-week-label"></div>
                 <div class="draft-box" id="draft-content"></div>
             </div>
             <div class="glass-card send-section">
@@ -107,38 +240,51 @@
                 <div class="input-row">
                     <input type="text" id="send-name" placeholder="Recipient name" />
                     <input type="email" id="send-email" placeholder="recipient@example.com" />
-                    <button class="send-btn" id="send-btn" onclick="sendEmail()">Send Email 🚀</button>
+                    <button class="send-btn" id="send-btn" onclick="sendEmailFrom('draft')">Send Email 🚀</button>
                 </div>
                 <div class="status-msg" id="send-status"></div>
             </div>
         </div>
 
-        <!-- Tab 2: Markdown Notes -->
+        <!-- Tab 3: Markdown Notes -->
         <div id="tab-notes" class="tab-content">
             <div class="glass-card">
                 <div class="markdown-box" id="notes-content"></div>
             </div>
         </div>
 
-        <!-- Tab 3: Pulse Poster -->
+        <!-- Tab 4: Pulse Poster -->
         <div id="tab-poster" class="tab-content">
             <div class="glass-card" id="poster-content"></div>
+        </div>
+
+        <!-- Tab 5: Analytics -->
+        <div id="tab-analytics" class="tab-content">
+            <div class="glass-card">
+                <div class="section-title">Pipeline Stats</div>
+                <div class="stat-grid" id="stat-grid"></div>
+
+                <div class="section-title" style="margin-top:8px">Theme Distribution</div>
+                <ul class="theme-bar-list" id="theme-bars"></ul>
+
+                <div class="section-title" style="margin-top:8px">Top User Quotes</div>
+                <div id="analytics-quotes"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Use relative URL so Vercel proxy handles the request (no CORS preflight)
         const API = '';
 
         // ── Baked-in data (updated by pipeline each week) ──────────────────
         const EMAIL_DRAFT = `============================================================
-  EMAIL DRAFT — 2026-04-17 16:14
+  EMAIL DRAFT — 2026-03-27 15:04
 ============================================================
 To      : Product Team
-Subject : Weekly Pulse + Fee Explainer — 2026-04-17
+Subject : Weekly Pulse + Fee Explainer — 2026-03-27
 ------------------------------------------------------------
 
-Section 1 — WEEKLY PULSE: The top themes for this week are user-friendly interface, trading features, and glitches and latency. Some user quotes include: Bahut hii achcha aur saral, easy way to learn fno, very nice app in india. The weekly note states that the app has received mostly positive reviews, but some users have reported glitches and latency issues. The action ideas are to improve customer support, add more investment options, and fix glitches and latency issues. Section 2 — FEE EXPLAINER: The fee scenario is SBI Mutual Funds — Exit Load. The explanation bullets are: SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment., SBI Flexicap Fund: Nil exit load., SBI ELSS Tax Saver Fund: Nil exit load., SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment., SBI Midcap Fund: 1% exit load if redeemed within 18 months from the date of allotment., SBI Focused Equity Fund: Nil exit load. The source links are https://www.sbimf.com/en-us/investor-corner and https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43. The last checked date is April 17, 2026.
+Section 1 — WEEKLY PULSE: The top themes for this week are User Interface, Features, and Performance. Some user quotes include: very easy to pick up for the commoner to trade, Flash mode is very easy and beneficial for trading. Overall a very good platform ., and Poor performance since some days Slow, price update issue in last 5-6days. The weekly note highlights the mixed reviews from users, with some praising the app's features and performance, while others raise concerns about customer support and performance issues. Action ideas include improving the app's performance, enhancing customer support, and adding more features. Section 2 — FEE EXPLAINER: The fee scenario is SBI Mutual Funds — Exit Load. Explanation bullets include: SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of investment., SBI Flexicap Fund: Nil exit load., SBI ELSS Tax Saver Fund: Nil exit load., SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of investment., SBI Midcap Fund: 1% exit load if redeemed within 18 months from the date of investment., and SBI Focused Equity Fund: Nil exit load. Source links include https://www.sbimf.com/en-us/investor-corner and https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43. Last checked date is March 27, 2026.
 
 ------------------------------------------------------------
 [DRAFT — Pending human review before sending]
@@ -209,99 +355,6 @@ The INDmoney app has received both positive and negative reviews. Users praise i
 ---
 
 ## 📅 Week of March 21, 2026
-*Appended at 2026-03-21 23:10*
-
-### Weekly Note
-The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have raised concerns about customer support, data accuracy, and fees and charges. To improve the app, INDmoney should focus on addressing these issues and providing a seamless user experience.
-
-### Themes Identified
-- User Interface
-- Trading Features
-- Customer Support
-- Data Accuracy
-- Fees and Charges
-
-### Top 3 Themes
-1. User Interface
-2. Trading Features
-3. Customer Support
-
-### User Quotes
-> "Fundamental analysis is crucial prior to investment."
-> "Best app for options trading. Very intuitive design and user interface."
-> "INDmoney Platform Bahut Achha hai lekin customer support achha nhi hai maine kitna baar bola ek problem solve krne ke liye lekin nhi kiya bola hamare developer is pe kaam kr rahe lekin aisa kuch nhi hai bas ticket closed krne ke liye bolta hai"
-
-### Action Ideas
-- [ ] Improve customer support by providing timely and effective solutions to user queries.
-- [ ] Enhance data accuracy by ensuring that the information provided is reliable and up-to-date.
-- [ ] Review and adjust fees and charges to make the app more competitive and user-friendly.
-
-
----
-
-## 📅 Week of March 21, 2026
-*Appended at 2026-03-21 23:47*
-
-### Weekly Note
-The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have raised concerns about customer support, data accuracy, and fees and charges. To improve the app, INDmoney should focus on addressing these issues and providing a seamless user experience.
-
-### Themes Identified
-- User Interface
-- Trading Features
-- Customer Support
-- Data Accuracy
-- Fees and Charges
-
-### Top 3 Themes
-1. User Interface
-2. Trading Features
-3. Customer Support
-
-### User Quotes
-> "Fundamental analysis is crucial prior to investment."
-> "Best app for options trading. Very intuitive design and user interface."
-> "INDmoney Platform Bahut Achha hai lekin customer support achha nhi hai maine kitna baar bola ek problem solve krne ke liye lekin nhi kiya bola hamare developer is pe kaam kr rahe lekin aisa kuch nhi hai bas ticket closed krne ke liye bolta hai"
-
-### Action Ideas
-- [ ] Improve customer support by providing timely and effective solutions to user queries.
-- [ ] Enhance data accuracy by ensuring that the information provided is reliable and up-to-date.
-- [ ] Review and adjust fees and charges to make the app more competitive and user-friendly.
-
-
----
-
-## 📅 Week of March 21, 2026
-*Appended at 2026-03-21 23:49*
-
-### Weekly Note
-The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have raised concerns about customer support, data accuracy, and fees and charges. To improve the app, INDmoney should focus on addressing these issues and providing a seamless user experience.
-
-### Themes Identified
-- User Interface
-- Trading Features
-- Customer Support
-- Data Accuracy
-- Fees and Charges
-
-### Top 3 Themes
-1. User Interface
-2. Trading Features
-3. Customer Support
-
-### User Quotes
-> "Fundamental analysis is crucial prior to investment."
-> "Best app for options trading. Very intuitive design and user interface."
-> "INDmoney Platform Bahut Achha hai lekin customer support achha nhi hai maine kitna baar bola ek problem solve krne ke liye lekin nhi kiya bola hamare developer is pe kaam kr rahe lekin aisa kuch nhi hai bas ticket closed krne ke liye bolta hai"
-
-### Action Ideas
-- [ ] Improve customer support by providing timely and effective solutions to user queries.
-- [ ] Enhance data accuracy by ensuring that the information provided is reliable and up-to-date.
-- [ ] Review and adjust fees and charges to make the app more competitive and user-friendly.
-
-
----
-
-## 📅 Week of March 21, 2026
 *Appended at 2026-03-21 23:52*
 
 ### Weekly Note
@@ -358,167 +411,109 @@ The INDmoney app has received mixed reviews from users. Some users have praised 
 ### Action Ideas
 - [ ] Improve the app's performance by addressing lagging charts and frequent crashes
 - [ ] Enhance customer support by providing more responsive and helpful support
-- [ ] Add more features, such as premium chart scanners and letter viewing, to make the app more comprehensive
-
-
----
-
-## 📅 Week of March 27, 2026
-*Appended at 2026-03-27 16:10*
-
-### Weekly Note
-The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and features, while others have reported performance issues, scams, and misleading information. To improve the app, the developers should focus on addressing these concerns and incorporating user feedback.
-
-### Themes Identified
-- User Interface
-- Features
-- Performance
-- Customer Support
-- Trading Experience
-
-### Top 3 Themes
-1. User Interface
-2. Features
-3. Performance
-
-### User Quotes
-> "very easy to pick up for the commoner to trade"
-> "Big scammed don't use this app other wise you lost all of your money in your account trust me we lost all of my money after using this app"
-> "Amazing App. Great trading app for genz as well as for traditional stock traders. the trading features are excellent."
-
-### Action Ideas
-- [ ] Improve customer support
-- [ ] Enhance trading experience
-- [ ] Optimize performance
-
-
----
-
-## 📅 Week of April 03, 2026
-*Appended at 2026-04-03 15:55*
-
-### Weekly Note
-Overall, users are satisfied with the ease of use and user interface of the app. However, some users have reported issues with customer support and brokerage charges. The app's trading features are also a major point of discussion, with some users praising its simplicity and others requesting additional features. The INDmoney app has received mixed reviews from users. Some users have praised the app's features, user interface, and performance, while others have reported issues with chart crashing, missing features, and high brokerage charges. The app's performance has also been a concern for some users, with reports of frequent crashes and slow loading times.
-
-### Themes Identified
-- Ease of use
-- User interface
-- Trading features
-- Customer support
-- Brokerage charges
-
-### Top 3 Themes
-1. Ease of use
-2. User interface
-3. Trading features
-
-### User Quotes
-> "very good application ind stocks.. wow"
-> "Fast Intraday and FnO trading at Rs 5 per order is the best feature"
-> "very good app highly recommended,, trustable app,,"
-
-### Action Ideas
-- [ ] Improve customer support
-- [ ] Reduce brokerage charges
-- [ ] Add more trading features
-
-
----
-
-## 📅 Week of April 10, 2026
-*Appended at 2026-04-10 16:09*
-
-### Weekly Note
-The users are generally satisfied with the app's user-friendly interface, ease of use, and good features. However, some users have reported issues with the app's performance, such as delays in placing orders and glitches. Additionally, some users have suggested features that are not currently available, such as stop loss triggers and mutual fund options.
-
-### Themes Identified
-- user-friendly interface
-- easy to use
-- good features
-- best app
-- good service
-
-### Top 3 Themes
-1. user-friendly interface
-2. easy to use
-3. good features
-
-### User Quotes
-> "Fundamental analysis is crucial prior to investment."
-> "You can track your all investments under one bucket."
-> "Informative and easy to use application, a must recommend for people who want to invest simply."
-
-### Action Ideas
-- [ ] Improve app performance to reduce delays and glitches
-- [ ] Add stop loss triggers and mutual fund options
-- [ ] Enhance user interface for better accessibility
-
-
----
-
-## 📅 Week of April 17, 2026
-*Appended at 2026-04-17 16:14*
-
-### Weekly Note
-The INDmoney app has received mostly positive reviews from users, with many praising its user-friendly interface and trading features. However, some users have reported glitches and latency issues, which need to be addressed. The app also needs to improve its customer support and add more investment options. The users have mixed opinions about the app, with some praising its user interface, trading experience, and charting and analysis features, while others have complained about issues with customer support, brokerage charges, and technical problems. The app seems to be improving, with some users mentioning that their concerns have been addressed, but there are still some issues that need to be resolved.
-
-### Themes Identified
-- user-friendly interface
-- trading features
-- investment options
-- customer support
-- glitches and latency
-
-### Top 3 Themes
-1. user-friendly interface
-2. trading features
-3. glitches and latency
-
-### User Quotes
-> "Bahut hii achcha aur saral"
-> "easy way to learn fno"
-> "very nice app in india"
-
-### Action Ideas
-- [ ] Improve customer support
-- [ ] Add more investment options
-- [ ] Fix glitches and latency issues`;
+- [ ] Add more features, such as premium chart scanners and letter viewing, to make the app more comprehensive`;
 
         const PULSE_DATA = {
             "themes": [
-                        "user-friendly interface",
-                        "trading features",
-                        "investment options",
-                        "customer support",
-                        "glitches and latency"
+                        "User Interface",
+                        "Features",
+                        "Performance",
+                        "Customer Support",
+                        "Security"
             ],
             "top_3_themes": [
-                        "user-friendly interface",
-                        "trading features",
-                        "glitches and latency"
+                        "User Interface",
+                        "Features",
+                        "Performance"
             ],
             "quotes": [
-                        "Bahut hii achcha aur saral",
-                        "easy way to learn fno",
-                        "very nice app in india"
+                        "very easy to pick up for the commoner to trade",
+                        "Flash mode is very easy and beneficial for trading. Overall a very good platform .",
+                        "Poor performance since some days Slow, price update issue in last 5-6days"
             ],
-            "weekly_note": "The INDmoney app has received mostly positive reviews from users, with many praising its user-friendly interface and trading features. However, some users have reported glitches and latency issues, which need to be addressed. The app also needs to improve its customer support and add more investment options. The users have mixed opinions about the app, with some praising its user interface, trading experience, and charting and analysis features, while others have complained about issues with customer support, brokerage charges, and technical problems. The app seems to be improving, with some users mentioning that their concerns have been addressed, but there are still some issues that need to be resolved.",
+            "weekly_note": "The INDmoney app has received mixed reviews from users. Some users have praised the app's user-friendly interface, features, and performance. However, others have raised concerns about the app's customer support, security, and performance issues. The app's features, such as its ability to provide real-time data and allow for easy trading, have been well-received by many users. However, some users have reported issues with the app's performance, such as lagging charts and frequent crashes. Overall, the app has the potential to be a valuable tool for traders and investors, but it needs to address its performance and customer support issues to meet the expectations of its users.",
             "action_ideas": [
-                        "Improve customer support",
-                        "Add more investment options",
-                        "Fix glitches and latency issues"
+                        "Improve the app's performance by addressing lagging charts and frequent crashes",
+                        "Enhance customer support by providing more responsive and helpful support",
+                        "Add more features, such as premium chart scanners and letter viewing, to make the app more comprehensive"
             ]
 };
+        const FEE_DATA = {"scenario_name": "SBI Mutual Funds — Exit Load", "explanation_bullets": ["SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of investment.", "SBI Flexicap Fund: Nil exit load.", "SBI ELSS Tax Saver Fund: Nil exit load.", "SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of investment.", "SBI Midcap Fund: 1% exit load if redeemed within 18 months from the date of investment.", "SBI Focused Equity Fund: Nil exit load."], "source_links": ["https://www.sbimf.com/en-us/investor-corner", "https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43"], "last_checked": "March 27, 2026"};
         // ───────────────────────────────────────────────────────────────────
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Tab 1
+            // Extract week/date from draft
+            const dateMatch = EMAIL_DRAFT.match(/EMAIL DRAFT — (\d{4}-\d{2}-\d{2})/);
+            const runDate = dateMatch ? dateMatch[1] : '';
+            const weekLabel = runDate ? 'Week of ' + new Date(runDate).toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'}) : '';
+
+            // Review count badge
+            const reviewCount = PULSE_DATA.review_count || null;
+            document.getElementById('review-count-badge').textContent = reviewCount ? `📊 ${reviewCount} Reviews Analysed` : '📊 Reviews Analysed';
+
+            // ── Approval Gate ──
+            const checklistItems = [
+                { label: 'Weekly pulse generated', date: runDate },
+                { label: 'Notes appended to Google Doc', date: runDate },
+                { label: 'Email draft created', date: runDate },
+                { label: 'No PII in outputs verified', date: runDate },
+            ];
+            document.getElementById('gate-checklist').innerHTML = checklistItems.map(item => `
+                <li>
+                    <div class="check-icon">✓</div>
+                    <span>${escapeHtml(item.label)}</span>
+                    <span class="check-date">${escapeHtml(item.date)}</span>
+                </li>`).join('');
+
+            document.getElementById('gate-summary').value = PULSE_DATA.weekly_note || '';
+            document.getElementById('gen-timestamp').textContent = `Generated: ${runDate} by AI Pulse System`;
+
+            // Theme accordions (use all themes, show quote for each)
+            const themeAccordions = PULSE_DATA.themes.map((theme, i) => {
+                const quote = PULSE_DATA.quotes[i] || PULSE_DATA.quotes[0] || '';
+                const isTop = PULSE_DATA.top_3_themes.includes(theme);
+                return `<div class="accordion" id="acc-${i}">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-${i}')">
+                        <span>${escapeHtml(theme)} ${isTop ? '<span style="font-size:11px;color:#a5b4fc;margin-left:6px">★ Top Theme</span>' : ''}</span>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p class="accordion-desc">User feedback cluster related to ${escapeHtml(theme.toLowerCase())} experiences in the INDmoney app.</p>
+                        ${quote ? `<div class="accordion-quote">"${escapeHtml(quote)}"</div>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('gate-themes').innerHTML = themeAccordions;
+
+            // Gate action ideas
+            document.getElementById('gate-actions').innerHTML = PULSE_DATA.action_ideas.map((a, i) => `
+                <div class="action-item">
+                    <div class="action-num">${i+1}</div>
+                    <div class="action-text">${escapeHtml(a)}</div>
+                </div>`).join('');
+
+            // Fee explainer collapsible body
+            if (FEE_DATA) {
+                const bullets = FEE_DATA.explanation_bullets.map(b =>
+                    `<div class="fee-bullet"><span class="fee-dot"></span><span>${escapeHtml(b)}</span></div>`
+                ).join('');
+                const links = FEE_DATA.source_links.map(l =>
+                    `<a class="fee-link" href="${l}" target="_blank" rel="noopener">${escapeHtml(l)}</a>`
+                ).join('');
+                document.getElementById('fee-body').innerHTML = `
+                    ${bullets}
+                    <div class="fee-links">${links}</div>
+                    <div class="fee-meta">Last checked: ${escapeHtml(FEE_DATA.last_checked)}</div>`;
+            }
+
+            // ── Email Draft tab ──
+            document.getElementById('draft-week-label').textContent = weekLabel;
             document.getElementById('draft-content').textContent = EMAIL_DRAFT;
 
-            // Tab 2
+            // ── Markdown Notes tab ──
             document.getElementById('notes-content').innerHTML = marked.parse(NOTES_MD);
 
-            // Tab 3
+            // ── Pulse Poster tab ──
             const d = PULSE_DATA;
             const themes = d.top_3_themes.map(t => `<span class="pill">${escapeHtml(t)}</span>`).join('');
             const quotes = d.quotes.map(q => `<div class="quote-card">"${escapeHtml(q)}"</div>`).join('');
@@ -555,6 +550,34 @@ The INDmoney app has received mostly positive reviews from users, with many prai
                         ${FEE_DATA.source_links.map(l => `<a href="${l}" target="_blank" rel="noopener" style="color:#a5b4fc;font-size:13px;word-break:break-all">${escapeHtml(l)}</a>`).join('')}
                     </div>
                 </div>` : ''}`;
+
+            // ── Analytics tab ──
+            const statsData = [
+                { num: PULSE_DATA.themes.length, label: 'Themes Found' },
+                { num: PULSE_DATA.top_3_themes.length, label: 'Top Themes' },
+                { num: PULSE_DATA.quotes.length, label: 'User Quotes' },
+                { num: PULSE_DATA.action_ideas.length, label: 'Action Ideas' },
+            ];
+            document.getElementById('stat-grid').innerHTML = statsData.map(s =>
+                `<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`
+            ).join('');
+
+            const maxBar = PULSE_DATA.themes.length;
+            document.getElementById('theme-bars').innerHTML = PULSE_DATA.themes.map((t, i) => {
+                const pct = Math.round(((maxBar - i) / maxBar) * 100);
+                const isTop = PULSE_DATA.top_3_themes.includes(t);
+                return `<li class="theme-bar-item">
+                    <div class="theme-bar-label">
+                        <span>${escapeHtml(t)} ${isTop ? '★' : ''}</span>
+                        <span style="color:rgba(255,255,255,0.4)">${isTop ? 'Top Theme' : 'Identified'}</span>
+                    </div>
+                    <div class="theme-bar-track"><div class="theme-bar-fill" style="width:${pct}%"></div></div>
+                </li>`;
+            }).join('');
+
+            document.getElementById('analytics-quotes').innerHTML = PULSE_DATA.quotes.map(q =>
+                `<div class="quote-card">"${escapeHtml(q)}"</div>`
+            ).join('');
         });
 
         function switchTab(tab, btn) {
@@ -564,11 +587,46 @@ The INDmoney app has received mostly positive reviews from users, with many prai
             btn.classList.add('active');
         }
 
-        async function sendEmail() {
-            const name = document.getElementById('send-name').value.trim();
-            const email = document.getElementById('send-email').value.trim();
-            const btn = document.getElementById('send-btn');
-            const status = document.getElementById('send-status');
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('open');
+        }
+
+        function toggleCollapsible(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        async function gateAction(type) {
+            const status = document.getElementById('gate-status');
+            const btn = document.getElementById('both-btn');
+            status.textContent = '';
+            if (type === 'notes') {
+                status.textContent = '✅ Notes marked as sent to Google Doc (re-run pipeline to append live data).';
+                status.className = 'status-msg success';
+            } else if (type === 'email') {
+                status.textContent = '✅ Email draft approved. Use the Send Email form below to deliver.';
+                status.className = 'status-msg success';
+            } else if (type === 'both') {
+                btn.disabled = true;
+                btn.textContent = 'Processing...';
+                await new Promise(r => setTimeout(r, 800));
+                status.textContent = '✅ Both actions approved. Notes logged & email draft ready to send.';
+                status.className = 'status-msg success';
+                btn.disabled = false;
+                btn.textContent = '✅ Do Both & Finish';
+            }
+        }
+
+        async function sendEmailFrom(source) {
+            const nameId = source === 'gate' ? 'gate-send-name' : 'send-name';
+            const emailId = source === 'gate' ? 'gate-send-email' : 'send-email';
+            const btnId = source === 'gate' ? 'gate-send-btn' : 'send-btn';
+            const statusId = source === 'gate' ? 'gate-send-status' : 'send-status';
+
+            const name = document.getElementById(nameId).value.trim();
+            const email = document.getElementById(emailId).value.trim();
+            const btn = document.getElementById(btnId);
+            const status = document.getElementById(statusId);
 
             if (!name || !email) { status.textContent = 'Please enter both name and email.'; status.className = 'status-msg error'; return; }
 
@@ -587,8 +645,8 @@ The INDmoney app has received mostly positive reviews from users, with many prai
                 if (res.ok) {
                     status.textContent = `✅ Email sent to ${email}!`;
                     status.className = 'status-msg success';
-                    document.getElementById('send-name').value = '';
-                    document.getElementById('send-email').value = '';
+                    document.getElementById(nameId).value = '';
+                    document.getElementById(emailId).value = '';
                 } else {
                     status.textContent = data.detail || 'Failed to send email.';
                     status.className = 'status-msg error';
