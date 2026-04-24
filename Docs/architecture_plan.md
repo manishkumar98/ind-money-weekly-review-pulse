@@ -8,13 +8,13 @@ This document is the single source of truth for the technical architecture of th
 
 A fully automated, 6-phase AI pipeline that:
 1. Scrapes INDmoney app reviews from the Play Store and App Store
-2. Cleans and sanitizes the data
-3. Uses Groq (Llama 3) to extract themes, quotes, action ideas, and an exit load explainer for SBI Mutual Funds
-4. Uses Groq (MCP tool-calling) to draft notes, emails, and append a combined JSON to Google Docs
-5. Sends a styled HTML email via Resend API — includes Exit Load fee explainer section
-6. Updates a public Vercel dashboard and exposes a FastAPI backend on Render
+2. Cleans and sanitizes the data (PII removal, deduplication)
+3. Uses Groq (Llama 3) to extract themes, quotes, action ideas, an exit load explainer for SBI Mutual Funds, **and derives word frequencies, sentiment split, and rating distribution for the analytics dashboard**
+4. Uses Groq (MCP tool-calling) to draft notes, emails, and append a combined JSON to Google Docs — all approval-gated
+5. Sends a styled HTML email via Brevo API — includes Exit Load fee explainer section
+6. Updates a public 8-tab Vercel dashboard with all pipeline outputs and exposes a FastAPI send-email endpoint on Render
 
-The entire pipeline runs every Saturday at 10:00 AM IST via GitHub Actions — zero manual intervention required.
+The entire pipeline runs every Friday at 8:40 PM IST (15:10 UTC) via GitHub Actions — zero manual intervention required.
 
 ---
 
@@ -294,11 +294,18 @@ project_root = _local_root if (_local_root / "Phase5_Email_UI").exists() else _d
 - Glassmorphism UI, animated background blobs
 - Name + email form → POST `/api/subscribe` → success feedback
 
-**`dashboard.html`** — 3-tab weekly pulse viewer
-- Tab 1: Email Draft (plain text)
-- Tab 2: Markdown Report (rendered with `marked.js`)
-- Tab 3: Pulse Poster (themes, quotes, actions, weekly note)
-- Send Email form → POST `https://ind-money-weekly-review-pulse.onrender.com/api/send-email`
+**`dashboard.html`** — 8-tab weekly pulse dashboard (Chart.js + vanilla JS)
+
+| Tab | Content | Data source | Pipeline-fed? |
+|---|---|---|---|
+| 🔒 Approval Gate | Checklist, editable summary, collapsible themes, action buttons, fee explainer toggle | `PULSE_DATA`, `FEE_DATA` | ✅ Yes |
+| 📧 Email Draft | Plain text email draft with Section 1 + Section 2 | `EMAIL_DRAFT` | ✅ Yes |
+| 📝 Markdown Report | Full appended history rendered with `marked.js` | `NOTES_MD` | ✅ Yes |
+| 🖼️ Pulse Poster | Themes, quotes, weekly note, action ideas, fee explainer | `PULSE_DATA`, `FEE_DATA` | ✅ Yes |
+| 📊 Analytics | Stat cards, bar/trend toggle chart (Chart.js), category tracker table with ticket management | `PULSE_DATA` | ✅ Yes |
+| ☁️ Word Cloud | Frequency word cloud, top 20 keywords with bars, upvoted review cards | `KEYWORDS`, `ANALYTICS_META` | ✅ Yes |
+| 🏷️ Categories | Category cards, horizontal distribution chart, sentiment chart, rating distribution chart | `CATEGORIES_DATA`, `ANALYTICS_META` | ✅ Yes |
+| ⚡ Ideation | AI Idea Recommender cards, Bug Reporter (search/select/generate report) | `AI_IDEAS` (from `PULSE_DATA`), `NEGATIVE_REVIEWS` | ✅ Yes |
 
 **Key design decision:** All tab content is **baked directly into `dashboard.html` as JavaScript constants**. No API calls are made to load data. This eliminates CORS issues, Render cold-start timeouts, and any dependency on the backend being awake. The only network call is the Send Email button.
 
@@ -309,10 +316,18 @@ project_root = _local_root if (_local_root / "Phase5_Email_UI").exists() else _d
 
 #### Dashboard Updater (`update_dashboard.py`)
 
-Runs as part of the GitHub Actions pipeline after Phase 4. Reads the three output files and injects them into `dashboard.html` using regex replacement on the JS constant blocks:
-- `EMAIL_DRAFT` ← `Phase3_MCP_Integration/email_draft.txt`
-- `NOTES_MD` ← `Phase3_MCP_Integration/weekly_pulse_notes.md`
-- `PULSE_DATA` ← `Phase2_LLM_Processing/weekly_pulse_output.json`
+Runs as part of the GitHub Actions pipeline after Phase 4. Reads all output files and injects them into `dashboard.html` using regex replacement on JS constant blocks:
+
+| Constant | Source file |
+|---|---|
+| `EMAIL_DRAFT` | `Phase3_MCP_Integration/email_draft.txt` |
+| `NOTES_MD` | `Phase3_MCP_Integration/weekly_pulse_notes.md` |
+| `PULSE_DATA` | `Phase2_LLM_Processing/weekly_pulse_output.json` |
+| `FEE_DATA` | `Phase2_LLM_Processing/fee_explanation.json` |
+| `KEYWORDS` | `Phase2_LLM_Processing/analytics_data.json` → `keywords` |
+| `CATEGORIES_DATA` | `Phase2_LLM_Processing/analytics_data.json` → `categories` |
+| `NEGATIVE_REVIEWS` | `Phase2_LLM_Processing/analytics_data.json` → `negative_reviews` |
+| `ANALYTICS_META` | `Phase2_LLM_Processing/analytics_data.json` → `review_count`, `sentiment`, `rating_dist` |
 
 After updating, GitHub Actions commits and pushes → Vercel auto-deploys.
 

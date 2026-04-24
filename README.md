@@ -109,6 +109,25 @@ Writes `email_draft.txt` with:
 
 ---
 
+## Dashboard Tabs
+
+The live dashboard at https://ind-money-weekly-review-pulse.vercel.app/dashboard.html has 8 tabs, all fed by the weekly pipeline:
+
+| Tab | What it shows | Pipeline source |
+|---|---|---|
+| 🔒 Approval Gate | Checklist, editable summary, collapsible theme accordions, fee explainer toggle, No PII badge, action buttons | `weekly_pulse_output.json`, `fee_explanation.json` |
+| 📧 Email Draft | Approved plain-text email (Section 1: Pulse + Section 2: Fee Explainer) | `email_draft.txt` |
+| 📝 Markdown Report | Full weekly notes history rendered with `marked.js` | `weekly_pulse_notes.md` |
+| 🖼️ Pulse Poster | Visual card — themes, user quotes, summary, action ideas, exit load section | `weekly_pulse_output.json`, `fee_explanation.json` |
+| 📊 Analytics | Stat cards, week-wise bar/trend chart (Chart.js), category tracker table with ticket management | `weekly_pulse_output.json` |
+| ☁️ Word Cloud | Frequency-sized word cloud, top 20 keyword bars, top upvoted review cards | `analytics_data.json` |
+| 🏷️ Categories | Category distribution chart, sentiment chart, rating distribution chart | `analytics_data.json` |
+| ⚡ Ideation | AI Idea Recommender cards (HIGH/MEDIUM impact), Bug Reporter with search + generate structured report | `analytics_data.json`, `weekly_pulse_output.json` |
+
+All tab data is **baked into `dashboard.html` as JS constants** by `update_dashboard.py` — no runtime API calls needed to render the dashboard.
+
+---
+
 ## Architecture Overview
 
 ```
@@ -294,7 +313,7 @@ Output saved to: `Phase2_LLM_Processing/fee_explanation.json`
 | MCP | `mcp` SDK v1.26.0 — `FastMCP`, `stdio_client` | Google Doc appender tool |
 | Email delivery | Brevo API (HTTP) | Send HTML pulse emails to any address |
 | Backend API | FastAPI + Uvicorn (Docker) | Send-email endpoint |
-| Frontend | Vanilla HTML/CSS/JS | Subscribe page + 3-tab dashboard |
+| Frontend | Vanilla HTML/CSS/JS + Chart.js | Subscribe page + 8-tab dashboard |
 | Hosting (frontend) | Vercel | Static site, auto-deploys on push |
 | Hosting (backend) | Render (Docker) | FastAPI container |
 | Scheduler | GitHub Actions (cron) | Weekly pipeline trigger |
@@ -311,9 +330,10 @@ ind-money-weekly-pulse-view/
 │   └── sanitized_indmoney_reviews.csv
 │
 ├── Phase2_LLM_Processing/
-│   ├── phase2_llm_processing.py      # Groq API analysis + fee explainer
+│   ├── phase2_llm_processing.py      # Groq API analysis + fee explainer + analytics derivation
 │   ├── weekly_pulse_output.json      # themes, quotes, actions
-│   └── fee_explanation.json          # exit load bullets, sources, last_checked
+│   ├── fee_explanation.json          # exit load bullets, sources, last_checked
+│   └── analytics_data.json           # word frequencies, sentiment, rating dist, categories
 │
 ├── Phase3_MCP_Integration/
 │   ├── phase3_mcp_orchestration.py   # Groq tool-calling + approval gates
@@ -330,10 +350,10 @@ ind-money-weekly-pulse-view/
 │   └── poster.html                   # Generated email poster (local preview)
 │
 ├── Phase6_Web_App/
-│   ├── backend/app.py                # FastAPI backend (Render)
-│   ├── frontend/dashboard.html       # 3-tab pulse dashboard (Vercel)
+│   ├── backend/app.py                # FastAPI backend — /api/send-email (Render)
+│   ├── frontend/dashboard.html       # 8-tab pulse dashboard (Vercel, Chart.js)
 │   ├── frontend/index.html           # Subscribe page (Vercel)
-│   └── update_dashboard.py           # Injects weekly data into dashboard.html
+│   └── update_dashboard.py           # Injects all pipeline outputs into dashboard.html
 │
 ├── Docs/
 │   ├── architecture_plan.md          # Full technical architecture

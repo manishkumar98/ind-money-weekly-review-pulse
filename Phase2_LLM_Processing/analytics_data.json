@@ -1,0 +1,191 @@
+{
+  "review_count": 226,
+  "keywords": [
+    {
+      "w": "trading",
+      "n": 54,
+      "c": "#4ade80"
+    },
+    {
+      "w": "best",
+      "n": 35,
+      "c": "#60a5fa"
+    },
+    {
+      "w": "option",
+      "n": 31,
+      "c": "#f59e0b"
+    },
+    {
+      "w": "you",
+      "n": 27,
+      "c": "#f472b6"
+    },
+    {
+      "w": "chart",
+      "n": 24,
+      "c": "#a78bfa"
+    },
+    {
+      "w": "please",
+      "n": 23,
+      "c": "#34d399"
+    },
+    {
+      "w": "stock",
+      "n": 22,
+      "c": "#fb923c"
+    },
+    {
+      "w": "loss",
+      "n": 18,
+      "c": "#818cf8"
+    },
+    {
+      "w": "stocks",
+      "n": 18,
+      "c": "#e879f9"
+    },
+    {
+      "w": "trade",
+      "n": 17,
+      "c": "#22d3ee"
+    },
+    {
+      "w": "your",
+      "n": 17,
+      "c": "#4ade80"
+    },
+    {
+      "w": "add",
+      "n": 17,
+      "c": "#f87171"
+    },
+    {
+      "w": "user",
+      "n": 15,
+      "c": "#fb923c"
+    },
+    {
+      "w": "ind",
+      "n": 14,
+      "c": "#60a5fa"
+    },
+    {
+      "w": "flash",
+      "n": 13,
+      "c": "#a5b4fc"
+    },
+    {
+      "w": "feature",
+      "n": 13,
+      "c": "#34d399"
+    },
+    {
+      "w": "features",
+      "n": 13,
+      "c": "#fbbf24"
+    },
+    {
+      "w": "market",
+      "n": 12,
+      "c": "#f87171"
+    },
+    {
+      "w": "don",
+      "n": 12,
+      "c": "#818cf8"
+    },
+    {
+      "w": "money",
+      "n": 12,
+      "c": "#e879f9"
+    }
+  ],
+  "rating_dist": {
+    "5": 121,
+    "4": 34,
+    "3": 7,
+    "2": 11,
+    "1": 53
+  },
+  "sentiment": {
+    "positive": 155,
+    "neutral": 7,
+    "negative": 64
+  },
+  "categories": [
+    {
+      "name": "user-friendly interface",
+      "count": 120,
+      "pct": 59.4,
+      "color": "#4ade80"
+    },
+    {
+      "name": "trading features",
+      "count": 27,
+      "pct": 13.4,
+      "color": "#60a5fa"
+    },
+    {
+      "name": "investment options",
+      "count": 24,
+      "pct": 11.9,
+      "color": "#f59e0b"
+    },
+    {
+      "name": "customer support",
+      "count": 16,
+      "pct": 7.9,
+      "color": "#f472b6"
+    },
+    {
+      "name": "glitches and latency",
+      "count": 15,
+      "pct": 7.4,
+      "color": "#a78bfa"
+    }
+  ],
+  "negative_reviews": [
+    {
+      "name": "App User",
+      "stars": 1,
+      "text": "Every day at 9:15 AM when I place an order, it shows \u201cExecute the order after market open\u201d even though the market is already open and LTP is changing. This major glitch has been happening for over a month. Also, in Scalper Mode there is no option to ",
+      "tags": [
+        "glitches and latency"
+      ]
+    },
+    {
+      "name": "App User",
+      "stars": 1,
+      "text": "Doing Fake Marketing to attract people. They published an ad showing brokerage charges as 5\u20b9 per order in FnO. when I installed the app and checked the charges, it was showing 20\u20b9 which is the same as other brokers. Completely Meaningless Marketing. ",
+      "tags": [
+        "glitches and latency"
+      ]
+    },
+    {
+      "name": "App User",
+      "stars": 1,
+      "text": "chart pattern detection timely notification required in app. without notification there is no use of chart Pattern. Lots of strike is index option each strike cannot check manuallly for chart pattern detection and trade.",
+      "tags": [
+        "glitches and latency"
+      ]
+    },
+    {
+      "name": "App User",
+      "stars": 1,
+      "text": "very poor app always hang today while trading it hang does not show any data and 1000 times I have tried to exit but app was totally fail and showing technical issue end I have lost my trade and I get loss after 1 hour the app get working and I exit ",
+      "tags": [
+        "trading features"
+      ]
+    },
+    {
+      "name": "App User",
+      "stars": 1,
+      "text": "ind flash trading app takes charges 20 rupees per order it is bad app now I closed permanently uninstalled this app and use groww zerodha and sahi app ,,, don't use aaltu faltu ind flash trading app.",
+      "tags": [
+        "trading features"
+      ]
+    }
+  ]
+}

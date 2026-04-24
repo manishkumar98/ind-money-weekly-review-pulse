@@ -10,15 +10,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DASHBOARD = Path(__file__).resolve().parent / "frontend" / "dashboard.html"
 
-draft_path = ROOT / "Phase3_MCP_Integration" / "email_draft.txt"
-notes_path = ROOT / "Phase3_MCP_Integration" / "weekly_pulse_notes.md"
-json_path  = ROOT / "Phase2_LLM_Processing"  / "weekly_pulse_output.json"
-fee_path   = ROOT / "Phase2_LLM_Processing"  / "fee_explanation.json"
+draft_path     = ROOT / "Phase3_MCP_Integration" / "email_draft.txt"
+notes_path     = ROOT / "Phase3_MCP_Integration" / "weekly_pulse_notes.md"
+json_path      = ROOT / "Phase2_LLM_Processing"  / "weekly_pulse_output.json"
+fee_path       = ROOT / "Phase2_LLM_Processing"  / "fee_explanation.json"
+analytics_path = ROOT / "Phase2_LLM_Processing"  / "analytics_data.json"
 
-draft  = draft_path.read_text(encoding="utf-8").strip()
-notes  = notes_path.read_text(encoding="utf-8").strip()
-pulse  = json.loads(json_path.read_text(encoding="utf-8"))
-fee    = json.loads(fee_path.read_text(encoding="utf-8")) if fee_path.exists() else None
+draft     = draft_path.read_text(encoding="utf-8").strip()
+notes     = notes_path.read_text(encoding="utf-8").strip()
+pulse     = json.loads(json_path.read_text(encoding="utf-8"))
+fee       = json.loads(fee_path.read_text(encoding="utf-8")) if fee_path.exists() else None
+analytics = json.loads(analytics_path.read_text(encoding="utf-8")) if analytics_path.exists() else None
 
 # Escape backticks so they don't break JS template literals
 def escape_js(text):
@@ -67,6 +69,25 @@ html = re.sub(
     f'\\1{week_str}\\2',
     html
 )
+
+# Replace analytics constants from analytics_data.json
+if analytics:
+    kw_js   = json.dumps(analytics['keywords'], ensure_ascii=False)
+    cat_js  = json.dumps(analytics['categories'], ensure_ascii=False)
+    neg_js  = json.dumps(analytics['negative_reviews'], ensure_ascii=False)
+    meta    = {'review_count': analytics['review_count'],
+               'sentiment': analytics['sentiment'],
+               'rating_dist': analytics['rating_dist']}
+    meta_js = json.dumps(meta, ensure_ascii=False)
+
+    html = re.sub(r"const KEYWORDS = \[[\s\S]*?\];",
+                  lambda _: f"const KEYWORDS = {kw_js};", html)
+    html = re.sub(r"const CATEGORIES_DATA = \[[\s\S]*?\];",
+                  lambda _: f"const CATEGORIES_DATA = {cat_js};", html)
+    html = re.sub(r"const NEGATIVE_REVIEWS = \[[\s\S]*?\];",
+                  lambda _: f"const NEGATIVE_REVIEWS = {neg_js};", html)
+    html = re.sub(r"const ANALYTICS_META = \{[^\n]*\};",
+                  lambda _: f"const ANALYTICS_META = {meta_js};", html)
 
 DASHBOARD.write_text(html, encoding="utf-8")
 print(f"✅ dashboard.html updated with latest pulse data ({week_str})")
