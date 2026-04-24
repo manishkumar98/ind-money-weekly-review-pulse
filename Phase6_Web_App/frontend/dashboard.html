@@ -176,6 +176,80 @@
         .add-ticket-input { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; padding: 6px 10px; font-size: 12px; width: 110px; font-family: 'Outfit', sans-serif; outline: none; }
         .add-ticket-input::placeholder { color: rgba(255,255,255,0.2); }
         .add-ticket-btn { width: 28px; height: 28px; border-radius: 8px; border: none; background: linear-gradient(135deg,#4361ee,#3a0ca3); color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* Word Cloud */
+        .wc-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+        .wc-stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px 20px; }
+        .wc-stat-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+        .wc-stat-num { font-size: 32px; font-weight: 700; color: #fff; }
+        .wc-cloud { min-height: 180px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: center; padding: 20px 0; }
+        .wc-word { cursor: pointer; font-weight: 600; transition: opacity 0.2s; line-height: 1.2; }
+        .wc-word:hover { opacity: 0.7; text-decoration: underline; }
+        .kw-list { list-style: none; }
+        .kw-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .kw-item:last-child { border-bottom: none; }
+        .kw-rank { font-size: 12px; color: rgba(255,255,255,0.3); width: 20px; flex-shrink: 0; }
+        .kw-word { font-size: 14px; font-weight: 600; color: #fff; width: 90px; flex-shrink: 0; }
+        .kw-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
+        .kw-bar-fill { height: 100%; border-radius: 10px; }
+        .kw-count { font-size: 13px; color: rgba(255,255,255,0.5); width: 36px; text-align: right; flex-shrink: 0; }
+        .review-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+        .rc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .rc-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(67,97,238,0.3); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #a5b4fc; flex-shrink: 0; }
+        .rc-name { font-size: 14px; font-weight: 700; color: #fff; }
+        .rc-meta { font-size: 12px; color: rgba(255,255,255,0.35); }
+        .rc-stars { margin-left: auto; display: flex; gap: 2px; }
+        .star-filled { color: #f59e0b; font-size: 13px; }
+        .star-empty { color: rgba(255,255,255,0.2); font-size: 13px; }
+        .rc-body { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+        .rc-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .rc-tag { background: rgba(67,97,238,0.2); border: 1px solid rgba(67,97,238,0.3); color: #a5b4fc; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .rc-footer { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.3); }
+        .sentiment-chip { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+        .sent-Positive { background: rgba(74,222,128,0.15); color: #4ade80; }
+        .sent-Negative { background: rgba(239,68,68,0.15); color: #f87171; }
+        .sent-Neutral  { background: rgba(250,204,21,0.15); color: #fbbf24; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width:640px){ .two-col{ grid-template-columns:1fr; } .wc-stats{ grid-template-columns:1fr 1fr; } }
+
+        /* Categories */
+        .cat-cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 14px; margin-bottom: 24px; }
+        .cat-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; }
+        .cat-card-icon { font-size: 22px; margin-bottom: 10px; }
+        .cat-card-name { font-size: 15px; font-weight: 700; color: #fff; }
+        .cat-card-count { font-size: 28px; font-weight: 700; color: #a5b4fc; margin: 6px 0 4px; }
+        .cat-card-sub { font-size: 12px; color: rgba(255,255,255,0.35); }
+        .cat-pct-bar { height: 4px; border-radius: 10px; margin-top: 10px; }
+        .cat-stat-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .cat-stat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .cat-stat-name { flex: 1; font-size: 14px; color: rgba(255,255,255,0.8); }
+        .cat-stat-count { font-size: 14px; font-weight: 600; color: #fff; }
+        .cat-stat-pct { font-size: 12px; color: rgba(255,255,255,0.35); width: 40px; text-align: right; }
+        .cat-stat-bar { height: 3px; border-radius: 10px; margin-top: 3px; }
+
+        /* Ideation */
+        .idea-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; height: 100%; }
+        .idea-panel-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .idea-panel-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+        .idea-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+        .idea-card-title { font-size: 14px; font-weight: 700; color: #a5b4fc; margin-bottom: 6px; }
+        .idea-card-body { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+        .idea-card-impact { display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
+        .impact-High { background: rgba(74,222,128,0.15); color: #4ade80; }
+        .impact-Medium { background: rgba(250,204,21,0.15); color: #fbbf24; }
+        .bug-search { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: 'Outfit', sans-serif; outline: none; margin-bottom: 14px; }
+        .bug-search::placeholder { color: rgba(255,255,255,0.3); }
+        .bug-review-list { max-height: 340px; overflow-y: auto; }
+        .bug-review-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 8px; cursor: pointer; transition: background 0.2s; }
+        .bug-review-item:hover { background: rgba(255,255,255,0.05); }
+        .bug-review-item.selected { background: rgba(67,97,238,0.15); border-color: rgba(67,97,238,0.4); }
+        .bug-cb { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid rgba(255,255,255,0.3); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+        .bug-cb.checked { background: #4361ee; border-color: #4361ee; }
+        .bug-rev-name { font-size: 13px; font-weight: 700; color: #fff; }
+        .bug-rev-text { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 2px; line-height: 1.5; }
+        .gen-report-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg,#ef4444,#b91c1c); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 14px; font-family:'Outfit',sans-serif; transition: opacity 0.2s; }
+        .gen-report-btn:hover { opacity: 0.85; }
+        .select-all-btn { float: right; font-size: 12px; font-weight: 600; color: #a5b4fc; background: none; border: none; cursor: pointer; padding: 0; font-family:'Outfit',sans-serif; }
     </style>
 </head>
 <body>
@@ -199,6 +273,9 @@
             <button class="tab-btn" onclick="switchTab('notes', this)">📝 Markdown Report</button>
             <button class="tab-btn" onclick="switchTab('poster', this)">🖼️ Pulse Poster</button>
             <button class="tab-btn" onclick="switchTab('analytics', this)">📊 Analytics</button>
+            <button class="tab-btn" onclick="switchTab('wordcloud', this)">☁️ Word Cloud</button>
+            <button class="tab-btn" onclick="switchTab('categories', this)">🏷️ Categories</button>
+            <button class="tab-btn" onclick="switchTab('ideation', this)">⚡ Ideation</button>
         </div>
 
         <!-- Tab 1: Approval Gate -->
@@ -326,6 +403,87 @@
                         <tbody id="tracker-body"></tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+        <!-- Tab 6: Word Cloud -->
+        <div id="tab-wordcloud" class="tab-content">
+            <div class="glass-card">
+                <div class="wc-stats" id="wc-stats"></div>
+                <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px">Word Cloud</div>
+                <div class="wc-cloud" id="wc-cloud"></div>
+                <p style="text-align:center;font-size:12px;color:rgba(255,255,255,0.25);margin-top:14px">Click any word to filter reviews containing it.</p>
+            </div>
+            <div class="two-col">
+                <div class="glass-card">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                        <div style="font-size:16px;font-weight:700;color:#fff">Top Keywords</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.4)" id="kw-count-label"></div>
+                    </div>
+                    <ul class="kw-list" id="kw-list"></ul>
+                </div>
+                <div class="glass-card">
+                    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">Top Upvoted Reviews</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px" id="upvote-count-label"></div>
+                    <div id="upvoted-reviews"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 7: Categories -->
+        <div id="tab-categories" class="tab-content">
+            <div class="cat-cards" id="cat-cards"></div>
+            <div class="two-col">
+                <div class="glass-card">
+                    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">Category Distribution</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:16px">Horizontal view of review volumes</div>
+                    <div style="position:relative;height:320px"><canvas id="catDistChart"></canvas></div>
+                </div>
+                <div class="glass-card">
+                    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:16px">Category Stats</div>
+                    <div id="cat-stats-list"></div>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="glass-card">
+                    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">Sentiment Analysis</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:16px">Positive / Neutral / Negative split</div>
+                    <div style="position:relative;height:220px"><canvas id="sentimentChart"></canvas></div>
+                </div>
+                <div class="glass-card">
+                    <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">Rating Distribution</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:16px">Reviews by star rating</div>
+                    <div style="position:relative;height:220px"><canvas id="ratingChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 8: Ideation -->
+        <div id="tab-ideation" class="tab-content">
+            <div style="margin-bottom:20px">
+                <div style="font-size:24px;font-weight:700;color:#fff">⚡ Ideation</div>
+                <div style="font-size:14px;color:rgba(255,255,255,0.5);margin-top:4px">AI-powered product ideas, bug reports, and reply generation from user reviews</div>
+            </div>
+            <div class="two-col">
+                <div class="idea-panel">
+                    <div class="idea-panel-title">💡 AI Idea Recommender</div>
+                    <div class="idea-panel-sub">Analyses negative reviews to suggest product improvements</div>
+                    <div id="idea-list"></div>
+                </div>
+                <div class="idea-panel">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                        <div class="idea-panel-title">🐛 Bug Reporter</div>
+                        <button class="select-all-btn" onclick="bugSelectAll()">Select All</button>
+                    </div>
+                    <div class="idea-panel-sub">Select reviews to generate structured bug reports</div>
+                    <input class="bug-search" placeholder="🔍 Search negative reviews..." oninput="filterBugReviews(this.value)" />
+                    <div class="bug-review-list" id="bug-review-list"></div>
+                    <button class="gen-report-btn" id="gen-report-btn" onclick="generateBugReport()">Generate Report from <span id="selected-count">0</span> Reviews</button>
+                </div>
+            </div>
+            <div class="glass-card" id="bug-report-output" style="display:none;margin-top:20px">
+                <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:14px">🐛 Generated Bug Report</div>
+                <div id="bug-report-content" style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.8;white-space:pre-wrap;font-family:monospace;background:rgba(0,0,0,0.2);border-radius:10px;padding:16px"></div>
             </div>
         </div>
     </div>
@@ -682,6 +840,12 @@ The INDmoney app has received mixed reviews from users. Some users have praised 
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
             btn.classList.add('active');
+            if (!_tabInited[tab]) {
+                _tabInited[tab] = true;
+                if (tab === 'wordcloud') initWordCloud();
+                if (tab === 'categories') initCategories();
+                if (tab === 'ideation') initIdeation();
+            }
         }
 
         function toggleAccordion(id) {
@@ -756,6 +920,223 @@ The INDmoney app has received mixed reviews from users. Some users have praised 
                 btn.textContent = 'Send Email 🚀';
             }
         }
+
+        // ── Word Cloud data ──────────────────────────────────────────────────
+        const KEYWORDS = [
+            {w:'good',n:373,c:'#4ade80'},{w:'app',n:198,c:'#60a5fa'},{w:'nice',n:86,c:'#f59e0b'},
+            {w:'best',n:78,c:'#f472b6'},{w:'trading',n:57,c:'#a78bfa'},{w:'easy',n:51,c:'#34d399'},
+            {w:'option',n:34,c:'#fb923c'},{w:'excellent',n:30,c:'#818cf8'},{w:'application',n:28,c:'#e879f9'},
+            {w:'great',n:25,c:'#22d3ee'},{w:'experience',n:24,c:'#4ade80'},{w:'update',n:23,c:'#f87171'},
+            {w:'worst',n:23,c:'#fb923c'},{w:'customer',n:23,c:'#60a5fa'},{w:'user',n:22,c:'#a5b4fc'},
+            {w:'platform',n:22,c:'#34d399'},{w:'service',n:22,c:'#fbbf24'},{w:'bad',n:19,c:'#f87171'},
+            {w:'interface',n:18,c:'#818cf8'},{w:'charges',n:17,c:'#e879f9'}
+        ];
+        const UPVOTED_REVIEWS = [
+            {name:'Manish Mathur',date:'21 Apr 2026',stars:4,sentiment:'Neutral',text:'easy to use and understand UI DESIGN, FAST & RELIABLE',tags:['UI/UX','Performance'],upvotes:141},
+            {name:'App User',date:'28 Mar 2026',stars:1,sentiment:'Negative',text:'On listing day the stock was not visible on the app for around 10 minutes after it went live on the exchange. Available on other brokerages during the same time.',tags:['Investment & Trading','Performance'],upvotes:828},
+            {name:'App User',date:'30 Mar 2026',stars:1,sentiment:'Neutral',text:'I have many reasons for not choosing INDmoney: 1. Brokerage on equity delivery. 2. Worst customer and product support. 3. Very less new feature updates.',tags:['Customer Support','Features'],upvotes:746},
+        ];
+
+        // ── Category data ─────────────────────────────────────────────────────
+        const CATEGORIES_DATA = [
+            {name:'General Praise',count:120,pct:12.0,color:'#4ade80'},
+            {name:'UI/UX',count:27,pct:2.7,color:'#60a5fa'},
+            {name:'Performance',count:24,pct:2.4,color:'#f59e0b'},
+            {name:'Investment & Trading',count:16,pct:1.6,color:'#f472b6'},
+            {name:'Transaction Issues',count:15,pct:1.5,color:'#a78bfa'},
+            {name:'Feature Request',count:13,pct:1.3,color:'#34d399'},
+            {name:'Customer Support',count:8,pct:0.8,color:'#fb923c'},
+            {name:'Payments',count:6,pct:0.6,color:'#fbbf24'},
+            {name:'App Crash',count:4,pct:0.4,color:'#f87171'},
+            {name:'Charges & Fees',count:3,pct:0.3,color:'#e879f9'},
+        ];
+
+        // ── Ideation data ─────────────────────────────────────────────────────
+        const AI_IDEAS = [
+            {title:'Fix Chart Lag in Flash Mode',body:'Multiple users report lagging option charts and missing candlestick data during high-volatility sessions. Prioritise rendering optimisation for Flash Mode.',impact:'High'},
+            {title:'Improve Customer Support SLA',body:'Reviews frequently cite unresolved tickets closed without solution. Implement visible SLA timers and escalation paths for recurring issues.',impact:'High'},
+            {title:'Add Trailing Stop-Loss Feature',body:'Power traders explicitly request trailing stop-loss orders. This is a standard feature on competing platforms and would reduce churn.',impact:'Medium'},
+            {title:'Mutual Funds SIP Reminders',body:'Users want push notifications for SIP execution dates and confirmation of investment. Easy win for engagement and trust.',impact:'Medium'},
+        ];
+        const NEGATIVE_REVIEWS = [
+            {name:'App User',stars:1,text:'Poor performance since some days. Slow, price update issue in last 5-6 days.',tags:['Performance']},
+            {name:'App User',stars:1,text:'INDmoney Platform Bahut Achha hai lekin customer support achha nhi hai. Ticket closed without resolution.',tags:['Customer Support']},
+            {name:'App User',stars:2,text:'Charts lag badly in Flash mode. Missing option chain data during peak hours.',tags:['Performance','Features']},
+            {name:'App User',stars:1,text:'Brokerage charges are very high compared to competitors. No transparency on fee breakup.',tags:['Charges & Fees']},
+            {name:'App User',stars:1,text:'App crashes frequently when opening the portfolio section. Very frustrating.',tags:['App Crash']},
+        ];
+
+        let _bugSelected = new Set();
+
+        function initWordCloud() {
+            document.getElementById('wc-stats').innerHTML = [
+                {label:'REVIEWS ANALYZED',num:'1,000',icon:'📄'},
+                {label:'TOTAL WORDS',num:'3,694',icon:'#'},
+                {label:'UNIQUE WORDS',num:'1,273',icon:'🌐'},
+            ].map(s => `<div class="wc-stat">
+                <div class="wc-stat-label">${s.label}</div>
+                <div class="wc-stat-num">${s.num}</div>
+            </div>`).join('');
+
+            const max = KEYWORDS[0].n;
+            document.getElementById('wc-cloud').innerHTML = KEYWORDS.map(k => {
+                const size = 13 + Math.round((k.n / max) * 38);
+                return `<span class="wc-word" style="font-size:${size}px;color:${k.c}" title="${k.n} occurrences">${k.w}</span>`;
+            }).join('');
+
+            document.getElementById('kw-count-label').textContent = `Show All (${KEYWORDS.length})`;
+            document.getElementById('kw-list').innerHTML = KEYWORDS.map((k,i) => `
+                <li class="kw-item">
+                    <span class="kw-rank">${i+1}</span>
+                    <span class="kw-word">${k.w}</span>
+                    <div class="kw-bar-track"><div class="kw-bar-fill" style="width:${Math.round(k.n/max*100)}%;background:${k.c}"></div></div>
+                    <span class="kw-count">${k.n}</span>
+                </li>`).join('');
+
+            document.getElementById('upvote-count-label').textContent = `${UPVOTED_REVIEWS.length} reviews`;
+            document.getElementById('upvoted-reviews').innerHTML = UPVOTED_REVIEWS.map(r => {
+                const stars = '★'.repeat(r.stars) + '☆'.repeat(5-r.stars);
+                const tags = r.tags.map(t=>`<span class="rc-tag">${t}</span>`).join('');
+                return `<div class="review-card">
+                    <div class="rc-header">
+                        <div class="rc-avatar">${r.name[0]}</div>
+                        <div><div class="rc-name">${escapeHtml(r.name)}</div><div class="rc-meta">Android · ${r.date}</div></div>
+                        <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+                            <span style="color:${r.stars>=4?'#f59e0b':'#f87171'}">${stars}</span>
+                            <span class="sentiment-chip sent-${r.sentiment}">${r.sentiment}</span>
+                        </div>
+                    </div>
+                    <div class="rc-body">${escapeHtml(r.text)}</div>
+                    <div class="rc-tags">${tags}</div>
+                    <div class="rc-footer"><span>👍 ${r.upvotes}</span></div>
+                </div>`;
+            }).join('');
+        }
+
+        function initCategories() {
+            const top3 = CATEGORIES_DATA.slice(0,3);
+            const icons = ['👍','🖥️','⚡'];
+            document.getElementById('cat-cards').innerHTML = top3.map((c,i) => `
+                <div class="cat-card">
+                    <div class="cat-card-icon">${icons[i]}</div>
+                    <div class="cat-card-name">${escapeHtml(c.name)}</div>
+                    <div class="cat-card-count">${c.count}</div>
+                    <div class="cat-card-sub">reviews — ${c.pct}%</div>
+                    <div class="cat-pct-bar" style="background:${c.color};width:${Math.min(c.pct*8,100)}%"></div>
+                </div>`).join('');
+
+            const catCtx = document.getElementById('catDistChart').getContext('2d');
+            new Chart(catCtx,{type:'bar',data:{
+                labels: CATEGORIES_DATA.map(c=>c.name),
+                datasets:[{label:'Reviews',data:CATEGORIES_DATA.map(c=>c.count),
+                    backgroundColor:CATEGORIES_DATA.map(c=>c.color+'cc'),
+                    borderColor:CATEGORIES_DATA.map(c=>c.color),
+                    borderWidth:1,borderRadius:5}]
+            },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+                plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(0,0,0,0.75)',bodyFont:{family:'Outfit'}}},
+                scales:{x:{ticks:{color:'rgba(255,255,255,0.5)',font:{family:'Outfit'}},grid:{color:'rgba(255,255,255,0.05)'}},
+                        y:{ticks:{color:'rgba(255,255,255,0.7)',font:{family:'Outfit',size:11}},grid:{display:false}}}}});
+
+            const totalCat = CATEGORIES_DATA.reduce((s,c)=>s+c.count,0);
+            document.getElementById('cat-stats-list').innerHTML = CATEGORIES_DATA.map(c => `
+                <div class="cat-stat-row">
+                    <div class="cat-stat-dot" style="background:${c.color}"></div>
+                    <div><div class="cat-stat-name">${escapeHtml(c.name)}</div>
+                    <div class="cat-stat-bar" style="background:${c.color};width:${Math.round(c.count/CATEGORIES_DATA[0].count*120)}px"></div></div>
+                    <div class="cat-stat-count">${c.count}</div>
+                    <div class="cat-stat-pct">${c.pct}%</div>
+                </div>`).join('');
+
+            const sentCtx = document.getElementById('sentimentChart').getContext('2d');
+            new Chart(sentCtx,{type:'bar',data:{
+                labels:['Positive','Neutral','Negative'],
+                datasets:[{data:[650,200,150],backgroundColor:['#4ade8099','#fbbf2499','#f8717199'],borderColor:['#4ade80','#fbbf24','#f87171'],borderWidth:2,borderRadius:8}]
+            },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+                scales:{x:{ticks:{color:'rgba(255,255,255,0.6)',font:{family:'Outfit'}},grid:{display:false}},
+                        y:{ticks:{color:'rgba(255,255,255,0.4)',font:{family:'Outfit'}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+
+            const ratingCtx = document.getElementById('ratingChart').getContext('2d');
+            new Chart(ratingCtx,{type:'bar',data:{
+                labels:['5★','4★','3★','2★','1★'],
+                datasets:[{data:[700,50,40,30,180],backgroundColor:['#4ade8099','#4ade8099','#fbbf2499','#fb923c99','#f8717199'],borderColor:['#4ade80','#4ade80','#fbbf24','#fb923c','#f87171'],borderWidth:2,borderRadius:8}]
+            },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+                scales:{x:{ticks:{color:'rgba(255,255,255,0.6)',font:{family:'Outfit'}},grid:{display:false}},
+                        y:{ticks:{color:'rgba(255,255,255,0.4)',font:{family:'Outfit'}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+        }
+
+        function initIdeation() {
+            document.getElementById('idea-list').innerHTML = AI_IDEAS.map(idea => `
+                <div class="idea-card">
+                    <div class="idea-card-title">${escapeHtml(idea.title)}</div>
+                    <div class="idea-card-body">${escapeHtml(idea.body)}</div>
+                    <span class="idea-card-impact impact-${idea.impact}">${idea.impact} Impact</span>
+                </div>`).join('');
+
+            renderBugList(NEGATIVE_REVIEWS);
+        }
+
+        function renderBugList(reviews) {
+            document.getElementById('bug-review-list').innerHTML = reviews.map((r,i) => {
+                const isSelected = _bugSelected.has(i);
+                const stars = '★'.repeat(r.stars)+'☆'.repeat(5-r.stars);
+                return `<div class="bug-review-item${isSelected?' selected':''}" onclick="toggleBugReview(${i},this)">
+                    <div class="bug-cb${isSelected?' checked':''}">${isSelected?'✓':''}</div>
+                    <div>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <span class="bug-rev-name">${escapeHtml(r.name)}</span>
+                            <span style="color:#f59e0b;font-size:11px">${stars}</span>
+                        </div>
+                        <div class="bug-rev-text">${escapeHtml(r.text)}</div>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('selected-count').textContent = _bugSelected.size;
+        }
+
+        function toggleBugReview(idx, el) {
+            if (_bugSelected.has(idx)) _bugSelected.delete(idx); else _bugSelected.add(idx);
+            el.classList.toggle('selected');
+            el.querySelector('.bug-cb').classList.toggle('checked');
+            el.querySelector('.bug-cb').textContent = _bugSelected.has(idx)?'✓':'';
+            document.getElementById('selected-count').textContent = _bugSelected.size;
+        }
+
+        function bugSelectAll() {
+            NEGATIVE_REVIEWS.forEach((_,i)=>_bugSelected.add(i));
+            renderBugList(NEGATIVE_REVIEWS);
+        }
+
+        function filterBugReviews(query) {
+            const filtered = NEGATIVE_REVIEWS.filter(r=>r.text.toLowerCase().includes(query.toLowerCase())||r.name.toLowerCase().includes(query.toLowerCase()));
+            renderBugList(filtered);
+        }
+
+        function generateBugReport() {
+            if (_bugSelected.size === 0) return;
+            const selected = [..._bugSelected].map(i=>NEGATIVE_REVIEWS[i]);
+            const report = `BUG REPORT — Generated ${new Date().toLocaleDateString('en-IN')}
+${'='.repeat(60)}
+
+Total Reviews Selected: ${selected.length}
+Generated by: INDmoney AI Pulse System
+
+${selected.map((r,i)=>`ISSUE #${i+1}
+  Reporter : ${r.name}
+  Rating   : ${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}
+  Tags     : ${r.tags.join(', ')}
+  Feedback : ${r.text}
+  Priority : ${r.stars === 1 ? 'HIGH' : 'MEDIUM'}
+`).join('\n')}
+${'='.repeat(60)}
+[Pending triage and ticket assignment]`;
+            document.getElementById('bug-report-content').textContent = report;
+            document.getElementById('bug-report-output').style.display = 'block';
+            document.getElementById('bug-report-output').scrollIntoView({behavior:'smooth'});
+        }
+
+        // Lazy-init tabs on first click
+        const _tabInited = {};
+        const _origSwitchTab = switchTab;
 
         function setChartType(type, btn) {
             document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.remove('active'));
