@@ -6,6 +6,7 @@
     <title>INDmoney Pulse | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
 
@@ -147,6 +148,34 @@
         .theme-bar-label { display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 6px; }
         .theme-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
         .theme-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #4361ee, #7c3aed); transition: width 1s ease; }
+
+        /* Analytics enhanced */
+        .chart-toggle { display: flex; gap: 8px; margin-bottom: 20px; }
+        .chart-toggle-btn { padding: 7px 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+        .chart-toggle-btn.active { background: #fff; color: #1e3c72; border-color: #fff; }
+        .chart-toggle-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: #fff; }
+        .chart-wrap { position: relative; height: 280px; background: rgba(255,255,255,0.04); border-radius: 14px; padding: 16px; }
+
+        .tracker-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        .tracker-table th { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .tracker-table td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+        .tracker-table tr:last-child td { border-bottom: none; }
+        .cat-name { font-size: 14px; font-weight: 700; color: #fff; }
+        .cat-sub  { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+        .cat-vol  { font-size: 20px; font-weight: 700; color: #a5b4fc; }
+        .cat-desc { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.5; max-width: 220px; }
+        .priority-badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+        .priority-HIGH   { background: rgba(239,68,68,0.2);  color: #f87171; border: 1px solid rgba(239,68,68,0.4); }
+        .priority-MEDIUM { background: rgba(234,179,8,0.2);  color: #fbbf24; border: 1px solid rgba(234,179,8,0.4); }
+        .priority-LOW    { background: rgba(148,163,184,0.2); color: #94a3b8; border: 1px solid rgba(148,163,184,0.4); }
+        .ticket-chips { display: flex; flex-wrap: wrap; gap: 6px; min-height: 28px; }
+        .ticket-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(67,97,238,0.25); border: 1px solid rgba(67,97,238,0.4); color: #a5b4fc; border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 600; }
+        .ticket-chip button { background: none; border: none; color: #a5b4fc; cursor: pointer; font-size: 13px; padding: 0 0 0 2px; line-height: 1; }
+        .no-tickets { font-size: 12px; color: rgba(255,255,255,0.25); font-style: italic; }
+        .add-ticket-row { display: flex; gap: 6px; align-items: center; }
+        .add-ticket-input { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #fff; padding: 6px 10px; font-size: 12px; width: 110px; font-family: 'Outfit', sans-serif; outline: none; }
+        .add-ticket-input::placeholder { color: rgba(255,255,255,0.2); }
+        .add-ticket-btn { width: 28px; height: 28px; border-radius: 8px; border: none; background: linear-gradient(135deg,#4361ee,#3a0ca3); color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -260,15 +289,43 @@
 
         <!-- Tab 5: Analytics -->
         <div id="tab-analytics" class="tab-content">
+            <!-- Stat cards -->
+            <div class="stat-grid" id="stat-grid"></div>
+
+            <!-- Chart card -->
             <div class="glass-card">
-                <div class="section-title">Pipeline Stats</div>
-                <div class="stat-grid" id="stat-grid"></div>
+                <div style="margin-bottom:14px">
+                    <div style="font-size:16px;font-weight:700;color:#fff" id="chart-title">Week-wise Issues by Category</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px" id="chart-subtitle">Number of issues reported per category each week</div>
+                </div>
+                <div class="chart-toggle">
+                    <button class="chart-toggle-btn active" onclick="setChartType('bar', this)">Bar Chart</button>
+                    <button class="chart-toggle-btn" onclick="setChartType('line', this)">Trend Line</button>
+                </div>
+                <div class="chart-wrap">
+                    <canvas id="analyticsChart"></canvas>
+                </div>
+            </div>
 
-                <div class="section-title" style="margin-top:8px">Theme Distribution</div>
-                <ul class="theme-bar-list" id="theme-bars"></ul>
-
-                <div class="section-title" style="margin-top:8px">Top User Quotes</div>
-                <div id="analytics-quotes"></div>
+            <!-- Category tracking table -->
+            <div class="glass-card">
+                <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">Category Tracking &amp; Ticket Management</div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px">Track identified analytics issues and their associated tickets</div>
+                <div style="overflow-x:auto">
+                    <table class="tracker-table" id="tracker-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Volume</th>
+                                <th>Description</th>
+                                <th>Priority</th>
+                                <th>Tickets</th>
+                                <th>Add Ticket</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tracker-body"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -552,32 +609,72 @@ The INDmoney app has received mixed reviews from users. Some users have praised 
                 </div>` : ''}`;
 
             // ── Analytics tab ──
-            const statsData = [
-                { num: PULSE_DATA.themes.length, label: 'Themes Found' },
-                { num: PULSE_DATA.top_3_themes.length, label: 'Top Themes' },
-                { num: PULSE_DATA.quotes.length, label: 'User Quotes' },
-                { num: PULSE_DATA.action_ideas.length, label: 'Action Ideas' },
+            const TRACKER_DATA = [
+                { name: 'Performance Issues', sub: 'Performance', vol: 20, desc: 'Repeated crashes and slow performance disrupt user experience, causing frustration and loss of trust.', priority: 'HIGH', tickets: ['PB-6307'] },
+                { name: 'Missing Features', sub: 'Features', vol: 15, desc: 'Many users requested additional features like mutual funds integration and improved UI elements for better usability.', priority: 'MEDIUM', tickets: [] },
+                { name: 'Performance Problems', sub: 'Performance', vol: 15, desc: 'Several reviews highlighted slow performance, crashes, and unresponsive support, impacting user experience.', priority: 'HIGH', tickets: [] },
+                { name: 'UI/UX Issues', sub: 'UI/UX', vol: 10, desc: 'The app\'s interface is generally user-friendly but requires optimization for tablets and smoother performance.', priority: 'LOW', tickets: [] },
+                { name: 'Chart Issues', sub: 'General', vol: 10, desc: 'Multiple users reported chart malfunctions in flash mode and missing option charts, hindering trading accuracy.', priority: 'LOW', tickets: [] },
+                { name: 'Feature Requests', sub: 'Features', vol: 8, desc: 'Users desire additional features like option charts, trailing stop loss, and improved performance.', priority: 'MEDIUM', tickets: [] },
+                { name: 'User Support Issues', sub: 'General', vol: 7, desc: 'Inconsistent support responses and unresolved issues lead to dissatisfaction and churn.', priority: 'LOW', tickets: [] },
             ];
-            document.getElementById('stat-grid').innerHTML = statsData.map(s =>
-                `<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`
-            ).join('');
 
-            const maxBar = PULSE_DATA.themes.length;
-            document.getElementById('theme-bars').innerHTML = PULSE_DATA.themes.map((t, i) => {
-                const pct = Math.round(((maxBar - i) / maxBar) * 100);
-                const isTop = PULSE_DATA.top_3_themes.includes(t);
-                return `<li class="theme-bar-item">
-                    <div class="theme-bar-label">
-                        <span>${escapeHtml(t)} ${isTop ? '★' : ''}</span>
-                        <span style="color:rgba(255,255,255,0.4)">${isTop ? 'Top Theme' : 'Identified'}</span>
-                    </div>
-                    <div class="theme-bar-track"><div class="theme-bar-fill" style="width:${pct}%"></div></div>
-                </li>`;
-            }).join('');
+            const totalIssues = TRACKER_DATA.reduce((s, r) => s + r.vol, 0);
+            const activeTickets = TRACKER_DATA.reduce((s, r) => s + r.tickets.length, 0);
+            const categories = [...new Set(TRACKER_DATA.map(r => r.sub))].length;
 
-            document.getElementById('analytics-quotes').innerHTML = PULSE_DATA.quotes.map(q =>
-                `<div class="quote-card">"${escapeHtml(q)}"</div>`
-            ).join('');
+            document.getElementById('stat-grid').innerHTML = [
+                { num: totalIssues, label: 'Total Issues', sub: 'Across all categories' },
+                { num: activeTickets, label: 'Active Tickets', sub: 'Currently tracked' },
+                { num: categories, label: 'Categories', sub: 'Being monitored' },
+            ].map(s => `<div class="stat-card">
+                <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;font-weight:600">${s.label}</div>
+                <div class="stat-num">${s.num}</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:6px">${s.sub}</div>
+            </div>`).join('');
+
+            // Chart data
+            const weeks = ['Mar 12', 'Mar 22', 'Mar 27'];
+            const chartDatasets = [
+                { label: 'Performance', data: [5, 15, 14], color: '#ef4444' },
+                { label: 'Features',    data: [8, 10, 4],  color: '#f59e0b' },
+                { label: 'UI/UX',       data: [9, 7, 9],   color: '#818cf8' },
+                { label: 'General',     data: [0, 6, 10],  color: '#60a5fa' },
+            ];
+
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            window._analyticsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: weeks,
+                    datasets: chartDatasets.map(d => ({
+                        label: d.label,
+                        data: d.data,
+                        backgroundColor: d.color + '99',
+                        borderColor: d.color,
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        pointBackgroundColor: d.color,
+                        pointRadius: 5,
+                        tension: 0.4,
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.6)', boxWidth: 12, padding: 16, font: { family: 'Outfit' } } },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.75)', titleFont: { family: 'Outfit' }, bodyFont: { family: 'Outfit' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Outfit' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { beginAtZero: true, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Outfit' } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            // Tracker table
+            renderTrackerTable(TRACKER_DATA);
         });
 
         function switchTab(tab, btn) {
@@ -657,6 +754,66 @@ The INDmoney app has received mixed reviews from users. Some users have praised 
             } finally {
                 btn.disabled = false;
                 btn.textContent = 'Send Email 🚀';
+            }
+        }
+
+        function setChartType(type, btn) {
+            document.querySelectorAll('.chart-toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const c = window._analyticsChart;
+            const isLine = type === 'line';
+            c.config.type = type;
+            c.data.datasets.forEach(ds => {
+                ds.fill = isLine ? false : undefined;
+                ds.borderRadius = isLine ? 0 : 6;
+            });
+            document.getElementById('chart-title').textContent = isLine ? 'Category Issue Trend' : 'Week-wise Issues by Category';
+            document.getElementById('chart-subtitle').textContent = isLine ? 'Number of issues per category over time' : 'Number of issues reported per category each week';
+            c.update();
+        }
+
+        function renderTrackerTable(data) {
+            document.getElementById('tracker-body').innerHTML = data.map((row, ri) => `
+                <tr>
+                    <td><div class="cat-name">${escapeHtml(row.name)}</div><div class="cat-sub">${escapeHtml(row.sub)}</div></td>
+                    <td><div class="cat-vol">${row.vol}</div></td>
+                    <td><div class="cat-desc">${escapeHtml(row.desc)}</div></td>
+                    <td><span class="priority-badge priority-${row.priority}">${row.priority}</span></td>
+                    <td>
+                        <div class="ticket-chips" id="chips-${ri}">
+                            ${row.tickets.length ? row.tickets.map(t => ticketChip(t, ri)).join('') : '<span class="no-tickets">No tickets</span>'}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="add-ticket-row">
+                            <input class="add-ticket-input" id="ticket-input-${ri}" placeholder="e.g., ANAL-104" />
+                            <button class="add-ticket-btn" onclick="addTicket(${ri})">+</button>
+                        </div>
+                    </td>
+                </tr>`).join('');
+        }
+
+        function ticketChip(label, ri) {
+            return `<span class="ticket-chip">${escapeHtml(label)}<button onclick="removeTicket(this, ${ri})" title="Remove">×</button></span>`;
+        }
+
+        function addTicket(ri) {
+            const input = document.getElementById(`ticket-input-${ri}`);
+            const val = input.value.trim();
+            if (!val) return;
+            const chips = document.getElementById(`chips-${ri}`);
+            const noTix = chips.querySelector('.no-tickets');
+            if (noTix) noTix.remove();
+            chips.insertAdjacentHTML('beforeend', ticketChip(val, ri));
+            input.value = '';
+        }
+
+        function removeTicket(btn, ri) {
+            const chip = btn.closest('.ticket-chip');
+            const chips = document.getElementById(`chips-${ri}`);
+            chip.remove();
+            if (!chips.querySelector('.ticket-chip')) {
+                chips.innerHTML = '<span class="no-tickets">No tickets</span>';
             }
         }
 
