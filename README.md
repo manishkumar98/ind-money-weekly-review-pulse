@@ -2,6 +2,8 @@
 
 An end-to-end AI pipeline that automatically collects, analyzes, and distributes a weekly product pulse from INDmoney app reviews — completely hands-free, every Saturday.
 
+![INDmoney Weekly Pulse Demo](Docs/demo.gif)
+
 **Live URLs**
 - Subscribe page: https://ind-money-weekly-review-pulse.vercel.app
 - Dashboard: https://ind-money-weekly-review-pulse.vercel.app/dashboard.html
