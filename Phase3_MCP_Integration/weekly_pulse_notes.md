@@ -339,3 +339,34 @@ The INDmoney app has received mostly positive reviews from users, with many prai
 - [ ] Add more investment options
 - [ ] Fix glitches and latency issues
 
+
+---
+
+## 📅 Week of April 24, 2026
+*Appended at 2026-04-24 16:15*
+
+### Weekly Note
+The INDmoney app has received overwhelmingly positive reviews from users, with many praising its ease of use, user-friendly interface, and trading experience. However, some users have reported issues with customer support and certain features. To improve the app, INDmoney could consider adding more features, such as premium chart scanners and letter viewing, and addressing issues with customer support. The users have mixed opinions about the app. Some praise its user interface, trading features, and customer support, while others complain about technical issues, high brokerage charges, and poor customer support. The app seems to be improving, with some users mentioning that they have saved money by using the app's features.
+
+### Themes Identified
+- ease of use
+- user interface
+- trading experience
+- features
+- customer support
+
+### Top 3 Themes
+1. ease of use
+2. user interface
+3. trading experience
+
+### User Quotes
+> "very nice bahut achcha lagta hai Indian"
+> "best analysis is cool mind set"
+> "very easy to operate stock research fantastic I like ind money"
+
+### Action Ideas
+- [ ] Improve customer support
+- [ ] Add more features, such as premium chart scanners and letter viewing
+- [ ] Address issues with certain features, such as GTT orders for selling
+

@@ -1,25 +1,25 @@
 {
   "themes": [
-    "user-friendly interface",
-    "trading features",
-    "investment options",
-    "customer support",
-    "glitches and latency"
+    "ease of use",
+    "user interface",
+    "trading experience",
+    "features",
+    "customer support"
   ],
   "top_3_themes": [
-    "user-friendly interface",
-    "trading features",
-    "glitches and latency"
+    "ease of use",
+    "user interface",
+    "trading experience"
   ],
   "quotes": [
-    "Bahut hii achcha aur saral",
-    "easy way to learn fno",
-    "very nice app in india"
+    "very nice bahut achcha lagta hai Indian",
+    "best analysis is cool mind set",
+    "very easy to operate stock research fantastic I like ind money"
   ],
-  "weekly_note": "The INDmoney app has received mostly positive reviews from users, with many praising its user-friendly interface and trading features. However, some users have reported glitches and latency issues, which need to be addressed. The app also needs to improve its customer support and add more investment options. The users have mixed opinions about the app, with some praising its user interface, trading experience, and charting and analysis features, while others have complained about issues with customer support, brokerage charges, and technical problems. The app seems to be improving, with some users mentioning that their concerns have been addressed, but there are still some issues that need to be resolved.",
+  "weekly_note": "The INDmoney app has received overwhelmingly positive reviews from users, with many praising its ease of use, user-friendly interface, and trading experience. However, some users have reported issues with customer support and certain features. To improve the app, INDmoney could consider adding more features, such as premium chart scanners and letter viewing, and addressing issues with customer support. The users have mixed opinions about the app. Some praise its user interface, trading features, and customer support, while others complain about technical issues, high brokerage charges, and poor customer support. The app seems to be improving, with some users mentioning that they have saved money by using the app's features.",
   "action_ideas": [
     "Improve customer support",
-    "Add more investment options",
-    "Fix glitches and latency issues"
+    "Add more features, such as premium chart scanners and letter viewing",
+    "Address issues with certain features, such as GTT orders for selling"
   ]
 }
