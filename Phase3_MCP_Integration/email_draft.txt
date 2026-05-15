@@ -1,22 +1,22 @@
 
 ============================================================
-  EMAIL DRAFT — 2026-05-08 16:47
+  EMAIL DRAFT — 2026-05-15 17:03
 ============================================================
 To      : Product Team
-Subject : Weekly Pulse + Fee Explainer — 2026-05-08
+Subject : Weekly Pulse + Fee Explainer — 2026-05-15
 ------------------------------------------------------------
 
-Section 1 — WEEKLY PULSE:
-Top themes: user interface, trading features, brokerage charges
-User quotes: very nice app in india, very good app highly recommended, best for getting daily updates on invested stocks
-Weekly note: The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and low brokerage charges. However, some users have experienced technical issues, such as slow loading times and lag, and have requested features like mutual funds and a more user-friendly interface. The app's customer support has also been praised for its responsiveness and helpfulness. Overall, users are satisfied with the app's ease of use and features, but some have reported issues with performance, customer support, and user interface. The app has received praise for its intuitive design and user-friendly interface, but some users have experienced difficulties with navigation and functionality.
-Action ideas: Improve the user interface to make it more intuitive and user-friendly, Add more trading features, such as mutual funds and a more advanced charting system, Reduce brokerage charges to make the app more competitive with other trading platforms
+Section 1 — WEEKLY PULSE: 
+Top themes: user interface, trading features, customer support 
+User quotes: very nice bahut achcha lagta hai Indian, Fundamental analysis is crucial prior to investment., best dedicated app for indstocks , good work indmoney team - happy to see old version of wallet transactions 
+Weekly note: The INDmoney app has received both positive and negative reviews. Users appreciate its user-friendly interface, trading features, and customer support. However, some users have reported issues with mutual funds, charting, and customer support. The app's performance has been inconsistent, with some users experiencing glitches and delays. Overall, the app has potential but needs to address these issues to improve user satisfaction. 
+Action ideas: Improve mutual funds feature, Enhance charting capabilities, Address customer support issues 
 
-Section 2 — FEE EXPLAINER:
-Fee scenario name: SBI Mutual Funds — Exit Load
-Explanation bullets: SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment., SBI Flexicap Fund: Nil exit load., SBI ELSS Tax Saver Fund: Nil exit load., SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment., SBI Midcap Fund: Nil exit load., SBI Focused Equity Fund: Nil exit load.
-Source links: https://www.sbimf.com/en-us/investor-corner, https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43
-Last checked: May 08, 2026
+Section 2 — FEE EXPLAINER: 
+Fee scenario: SBI Mutual Funds — Exit Load 
+Explanation bullets: SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of investment., SBI Flexicap Fund: Nil exit load., SBI ELSS Tax Saver Fund: Nil exit load., SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of investment., SBI Midcap Fund: Nil exit load., SBI Focused Equity Fund: Nil exit load. 
+Source links: https://www.sbimf.com/en-us/investor-corner, https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43 
+Last checked: May 15, 2026
 
 ------------------------------------------------------------
 [DRAFT — Pending human review before sending]

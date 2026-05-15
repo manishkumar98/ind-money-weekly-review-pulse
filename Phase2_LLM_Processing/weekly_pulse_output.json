@@ -2,24 +2,24 @@
   "themes": [
     "user interface",
     "trading features",
-    "brokerage charges",
-    "technical issues",
-    "mutual funds"
+    "mutual funds",
+    "charting",
+    "customer support"
   ],
   "top_3_themes": [
     "user interface",
     "trading features",
-    "brokerage charges"
+    "customer support"
   ],
   "quotes": [
-    "very nice app in india",
-    "very good app highly recommended",
-    "best for getting daily updates on invested stocks"
+    "very nice bahut achcha lagta hai Indian",
+    "Fundamental analysis is crucial prior to investment.",
+    "best dedicated app for indstocks , good work indmoney team - happy to see old version of wallet transactions"
   ],
-  "weekly_note": "The INDmoney app has received both positive and negative reviews. Users praise its user-friendly interface, trading features, and low brokerage charges. However, some users have experienced technical issues, such as slow loading times and lag, and have requested features like mutual funds and a more user-friendly interface. The app's customer support has also been praised for its responsiveness and helpfulness. Overall, users are satisfied with the app's ease of use and features, but some have reported issues with performance, customer support, and user interface. The app has received praise for its intuitive design and user-friendly interface, but some users have experienced difficulties with navigation and functionality.",
+  "weekly_note": "The INDmoney app has received both positive and negative reviews. Users appreciate its user-friendly interface, trading features, and customer support. However, some users have reported issues with mutual funds, charting, and customer support. The app's performance has been inconsistent, with some users experiencing glitches and delays. Overall, the app has potential but needs to address these issues to improve user satisfaction.",
   "action_ideas": [
-    "Improve the user interface to make it more intuitive and user-friendly",
-    "Add more trading features, such as mutual funds and a more advanced charting system",
-    "Reduce brokerage charges to make the app more competitive with other trading platforms"
+    "Improve mutual funds feature",
+    "Enhance charting capabilities",
+    "Address customer support issues"
   ]
 }
