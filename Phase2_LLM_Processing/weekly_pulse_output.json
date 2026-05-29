@@ -1,25 +1,25 @@
 {
   "themes": [
-    "User Interface",
-    "Trading Features",
-    "Mutual Funds",
-    "Customer Support",
-    "Technical Issues"
+    "user-friendly interface",
+    "trading features",
+    "lagging charts",
+    "high brokerage charges",
+    "mutual fund section"
   ],
   "top_3_themes": [
-    "User Interface",
-    "Trading Features",
-    "Technical Issues"
+    "user-friendly interface",
+    "trading features",
+    "lagging charts"
   ],
   "quotes": [
-    "This app is really good",
-    "very nice bahut achcha lagta hai Indian",
-    "Best Trading App, And Upi Billing Platform."
+    "very good application for f&o trading",
+    "best platform for option trading",
+    "INDMoney Platform Bahut Achha hai lekin customer support achha nhi hai"
   ],
-  "weekly_note": "The INDmoney app has received mostly positive reviews from users, with many praising its user-friendly interface and trading features. However, some users have reported technical issues and requested additional features such as mutual funds and auto trailing stoploss. Customer support has also been a point of contention for some users. The app has received mixed reviews, with some users praising its user-friendly interface, features, and performance, while others have raised concerns about its customer support, investment options, and performance issues.",
+  "weekly_note": "The INDmoney app has received mixed reviews from users. While some praise its user-friendly interface and trading features, others have complained about lagging charts, high brokerage charges, and the lack of a mutual fund section. To improve the app, INDmoney should focus on addressing these issues and providing a seamless trading experience. The users have mixed opinions about the app, with some praising its user interface, features, and customer support, while others have raised concerns about technical issues, brokerage fees, and the lack of certain features. The app's customer support has also been criticized for being unhelpful. To improve the app, the developers should focus on addressing these issues and incorporating user feedback.",
   "action_ideas": [
-    "Improve user interface for better user experience",
-    "Add mutual funds feature to the app",
-    "Address technical issues and improve app stability"
+    "Improve chart performance to reduce lagging",
+    "Review and adjust brokerage charges to be more competitive",
+    "Add a mutual fund section to the app"
   ]
 }

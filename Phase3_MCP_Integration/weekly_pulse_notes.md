@@ -494,3 +494,34 @@ The INDmoney app has received mostly positive reviews from users, with many prai
 - [ ] Add mutual funds feature to the app
 - [ ] Address technical issues and improve app stability
 
+
+---
+
+## 📅 Week of May 29, 2026
+*Appended at 2026-05-29 18:19*
+
+### Weekly Note
+The INDmoney app has received mixed reviews from users. While some praise its user-friendly interface and trading features, others have complained about lagging charts, high brokerage charges, and the lack of a mutual fund section. To improve the app, INDmoney should focus on addressing these issues and providing a seamless trading experience. The users have mixed opinions about the app, with some praising its user interface, features, and customer support, while others have raised concerns about technical issues, brokerage fees, and the lack of certain features. The app's customer support has also been criticized for being unhelpful. To improve the app, the developers should focus on addressing these issues and incorporating user feedback.
+
+### Themes Identified
+- user-friendly interface
+- trading features
+- lagging charts
+- high brokerage charges
+- mutual fund section
+
+### Top 3 Themes
+1. user-friendly interface
+2. trading features
+3. lagging charts
+
+### User Quotes
+> "very good application for f&o trading"
+> "best platform for option trading"
+> "INDMoney Platform Bahut Achha hai lekin customer support achha nhi hai"
+
+### Action Ideas
+- [ ] Improve chart performance to reduce lagging
+- [ ] Review and adjust brokerage charges to be more competitive
+- [ ] Add a mutual fund section to the app
+
