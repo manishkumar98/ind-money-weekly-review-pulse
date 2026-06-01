@@ -4,6 +4,9 @@ An end-to-end AI pipeline that automatically collects, analyzes, and distributes
 
 ![INDmoney Weekly Pulse Demo](Docs/demo.gif)
 
+**Demonstration & Walkthrough**
+- 🎬 **[Watch the Video Walkthrough](Docs/video_walkthrough.mp4)** (4.5-minute video tour)
+
 **Live URLs**
 - Subscribe page: https://ind-money-weekly-review-pulse.vercel.app
 - Dashboard: https://ind-money-weekly-review-pulse.vercel.app/dashboard.html

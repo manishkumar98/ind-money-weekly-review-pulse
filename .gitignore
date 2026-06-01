@@ -38,3 +38,7 @@ node_modules/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Large Media / Temporary directories
+WeeklyProductPulseandFeeExplainer.mov
+extracted_frames/
