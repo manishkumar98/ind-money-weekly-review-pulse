@@ -14,6 +14,32 @@ An end-to-end AI pipeline that automatically collects, analyzes, and distributes
 
 ---
 
+## Visual Walkthrough & Feature Demos
+
+Below is a detailed breakdown of the end-to-end application lifecycle and its core features:
+
+### 1. Human-in-the-Loop Approval Gate
+Once the weekly reviews are processed, the generated note and action items are held in the **Approval Gate**. Admins can view/edit the weekly note summary and view the exit load explainer details before releasing the update.
+![Approval Gate](Docs/dashboard_approval.gif)
+
+### 2. Live Analytics Dashboard
+Tracks weekly themes over time, sentiment distribution, and user ratings using interactive Chart.js visualizations. Features a ticket/issue management dashboard with priority tags (High/Medium/Low).
+![Dashboard Analytics](Docs/dashboard_analytics.gif)
+
+### 3. Word Cloud, Sentiment & Bug Reporter
+Explore keyword frequencies, read upvoted user reviews categorized by sentiment, inspect AI-driven recommendation cards, and query negative reviews inside the interactive Bug Reporter.
+![Dashboard Features](Docs/dashboard_features.gif)
+
+### 4. Automated Email Delivery (Weekly Pulse)
+Once approved, the pipeline automatically format-constructs and emails the weekly reviews digest and exit-load explainer directly to subscribed users.
+![Email Notification](Docs/email_notification.gif)
+
+### 5. Orchestrator Pipeline Run (Console)
+The underlying backend orchestration running in the console, showcasing FastMCP tools, LLM processing, quote validation, and dashboard synchronization.
+![Pipeline Execution](Docs/pipeline_execution.gif)
+
+---
+
 ## What It Builds (Assignment Checklist)
 
 ### Part A — Weekly Review Pulse ✅
