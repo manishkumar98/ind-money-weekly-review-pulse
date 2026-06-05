@@ -1,25 +1,25 @@
 {
   "themes": [
-    "user-friendly interface",
-    "trading features",
-    "lagging charts",
-    "high brokerage charges",
-    "mutual fund section"
+    "Ease of use",
+    "User interface",
+    "Trading experience",
+    "Features",
+    "Performance"
   ],
   "top_3_themes": [
-    "user-friendly interface",
-    "trading features",
-    "lagging charts"
+    "Ease of use",
+    "User interface",
+    "Trading experience"
   ],
   "quotes": [
-    "very good application for f&o trading",
-    "best platform for option trading",
-    "INDMoney Platform Bahut Achha hai lekin customer support achha nhi hai"
+    "Very Simple & Easy Transaction Process, love it",
+    "Best app for options trading. Very intuitive design and user interface.",
+    "Fundamental analysis is crucial prior to investment."
   ],
-  "weekly_note": "The INDmoney app has received mixed reviews from users. While some praise its user-friendly interface and trading features, others have complained about lagging charts, high brokerage charges, and the lack of a mutual fund section. To improve the app, INDmoney should focus on addressing these issues and providing a seamless trading experience. The users have mixed opinions about the app, with some praising its user interface, features, and customer support, while others have raised concerns about technical issues, brokerage fees, and the lack of certain features. The app's customer support has also been criticized for being unhelpful. To improve the app, the developers should focus on addressing these issues and incorporating user feedback.",
+  "weekly_note": "The INDmoney app has received mostly positive reviews, with users praising its ease of use, user interface, and trading experience. However, some users have reported issues with performance, features, and customer support. The app's developers have been working to address these concerns and improve the overall user experience. The app has also received mixed reviews from users, with some praising the app's user interface, features, and customer support, while others have criticized the app's technical issues, brokerage charges, and customer support. Suggestions for improvement include adding more features, improving the user interface, and reducing brokerage charges.",
   "action_ideas": [
-    "Improve chart performance to reduce lagging",
-    "Review and adjust brokerage charges to be more competitive",
-    "Add a mutual fund section to the app"
+    "Improve performance and reduce latency",
+    "Add more features, such as mutual funds and commodity trading",
+    "Enhance customer support and address user concerns"
   ]
 }
