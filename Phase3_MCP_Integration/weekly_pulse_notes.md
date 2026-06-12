@@ -556,3 +556,34 @@ The INDmoney app has received mostly positive reviews, with users praising its e
 - [ ] Add more features, such as mutual funds and commodity trading
 - [ ] Enhance customer support and address user concerns
 
+
+---
+
+## 📅 Week of June 12, 2026
+*Appended at 2026-06-12 17:45*
+
+### Weekly Note
+The majority of users have a positive experience with the app, praising its user-friendly interface, trading features, and customer support. However, some users have reported technical issues, such as slow loading times, lag, and glitches. Additionally, some users have expressed concerns about the app's customer support, citing difficulties in resolving issues. To improve the app, the development team could focus on addressing these technical issues and enhancing customer support. The users have mixed opinions about the app. Some praise its user-friendly interface, trading features, and brokerage rates. However, others have raised concerns about the lack of mutual funds, security issues, and technical problems. The app needs to address these concerns to improve user satisfaction.
+
+### Themes Identified
+- User Interface
+- Trading Experience
+- Technical Issues
+- Customer Support
+- Features
+
+### Top 3 Themes
+1. User Interface
+2. Trading Experience
+3. Technical Issues
+
+### User Quotes
+> "Worst service from Indmoney."
+> "very good for Scalpers.."
+> "Fundamental analysis is crucial prior to investment."
+
+### Action Ideas
+- [ ] Improve customer support
+- [ ] Enhance technical features
+- [ ] Add mutual funds to the app
+

@@ -1060,35 +1060,66 @@ The INDmoney app has received mostly positive reviews, with users praising its e
 ### Action Ideas
 - [ ] Improve performance and reduce latency
 - [ ] Add more features, such as mutual funds and commodity trading
-- [ ] Enhance customer support and address user concerns`;
+- [ ] Enhance customer support and address user concerns
+
+
+---
+
+## 📅 Week of June 12, 2026
+*Appended at 2026-06-12 17:45*
+
+### Weekly Note
+The majority of users have a positive experience with the app, praising its user-friendly interface, trading features, and customer support. However, some users have reported technical issues, such as slow loading times, lag, and glitches. Additionally, some users have expressed concerns about the app's customer support, citing difficulties in resolving issues. To improve the app, the development team could focus on addressing these technical issues and enhancing customer support. The users have mixed opinions about the app. Some praise its user-friendly interface, trading features, and brokerage rates. However, others have raised concerns about the lack of mutual funds, security issues, and technical problems. The app needs to address these concerns to improve user satisfaction.
+
+### Themes Identified
+- User Interface
+- Trading Experience
+- Technical Issues
+- Customer Support
+- Features
+
+### Top 3 Themes
+1. User Interface
+2. Trading Experience
+3. Technical Issues
+
+### User Quotes
+> "Worst service from Indmoney."
+> "very good for Scalpers.."
+> "Fundamental analysis is crucial prior to investment."
+
+### Action Ideas
+- [ ] Improve customer support
+- [ ] Enhance technical features
+- [ ] Add mutual funds to the app`;
 
         const PULSE_DATA = {
             "themes": [
-                        "Ease of use",
-                        "User interface",
-                        "Trading experience",
-                        "Features",
-                        "Performance"
+                        "User Interface",
+                        "Trading Experience",
+                        "Technical Issues",
+                        "Customer Support",
+                        "Features"
             ],
             "top_3_themes": [
-                        "Ease of use",
-                        "User interface",
-                        "Trading experience"
+                        "User Interface",
+                        "Trading Experience",
+                        "Technical Issues"
             ],
             "quotes": [
-                        "Very Simple & Easy Transaction Process, love it",
-                        "Best app for options trading. Very intuitive design and user interface.",
+                        "Worst service from Indmoney.",
+                        "very good for Scalpers..",
                         "Fundamental analysis is crucial prior to investment."
             ],
-            "weekly_note": "The INDmoney app has received mostly positive reviews, with users praising its ease of use, user interface, and trading experience. However, some users have reported issues with performance, features, and customer support. The app's developers have been working to address these concerns and improve the overall user experience. The app has also received mixed reviews from users, with some praising the app's user interface, features, and customer support, while others have criticized the app's technical issues, brokerage charges, and customer support. Suggestions for improvement include adding more features, improving the user interface, and reducing brokerage charges.",
+            "weekly_note": "The majority of users have a positive experience with the app, praising its user-friendly interface, trading features, and customer support. However, some users have reported technical issues, such as slow loading times, lag, and glitches. Additionally, some users have expressed concerns about the app's customer support, citing difficulties in resolving issues. To improve the app, the development team could focus on addressing these technical issues and enhancing customer support. The users have mixed opinions about the app. Some praise its user-friendly interface, trading features, and brokerage rates. However, others have raised concerns about the lack of mutual funds, security issues, and technical problems. The app needs to address these concerns to improve user satisfaction.",
             "action_ideas": [
-                        "Improve performance and reduce latency",
-                        "Add more features, such as mutual funds and commodity trading",
-                        "Enhance customer support and address user concerns"
+                        "Improve customer support",
+                        "Enhance technical features",
+                        "Add mutual funds to the app"
             ]
 };
-        const ANALYTICS_META = {"review_count": 238, "sentiment": {"positive": 164, "neutral": 9, "negative": 65}, "rating_dist": {"5": 127, "4": 37, "3": 9, "2": 11, "1": 54}};
-        const FEE_DATA = {"scenario_name": "SBI Mutual Funds \u2014 Exit Load", "explanation_bullets": ["SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment.", "SBI Flexicap Fund: Nil exit load.", "SBI ELSS Tax Saver Fund: Nil exit load.", "SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment.", "SBI Midcap Fund: Nil exit load.", "SBI Focused Equity Fund: Nil exit load."], "source_links": ["https://www.sbimf.com/en-us/investor-corner", "https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43"], "last_checked": "June 05, 2026"};
+        const ANALYTICS_META = {"review_count": 240, "sentiment": {"positive": 165, "neutral": 10, "negative": 65}, "rating_dist": {"5": 127, "4": 38, "3": 10, "2": 11, "1": 54}};
+        const FEE_DATA = {"scenario_name": "SBI Mutual Funds \u2014 Exit Load", "explanation_bullets": ["SBI Large Cap Fund: 1% exit load if redeemed within 365 days from the date of allotment.", "SBI Flexicap Fund: 1% exit load if redeemed within 365 days from the date of allotment.", "SBI ELSS Tax Saver Fund: No exit load.", "SBI Small Cap Fund: 1% exit load if redeemed within 18 months from the date of allotment.", "SBI Midcap Fund: 1% exit load if redeemed within 18 months from the date of allotment.", "SBI Focused Equity Fund: 1% exit load if redeemed within 18 months from the date of allotment."], "source_links": ["https://www.sbimf.com/en-us/investor-corner", "https://www.sbimf.com/sbimf-scheme-details/sbi-large-cap-fund-(formerly-known-as-sbi-bluechip-fund)-43"], "last_checked": "June 12, 2026"};
         // ───────────────────────────────────────────────────────────────────
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -1357,7 +1388,7 @@ The INDmoney app has received mostly positive reviews, with users praising its e
         }
 
         // ── Word Cloud data ──────────────────────────────────────────────────
-        const KEYWORDS = [{"w": "trading", "n": 57, "c": "#4ade80"}, {"w": "best", "n": 39, "c": "#60a5fa"}, {"w": "chart", "n": 33, "c": "#f59e0b"}, {"w": "you", "n": 31, "c": "#f472b6"}, {"w": "option", "n": 30, "c": "#a78bfa"}, {"w": "please", "n": 26, "c": "#34d399"}, {"w": "stock", "n": 21, "c": "#fb923c"}, {"w": "loss", "n": 18, "c": "#818cf8"}, {"w": "trade", "n": 18, "c": "#e879f9"}, {"w": "add", "n": 17, "c": "#22d3ee"}, {"w": "stocks", "n": 17, "c": "#4ade80"}, {"w": "your", "n": 16, "c": "#f87171"}, {"w": "user", "n": 14, "c": "#fb923c"}, {"w": "ind", "n": 14, "c": "#60a5fa"}, {"w": "feature", "n": 14, "c": "#a5b4fc"}, {"w": "features", "n": 14, "c": "#34d399"}, {"w": "order", "n": 13, "c": "#fbbf24"}, {"w": "market", "n": 13, "c": "#f87171"}, {"w": "flash", "n": 13, "c": "#818cf8"}, {"w": "money", "n": 13, "c": "#e879f9"}];
+        const KEYWORDS = [{"w": "trading", "n": 57, "c": "#4ade80"}, {"w": "best", "n": 39, "c": "#60a5fa"}, {"w": "chart", "n": 33, "c": "#f59e0b"}, {"w": "you", "n": 31, "c": "#f472b6"}, {"w": "option", "n": 30, "c": "#a78bfa"}, {"w": "please", "n": 26, "c": "#34d399"}, {"w": "stock", "n": 21, "c": "#fb923c"}, {"w": "loss", "n": 18, "c": "#818cf8"}, {"w": "trade", "n": 18, "c": "#e879f9"}, {"w": "add", "n": 17, "c": "#22d3ee"}, {"w": "your", "n": 17, "c": "#4ade80"}, {"w": "stocks", "n": 17, "c": "#f87171"}, {"w": "ind", "n": 15, "c": "#fb923c"}, {"w": "user", "n": 14, "c": "#60a5fa"}, {"w": "flash", "n": 14, "c": "#a5b4fc"}, {"w": "feature", "n": 14, "c": "#34d399"}, {"w": "features", "n": 14, "c": "#fbbf24"}, {"w": "order", "n": 13, "c": "#f87171"}, {"w": "market", "n": 13, "c": "#818cf8"}, {"w": "money", "n": 13, "c": "#e879f9"}];
         const UPVOTED_REVIEWS = [
             {name:'Manish Mathur',date:'21 Apr 2026',stars:4,sentiment:'Neutral',text:'easy to use and understand UI DESIGN, FAST & RELIABLE',tags:['UI/UX','Performance'],upvotes:141},
             {name:'App User',date:'28 Mar 2026',stars:1,sentiment:'Negative',text:'On listing day the stock was not visible on the app for around 10 minutes after it went live on the exchange. Available on other brokerages during the same time.',tags:['Investment & Trading','Performance'],upvotes:828},
@@ -1365,7 +1396,7 @@ The INDmoney app has received mostly positive reviews, with users praising its e
         ];
 
         // ── Category data ─────────────────────────────────────────────────────
-        const CATEGORIES_DATA = [{"name": "Ease of use", "count": 120, "pct": 59.4, "color": "#4ade80"}, {"name": "User interface", "count": 27, "pct": 13.4, "color": "#60a5fa"}, {"name": "Trading experience", "count": 24, "pct": 11.9, "color": "#f59e0b"}, {"name": "Features", "count": 16, "pct": 7.9, "color": "#f472b6"}, {"name": "Performance", "count": 15, "pct": 7.4, "color": "#a78bfa"}];
+        const CATEGORIES_DATA = [{"name": "User Interface", "count": 120, "pct": 59.4, "color": "#4ade80"}, {"name": "Trading Experience", "count": 27, "pct": 13.4, "color": "#60a5fa"}, {"name": "Technical Issues", "count": 24, "pct": 11.9, "color": "#f59e0b"}, {"name": "Customer Support", "count": 16, "pct": 7.9, "color": "#f472b6"}, {"name": "Features", "count": 15, "pct": 7.4, "color": "#a78bfa"}];
 
         // ── Ideation data ─────────────────────────────────────────────────────
         const AI_IDEAS = [
@@ -1374,7 +1405,7 @@ The INDmoney app has received mostly positive reviews, with users praising its e
             {title:'Add Trailing Stop-Loss Feature',body:'Power traders explicitly request trailing stop-loss orders. This is a standard feature on competing platforms and would reduce churn.',impact:'Medium'},
             {title:'Mutual Funds SIP Reminders',body:'Users want push notifications for SIP execution dates and confirmation of investment. Easy win for engagement and trust.',impact:'Medium'},
         ];
-        const NEGATIVE_REVIEWS = [{"name": "App User", "stars": 1, "text": "Sometimes the position vanished from the chart, TP/SL didn't work on mobile, from desktop browsers I can but that also depends on luck, if I use setup then it works sometime, and then position disappear from chart. So frustrating, and last day while ", "tags": ["Ease of use"]}, {"name": "App User", "stars": 1, "text": "customized watch list is not visible under watchlist. user preferences is allowed to add to watchlist from option chain which is missing. specific chart trend should be highlighted even at chart as well.", "tags": ["Ease of use"]}, {"name": "App User", "stars": 1, "text": "Every day at 9:15 AM when I place an order, it shows “Execute the order after market open” even though the market is already open and LTP is changing. This major glitch has been happening for over a month. Also, in Scalper Mode there is no option to ", "tags": ["Ease of use"]}, {"name": "App User", "stars": 1, "text": "very poor app always hang today while trading it hang does not show any data and 1000 times I have tried to exit but app was totally fail and showing technical issue end I have lost my trade and I get loss after 1 hour the app get working and I exit ", "tags": ["Trading experience"]}, {"name": "App User", "stars": 1, "text": "chart pattern detection timely notification required in app. without notification there is no use of chart Pattern. Lots of strike is index option each strike cannot check manuallly for chart pattern detection and trade.", "tags": ["Ease of use"]}];
+        const NEGATIVE_REVIEWS = [{"name": "App User", "stars": 1, "text": "Sometimes the position vanished from the chart, TP/SL didn't work on mobile, from desktop browsers I can but that also depends on luck, if I use setup then it works sometime, and then position disappear from chart. So frustrating, and last day while ", "tags": ["User Interface"]}, {"name": "App User", "stars": 1, "text": "customized watch list is not visible under watchlist. user preferences is allowed to add to watchlist from option chain which is missing. specific chart trend should be highlighted even at chart as well.", "tags": ["User Interface"]}, {"name": "App User", "stars": 1, "text": "Every day at 9:15 AM when I place an order, it shows “Execute the order after market open” even though the market is already open and LTP is changing. This major glitch has been happening for over a month. Also, in Scalper Mode there is no option to ", "tags": ["User Interface"]}, {"name": "App User", "stars": 1, "text": "very poor app always hang today while trading it hang does not show any data and 1000 times I have tried to exit but app was totally fail and showing technical issue end I have lost my trade and I get loss after 1 hour the app get working and I exit ", "tags": ["Trading Experience"]}, {"name": "App User", "stars": 1, "text": "chart pattern detection timely notification required in app. without notification there is no use of chart Pattern. Lots of strike is index option each strike cannot check manuallly for chart pattern detection and trade.", "tags": ["User Interface"]}];
 
         let _bugSelected = new Set();
 

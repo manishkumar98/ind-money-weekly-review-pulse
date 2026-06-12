@@ -1,25 +1,25 @@
 {
   "themes": [
-    "Ease of use",
-    "User interface",
-    "Trading experience",
-    "Features",
-    "Performance"
+    "User Interface",
+    "Trading Experience",
+    "Technical Issues",
+    "Customer Support",
+    "Features"
   ],
   "top_3_themes": [
-    "Ease of use",
-    "User interface",
-    "Trading experience"
+    "User Interface",
+    "Trading Experience",
+    "Technical Issues"
   ],
   "quotes": [
-    "Very Simple & Easy Transaction Process, love it",
-    "Best app for options trading. Very intuitive design and user interface.",
+    "Worst service from Indmoney.",
+    "very good for Scalpers..",
     "Fundamental analysis is crucial prior to investment."
   ],
-  "weekly_note": "The INDmoney app has received mostly positive reviews, with users praising its ease of use, user interface, and trading experience. However, some users have reported issues with performance, features, and customer support. The app's developers have been working to address these concerns and improve the overall user experience. The app has also received mixed reviews from users, with some praising the app's user interface, features, and customer support, while others have criticized the app's technical issues, brokerage charges, and customer support. Suggestions for improvement include adding more features, improving the user interface, and reducing brokerage charges.",
+  "weekly_note": "The majority of users have a positive experience with the app, praising its user-friendly interface, trading features, and customer support. However, some users have reported technical issues, such as slow loading times, lag, and glitches. Additionally, some users have expressed concerns about the app's customer support, citing difficulties in resolving issues. To improve the app, the development team could focus on addressing these technical issues and enhancing customer support. The users have mixed opinions about the app. Some praise its user-friendly interface, trading features, and brokerage rates. However, others have raised concerns about the lack of mutual funds, security issues, and technical problems. The app needs to address these concerns to improve user satisfaction.",
   "action_ideas": [
-    "Improve performance and reduce latency",
-    "Add more features, such as mutual funds and commodity trading",
-    "Enhance customer support and address user concerns"
+    "Improve customer support",
+    "Enhance technical features",
+    "Add mutual funds to the app"
   ]
 }
