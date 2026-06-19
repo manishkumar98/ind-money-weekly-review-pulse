@@ -1,25 +1,25 @@
 {
   "themes": [
-    "User Interface",
-    "Trading Experience",
-    "Technical Issues",
-    "Customer Support",
-    "Features"
+    "Ease of use",
+    "User interface",
+    "Trading features",
+    "Customer support",
+    "Technical issues"
   ],
   "top_3_themes": [
-    "User Interface",
-    "Trading Experience",
-    "Technical Issues"
+    "Ease of use",
+    "User interface",
+    "Trading features"
   ],
   "quotes": [
-    "Worst service from Indmoney.",
-    "very good for Scalpers..",
-    "Fundamental analysis is crucial prior to investment."
+    "informative and easy to use application, a must recommend for people who want to invest simply",
+    "very easy to pick up for the commoner to trade",
+    "best dedicated app for indstocks , good work indmoney team - happy to see old version of wallet transactions"
   ],
-  "weekly_note": "The majority of users have a positive experience with the app, praising its user-friendly interface, trading features, and customer support. However, some users have reported technical issues, such as slow loading times, lag, and glitches. Additionally, some users have expressed concerns about the app's customer support, citing difficulties in resolving issues. To improve the app, the development team could focus on addressing these technical issues and enhancing customer support. The users have mixed opinions about the app. Some praise its user-friendly interface, trading features, and brokerage rates. However, others have raised concerns about the lack of mutual funds, security issues, and technical problems. The app needs to address these concerns to improve user satisfaction.",
+  "weekly_note": "The INDmoney app has received both positive and negative reviews. Users praise its ease of use, user-friendly interface, and trading features. However, some users have experienced technical issues, poor customer support, and difficulties with trading. To improve, the app could focus on optimizing its performance, enhancing customer support, and addressing user concerns. Overall, the app has received positive reviews for its user interface, features, and functionality. However, some users have experienced performance issues, security concerns, and difficulties with customer support. The app's developers have been working to address these issues and improve the overall user experience.",
   "action_ideas": [
     "Improve customer support",
-    "Enhance technical features",
-    "Add mutual funds to the app"
+    "Enhance trading features",
+    "Optimize app performance"
   ]
 }
