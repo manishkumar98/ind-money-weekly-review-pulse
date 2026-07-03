@@ -1,25 +1,25 @@
 {
   "themes": [
-    "Ease of use",
-    "User interface",
-    "Trading features",
-    "Customer support",
-    "Technical issues"
+    "user interface",
+    "trading features",
+    "customer support",
+    "charting",
+    "mutual funds"
   ],
   "top_3_themes": [
-    "Ease of use",
-    "User interface",
-    "Trading features"
+    "user interface",
+    "trading features",
+    "customer support"
   ],
   "quotes": [
-    "informative and easy to use application, a must recommend for people who want to invest simply",
-    "very easy to pick up for the commoner to trade",
-    "best dedicated app for indstocks , good work indmoney team - happy to see old version of wallet transactions"
+    "Fundamental analysis is crucial prior to investment.",
+    "This INDstocks is the best platform for Stock market thata I had every used in my life.",
+    "Best app for trading but chart is not accurate."
   ],
-  "weekly_note": "The INDmoney app has received both positive and negative reviews. Users praise its ease of use, user-friendly interface, and trading features. However, some users have experienced technical issues, poor customer support, and difficulties with trading. To improve, the app could focus on optimizing its performance, enhancing customer support, and addressing user concerns. Overall, the app has received positive reviews for its user interface, features, and functionality. However, some users have experienced performance issues, security concerns, and difficulties with customer support. The app's developers have been working to address these issues and improve the overall user experience.",
+  "weekly_note": "The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have criticized its customer support and charting capabilities. Some users have also requested additional features, such as mutual funds and dual chart views. The users have mixed opinions about the app, with some praising its features and user experience, while others have reported technical issues and security concerns. The app's developers should focus on addressing these concerns and improving the overall user experience.",
   "action_ideas": [
     "Improve customer support",
-    "Enhance trading features",
-    "Optimize app performance"
+    "Enhance charting capabilities",
+    "Improve the app's technical stability and reduce latency"
   ]
 }
