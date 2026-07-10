@@ -680,3 +680,34 @@ The INDmoney app has received mixed reviews from users, with some praising its u
 - [ ] Enhance charting capabilities
 - [ ] Improve the app's technical stability and reduce latency
 
+
+---
+
+## 📅 Week of July 10, 2026
+*Appended at 2026-07-10 17:09*
+
+### Weekly Note
+The INDmoney app has received mixed reviews from users. While some praise its user-friendly interface, features, and performance, others have raised concerns about its brokerage fees, trading experience, and technical issues. To improve, the app could focus on optimizing its performance, adding more features, and addressing user complaints. The app has also received praise for its user-friendly interface and features, while others have experienced performance issues and poor customer support. To improve the app, INDmoney should focus on addressing these concerns and adding more features to enhance the trading experience.
+
+### Themes Identified
+- Trading
+- Brokerage
+- User Interface
+- Features
+- Performance
+
+### Top 3 Themes
+1. Trading
+2. Brokerage
+3. User Interface
+
+### User Quotes
+> "very easy to pick up for the commoner to trade"
+> "best charting platform and option brokerage 5 rupees per executed order to change small trader life"
+> "INDmoney Platform Bahut Achha hai lekin customer support achha nhi hai maine kitna baar bola ek problem solve krne ke liye lekin nhi kiya bola hamare developer is pe kaam kr rahe lekin aisa kuch nhi hai bas ticket closed krne ke liye bolta hai"
+
+### Action Ideas
+- [ ] Improve performance and reduce technical issues
+- [ ] Add more features, such as SL Limit orders and live chart position tools
+- [ ] Enhance the trading experience and make it more beginner-friendly
+
