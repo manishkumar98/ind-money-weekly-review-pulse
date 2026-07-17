@@ -711,3 +711,34 @@ The INDmoney app has received mixed reviews from users. While some praise its us
 - [ ] Add more features, such as SL Limit orders and live chart position tools
 - [ ] Enhance the trading experience and make it more beginner-friendly
 
+
+---
+
+## 📅 Week of July 17, 2026
+*Appended at 2026-07-17 16:37*
+
+### Weekly Note
+The majority of users have a positive experience with INDmoney, praising its user-friendly interface, features, and performance. However, some users have reported issues with the app's performance, such as slow loading times and lag. Additionally, some users have requested features like stop-loss triggers, automatic trading, and improved charting capabilities. The INDmoney app has received mixed reviews from users. Some users have praised the app's user interface, trading features, and customer support, while others have reported technical issues, poor customer support, and requested additional features. The app's performance has been a concern for some users, with reports of slow loading times, chart crashing, and issues with order execution.
+
+### Themes Identified
+- Trading
+- Brokerage
+- User Interface
+- Features
+- Performance
+
+### Top 3 Themes
+1. Trading
+2. Brokerage
+3. User Interface
+
+### User Quotes
+> "I believe it is a good experience for new traders."
+> "The best application with the best brokerage in the market really mast hai"
+> "very very good IND stocks Broking charges is very Low I like this."
+
+### Action Ideas
+- [ ] Improve the app's performance by addressing slow loading times and lag.
+- [ ] Add features like stop-loss triggers, automatic trading, and improved charting capabilities.
+- [ ] Enhance the user interface to make it more intuitive and user-friendly.
+
