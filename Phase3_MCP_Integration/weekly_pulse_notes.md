@@ -742,3 +742,34 @@ The majority of users have a positive experience with INDmoney, praising its use
 - [ ] Add features like stop-loss triggers, automatic trading, and improved charting capabilities.
 - [ ] Enhance the user interface to make it more intuitive and user-friendly.
 
+
+---
+
+## 📅 Week of July 24, 2026
+*Appended at 2026-07-24 16:57*
+
+### Weekly Note
+The user reviews for INDmoney are mixed, with some users praising the app's features, user interface, and performance, while others have raised concerns about the accuracy of charts, the lack of certain features, and issues with the app's performance. The INDmoney app has received mixed reviews from users, with some praising its user-friendly interface and trading features, while others have experienced technical issues and poor customer support. The app's brokerage charges have also been a point of contention for some users. To improve the app, INDmoney could focus on addressing these issues and providing a more seamless user experience.
+
+### Themes Identified
+- Trading
+- Brokerage
+- User Interface
+- Features
+- Performance
+
+### Top 3 Themes
+1. Trading
+2. Brokerage
+3. User Interface
+
+### User Quotes
+> "Best app for trading but chart is not accurate."
+> "This app is very nice and very seckure"
+> "I've been using Flash Trading by INDmoney for a while, and the experience has been smooth so far."
+
+### Action Ideas
+- [ ] Improve the accuracy of charts
+- [ ] Add more features, such as mutual funds and US stock trading
+- [ ] Optimize the app for tablet usage
+
